@@ -59,3 +59,4 @@ F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\obj\Debug\net9.0\
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\obj\Debug\net9.0\AudioInterviewer.API.pdb
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\obj\Debug\net9.0\AudioInterviewer.API.genruntimeconfig.cache
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\obj\Debug\net9.0\ref\AudioInterviewer.API.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\obj\Debug\net9.0\AudioInterviewer.API.sourcelink.json
