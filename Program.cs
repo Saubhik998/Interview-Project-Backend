@@ -1,11 +1,15 @@
 using Microsoft.OpenApi.Models;
+using AudioInterviewer.API.Services; // 👈 Import the service namespace
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 
-//  Add Swagger with metadata
+// ✅ Register the InterviewService for dependency injection
+builder.Services.AddSingleton<InterviewService>();
+
+// Add Swagger with custom metadata
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -25,22 +29,21 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    //  Enable Swagger middleware
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "AI Audio Interview API V1");
-        c.RoutePrefix = string.Empty; 
+        c.RoutePrefix = string.Empty; // 👈 Swagger UI at root
     });
 }
 
-app.UseHttpsRedirection(); // This redirects HTTP to HTTPS
-
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

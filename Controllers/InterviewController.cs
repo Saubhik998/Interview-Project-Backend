@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using AudioInterviewer.API.Models;
+using AudioInterviewer.API.Services;
 
 namespace AudioInterviewer.API.Controllers
 {
@@ -7,111 +8,71 @@ namespace AudioInterviewer.API.Controllers
     [Route("api/[controller]")]
     public class InterviewController : ControllerBase
     {
-        private static List<string> _questions = new()
+        private readonly InterviewService _interviewService;
+
+        public InterviewController(InterviewService interviewService)
         {
-            "Tell me about yourself.",
-            "What are your strengths?",
-            "Why do you want this job?"
-        };
-
-        private static int _currentIndex = 0;
-
-        private static List<object> _answers = new();
-
-        private static string _jobDescription = "";
+            _interviewService = interviewService;
+        }
 
         /// <summary>
-        /// Initializes an interview session with the provided job description.
-        /// Returns a list of mock questions.
+        /// Initializes the interview session with a given Job Description.
         /// </summary>
         [HttpPost("init")]
         public IActionResult InitializeInterview([FromBody] string jobDescription)
         {
-            _jobDescription = jobDescription;
-            _currentIndex = 0;
-            _answers.Clear(); // Reset previous answers if any
-
+            _interviewService.InitializeSession(jobDescription);
             return Ok(new
             {
                 message = "Interview initialized",
                 jd = jobDescription,
-                questions = _questions
+                questions = _interviewService.GetQuestions().Select(q => q.Text).ToList()
             });
         }
 
         /// <summary>
-        /// Gets the next interview question in the sequence.
+        /// Retrieves the next question in the session.
         /// </summary>
         [HttpGet("question")]
         public IActionResult GetNextQuestion()
         {
-            if (_currentIndex >= _questions.Count)
+            var question = _interviewService.GetNextQuestion();
+            if (question == null)
                 return Ok(new { message = "Interview complete" });
 
-            var question = _questions[_currentIndex];
-            return Ok(new { index = _currentIndex, question });
+            return Ok(new { index = _interviewService.CurrentIndex, question = question.Text });
         }
 
         /// <summary>
-        /// Stores an answer for the current question.
+        /// Stores the candidate’s answer for the current question.
         /// </summary>
         [HttpPost("answer")]
-        public IActionResult SubmitAnswer([FromBody] AnswerDto answer)
+        public IActionResult SubmitAnswer([FromBody] AnswerDto answerDto)
         {
-            if (_currentIndex >= _questions.Count)
+            bool success = _interviewService.SubmitAnswer(answerDto);
+            if (!success)
                 return BadRequest("No more questions.");
 
-            _answers.Add(new
-            {
-                question = _questions[_currentIndex],
-                answer.audioUrl,
-                answer.transcript
-            });
-
-            _currentIndex++;
-
-            return Ok(new { message = "Answer recorded", index = _currentIndex });
+            return Ok(new { message = "Answer recorded", index = _interviewService.CurrentIndex });
         }
 
         /// <summary>
-        /// Completes the interview and returns a basic summary.
+        /// Completes the interview.
         /// </summary>
         [HttpPost("complete")]
         public IActionResult CompleteInterview()
         {
-            return Ok(new
-            {
-                message = "Interview completed",
-                totalQuestions = _questions.Count,
-                totalAnswers = _answers.Count
-            });
+            var summary = _interviewService.GetCompletionSummary();
+            return Ok(summary);
         }
 
         /// <summary>
-        /// Returns a mock report for the completed interview.
+        /// Returns a mock interview report.
         /// </summary>
         [HttpGet("report")]
         public IActionResult GetReport()
         {
-            var report = new
-            {
-                candidateFit = 78,
-                strengths = new[] { "Good communication", "Clear responses" },
-                improvementAreas = new[] { "More technical detail", "Confidence" },
-                suggestedFollowUp = "Schedule technical round",
-                answers = _answers
-            };
-
-            return Ok(report);
+            return Ok(_interviewService.GenerateReport());
         }
-    }
-
-    /// <summary>
-    /// DTO for receiving answer data.
-    /// </summary>
-    public class AnswerDto
-    {
-        public string audioUrl { get; set; } = "";
-        public string transcript { get; set; } = "";
     }
 }
