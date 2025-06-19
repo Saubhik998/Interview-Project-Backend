@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "hbIxhZ3USPYwgjEKc1Ig00RKSnfjkNmWISdh4Z9SIwk=",
+  "Source": "AudioInterviewer.API",
+  "BasePath": "_content/AudioInterviewer.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
