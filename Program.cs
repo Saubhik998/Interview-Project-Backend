@@ -1,14 +1,14 @@
 using Microsoft.OpenApi.Models;
 using AudioInterviewer.API.Services;           // InterviewService
 using AudioInterviewer.API.Data;               // MongoDBContext
-using AudioInterviewer.API.Models;             // MongoDbSettings
+
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Load MongoDB settings from appsettings.json
 builder.Services.Configure<MongoDbSettings>(
-    builder.Configuration.GetSection("MongoDbSettings"));
+    builder.Configuration.GetSection("MongoDB"));
 
 // Register MongoDBContext for DI
 builder.Services.AddSingleton<MongoDbContext>();
