@@ -1,16 +1,24 @@
+using AudioInterviewer.API.Data;
 using AudioInterviewer.API.Models;
+using MongoDB.Driver;
 
 namespace AudioInterviewer.API.Services
 {
     /// <summary>
-    /// Service that manages in-memory interview logic and state.
+    /// Service that manages interview logic and persists data using MongoDB.
     /// </summary>
     public class InterviewService
     {
+        private readonly MongoDbContext _dbContext;
         private InterviewSession _session = new();
 
+        public InterviewService(MongoDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         /// <summary>
-        /// Initializes a new interview session with a given job description.
+        /// Initializes a new interview session and stores it in MongoDB.
         /// </summary>
         public void InitializeSession(string jobDescription)
         {
@@ -26,10 +34,12 @@ namespace AudioInterviewer.API.Services
                     new Question { Text = "Why do you want this job?" }
                 }
             };
+
+            _dbContext.Sessions.InsertOne(_session);
         }
 
         /// <summary>
-        /// Returns the next question or null if done.
+        /// Returns the next question or null if interview is complete.
         /// </summary>
         public Question? GetNextQuestion()
         {
@@ -40,7 +50,7 @@ namespace AudioInterviewer.API.Services
         }
 
         /// <summary>
-        /// Submits an answer and increments index.
+        /// Saves answer and updates the session document in MongoDB.
         /// </summary>
         public bool SubmitAnswer(AnswerDto answerDto)
         {
@@ -56,6 +66,10 @@ namespace AudioInterviewer.API.Services
 
             _session.Answers.Add(answer);
             _session.CurrentIndex++;
+
+            // Update session in MongoDB
+            var filter = Builders<InterviewSession>.Filter.Eq(s => s.Id, _session.Id);
+            _dbContext.Sessions.ReplaceOne(filter, _session);
 
             return true;
         }

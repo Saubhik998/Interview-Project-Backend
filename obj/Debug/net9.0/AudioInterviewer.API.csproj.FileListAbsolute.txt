@@ -60,3 +60,9 @@ F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\obj\Debug\net9.0\
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\obj\Debug\net9.0\AudioInterviewer.API.genruntimeconfig.cache
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\obj\Debug\net9.0\ref\AudioInterviewer.API.dll
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\obj\Debug\net9.0\AudioInterviewer.API.sourcelink.json
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net9.0\DnsClient.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net9.0\MongoDB.Bson.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net9.0\MongoDB.Driver.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net9.0\SharpCompress.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net9.0\Snappier.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net9.0\ZstdSharp.dll
