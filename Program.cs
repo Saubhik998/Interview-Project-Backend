@@ -1,15 +1,25 @@
 using Microsoft.OpenApi.Models;
-using AudioInterviewer.API.Services; // 👈 Import the service namespace
+using AudioInterviewer.API.Services;           // InterviewService
+using AudioInterviewer.API.Data;               // MongoDBContext
+using AudioInterviewer.API.Models;             // MongoDbSettings
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllers();
+// Load MongoDB settings from appsettings.json
+builder.Services.Configure<MongoDbSettings>(
+    builder.Configuration.GetSection("MongoDbSettings"));
 
-// ✅ Register the InterviewService for dependency injection
+// Register MongoDBContext for DI
+builder.Services.AddSingleton<MongoDbContext>();
+
+// Register InterviewService for in-memory/business logic
 builder.Services.AddSingleton<InterviewService>();
 
-// Add Swagger with custom metadata
+// Register Controllers
+builder.Services.AddControllers();
+
+// Add Swagger (API documentation)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -29,24 +39,29 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline
+// Swagger UI configuration (Dev only)
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "AI Audio Interview API V1");
-        c.RoutePrefix = string.Empty; // 👈 Swagger UI at root
+        c.RoutePrefix = string.Empty; // Swagger UI at root
     });
 }
+
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// HTTPS redirection
 app.UseHttpsRedirection();
 
+// AuthZ (optional - used for future JWT tokens or identity)
 app.UseAuthorization();
 
+// Map controller routes
 app.MapControllers();
 
+// Start the app
 app.Run();
