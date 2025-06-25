@@ -6,9 +6,9 @@ namespace AudioInterviewer.API.Models
     public class AnswerDto
     {
         /// <summary>
-        /// URL to the recorded audio file (frontend uploads audio).
+        /// Base64-encoded audio data from frontend.
         /// </summary>
-        public string AudioUrl { get; set; } = "";
+        public string AudioBase64 { get; set; } = "";
 
         /// <summary>
         /// Text transcription of the spoken answer.

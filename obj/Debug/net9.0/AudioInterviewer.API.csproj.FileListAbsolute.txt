@@ -66,3 +66,4 @@ F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net9.0\
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net9.0\SharpCompress.dll
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net9.0\Snappier.dll
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net9.0\ZstdSharp.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net9.0\AudioInterviewer.API.staticwebassets.runtime.json

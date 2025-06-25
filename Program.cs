@@ -2,6 +2,7 @@ using Microsoft.OpenApi.Models;
 using AudioInterviewer.API.Services; // InterviewService
 using AudioInterviewer.API.Data;     // MongoDBContext
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.StaticFiles; // ✅ Needed for MIME mapping
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +33,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-//  Moved CORS setup BEFORE builder.Build()
+// ✅ CORS policy for frontend React app
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
@@ -41,10 +42,10 @@ builder.Services.AddCors(options =>
                         .AllowAnyMethod());
 });
 
-// Build app AFTER all services are registered
+// Build the app
 var app = builder.Build();
 
-// Swagger UI (for development)
+// Swagger UI
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -55,11 +56,20 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+// ✅ Serve static files with .webm MIME mapping
+var contentTypeProvider = new FileExtensionContentTypeProvider();
+contentTypeProvider.Mappings[".webm"] = "audio/webm";
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    ContentTypeProvider = contentTypeProvider
+});
+
 // Middleware
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.MapControllers();
 
-// Run app
+// Run the app
 app.Run();
