@@ -1,0 +1,40 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/AudioInterviewer.API/audio/answer_638864401772135865.ihetnba8e6.webm">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\audio\answer_638864401772135865.webm'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"ihetnba8e6"},{"Name":"integrity","Value":"sha256-au5JwdaWMdjKkRTVNekLDeuaV5CiO\u002BHq11/V6FFyrKE="},{"Name":"label","Value":"_content/AudioInterviewer.API/audio/answer_638864401772135865.webm"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"101591"},{"Name":"Content-Type","Value":"video/webm"},{"Name":"ETag","Value":"\u0022au5JwdaWMdjKkRTVNekLDeuaV5CiO\u002BHq11/V6FFyrKE=\u0022"},{"Name":"Last-Modified","Value":"Wed, 25 Jun 2025 09:22:57 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/AudioInterviewer.API/audio/answer_638864401772135865.webm">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\audio\answer_638864401772135865.webm'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-au5JwdaWMdjKkRTVNekLDeuaV5CiO\u002BHq11/V6FFyrKE="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"101591"},{"Name":"Content-Type","Value":"video/webm"},{"Name":"ETag","Value":"\u0022au5JwdaWMdjKkRTVNekLDeuaV5CiO\u002BHq11/V6FFyrKE=\u0022"},{"Name":"Last-Modified","Value":"Wed, 25 Jun 2025 09:22:57 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/AudioInterviewer.API/audio/answer_638864401876698512.a6v4clz0i5.webm">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\audio\answer_638864401876698512.webm'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"a6v4clz0i5"},{"Name":"integrity","Value":"sha256-Llmky5Twu93Hd5xWVyA1\u002BzDvZt9dMmh0QjOX/E\u002BHzMw="},{"Name":"label","Value":"_content/AudioInterviewer.API/audio/answer_638864401876698512.webm"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"121877"},{"Name":"Content-Type","Value":"video/webm"},{"Name":"ETag","Value":"\u0022Llmky5Twu93Hd5xWVyA1\u002BzDvZt9dMmh0QjOX/E\u002BHzMw=\u0022"},{"Name":"Last-Modified","Value":"Wed, 25 Jun 2025 09:23:07 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/AudioInterviewer.API/audio/answer_638864401876698512.webm">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\audio\answer_638864401876698512.webm'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-Llmky5Twu93Hd5xWVyA1\u002BzDvZt9dMmh0QjOX/E\u002BHzMw="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"121877"},{"Name":"Content-Type","Value":"video/webm"},{"Name":"ETag","Value":"\u0022Llmky5Twu93Hd5xWVyA1\u002BzDvZt9dMmh0QjOX/E\u002BHzMw=\u0022"},{"Name":"Last-Modified","Value":"Wed, 25 Jun 2025 09:23:07 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/AudioInterviewer.API/audio/answer_638864401973538857.92zd7tvggy.webm">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\audio\answer_638864401973538857.webm'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"92zd7tvggy"},{"Name":"integrity","Value":"sha256-wd0wLMpsx\u002BBFvoD80ndL57YVVH9Ze\u002BbkZppbwxLe5zE="},{"Name":"label","Value":"_content/AudioInterviewer.API/audio/answer_638864401973538857.webm"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"110285"},{"Name":"Content-Type","Value":"video/webm"},{"Name":"ETag","Value":"\u0022wd0wLMpsx\u002BBFvoD80ndL57YVVH9Ze\u002BbkZppbwxLe5zE=\u0022"},{"Name":"Last-Modified","Value":"Wed, 25 Jun 2025 09:23:17 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/AudioInterviewer.API/audio/answer_638864401973538857.webm">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\audio\answer_638864401973538857.webm'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-wd0wLMpsx\u002BBFvoD80ndL57YVVH9Ze\u002BbkZppbwxLe5zE="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"110285"},{"Name":"Content-Type","Value":"video/webm"},{"Name":"ETag","Value":"\u0022wd0wLMpsx\u002BBFvoD80ndL57YVVH9Ze\u002BbkZppbwxLe5zE=\u0022"},{"Name":"Last-Modified","Value":"Wed, 25 Jun 2025 09:23:17 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>

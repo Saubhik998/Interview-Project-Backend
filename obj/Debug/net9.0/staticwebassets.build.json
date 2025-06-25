@@ -1,12 +1,331 @@
 {
   "Version": 1,
-  "Hash": "hbIxhZ3USPYwgjEKc1Ig00RKSnfjkNmWISdh4Z9SIwk=",
+  "Hash": "lxCwYaKGEfkZg2zso4W2BDGbcUaMg1QZrPIXDgmS9PI=",
   "Source": "AudioInterviewer.API",
   "BasePath": "_content/AudioInterviewer.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "AudioInterviewer.API\\wwwroot",
+      "Source": "AudioInterviewer.API",
+      "ContentRoot": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\",
+      "BasePath": "_content/AudioInterviewer.API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864401772135865.webm",
+      "SourceId": "AudioInterviewer.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\",
+      "BasePath": "_content/AudioInterviewer.API",
+      "RelativePath": "audio/answer_638864401772135865#[.{fingerprint}]?.webm",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ihetnba8e6",
+      "Integrity": "au5JwdaWMdjKkRTVNekLDeuaV5CiO+Hq11/V6FFyrKE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\audio\\answer_638864401772135865.webm"
+    },
+    {
+      "Identity": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864401876698512.webm",
+      "SourceId": "AudioInterviewer.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\",
+      "BasePath": "_content/AudioInterviewer.API",
+      "RelativePath": "audio/answer_638864401876698512#[.{fingerprint}]?.webm",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "a6v4clz0i5",
+      "Integrity": "Llmky5Twu93Hd5xWVyA1+zDvZt9dMmh0QjOX/E+HzMw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\audio\\answer_638864401876698512.webm"
+    },
+    {
+      "Identity": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864401973538857.webm",
+      "SourceId": "AudioInterviewer.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\",
+      "BasePath": "_content/AudioInterviewer.API",
+      "RelativePath": "audio/answer_638864401973538857#[.{fingerprint}]?.webm",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "92zd7tvggy",
+      "Integrity": "wd0wLMpsx+BFvoD80ndL57YVVH9Ze+bkZppbwxLe5zE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\audio\\answer_638864401973538857.webm"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "audio/answer_638864401772135865.ihetnba8e6.webm",
+      "AssetFile": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864401772135865.webm",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "101591"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "video/webm"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"au5JwdaWMdjKkRTVNekLDeuaV5CiO+Hq11/V6FFyrKE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Jun 2025 09:22:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ihetnba8e6"
+        },
+        {
+          "Name": "label",
+          "Value": "audio/answer_638864401772135865.webm"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-au5JwdaWMdjKkRTVNekLDeuaV5CiO+Hq11/V6FFyrKE="
+        }
+      ]
+    },
+    {
+      "Route": "audio/answer_638864401772135865.webm",
+      "AssetFile": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864401772135865.webm",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "101591"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "video/webm"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"au5JwdaWMdjKkRTVNekLDeuaV5CiO+Hq11/V6FFyrKE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Jun 2025 09:22:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-au5JwdaWMdjKkRTVNekLDeuaV5CiO+Hq11/V6FFyrKE="
+        }
+      ]
+    },
+    {
+      "Route": "audio/answer_638864401876698512.a6v4clz0i5.webm",
+      "AssetFile": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864401876698512.webm",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "121877"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "video/webm"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Llmky5Twu93Hd5xWVyA1+zDvZt9dMmh0QjOX/E+HzMw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Jun 2025 09:23:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "a6v4clz0i5"
+        },
+        {
+          "Name": "label",
+          "Value": "audio/answer_638864401876698512.webm"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Llmky5Twu93Hd5xWVyA1+zDvZt9dMmh0QjOX/E+HzMw="
+        }
+      ]
+    },
+    {
+      "Route": "audio/answer_638864401876698512.webm",
+      "AssetFile": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864401876698512.webm",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "121877"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "video/webm"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Llmky5Twu93Hd5xWVyA1+zDvZt9dMmh0QjOX/E+HzMw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Jun 2025 09:23:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Llmky5Twu93Hd5xWVyA1+zDvZt9dMmh0QjOX/E+HzMw="
+        }
+      ]
+    },
+    {
+      "Route": "audio/answer_638864401973538857.92zd7tvggy.webm",
+      "AssetFile": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864401973538857.webm",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "110285"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "video/webm"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wd0wLMpsx+BFvoD80ndL57YVVH9Ze+bkZppbwxLe5zE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Jun 2025 09:23:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "92zd7tvggy"
+        },
+        {
+          "Name": "label",
+          "Value": "audio/answer_638864401973538857.webm"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-wd0wLMpsx+BFvoD80ndL57YVVH9Ze+bkZppbwxLe5zE="
+        }
+      ]
+    },
+    {
+      "Route": "audio/answer_638864401973538857.webm",
+      "AssetFile": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864401973538857.webm",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "110285"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "video/webm"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wd0wLMpsx+BFvoD80ndL57YVVH9Ze+bkZppbwxLe5zE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Jun 2025 09:23:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-wd0wLMpsx+BFvoD80ndL57YVVH9Ze+bkZppbwxLe5zE="
+        }
+      ]
+    }
+  ]
 }

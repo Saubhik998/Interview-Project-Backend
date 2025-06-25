@@ -51,16 +51,31 @@ namespace AudioInterviewer.API.Services
 
         /// <summary>
         /// Saves answer and updates the session document in MongoDB.
+        /// Also saves the base64 audio to a local file and stores the URL.
         /// </summary>
         public bool SubmitAnswer(AnswerDto answerDto)
         {
             if (_session.CurrentIndex >= _session.Questions.Count)
                 return false;
 
+            // Save base64 audio as .webm file in wwwroot/audio
+            string fileName = $"answer_{DateTime.UtcNow.Ticks}.webm";
+            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "audio");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string filePath = Path.Combine(folderPath, fileName);
+            byte[] audioBytes = Convert.FromBase64String(answerDto.AudioBase64);
+            File.WriteAllBytes(filePath, audioBytes);
+
+            string audioUrl = $"/audio/{fileName}";
+
             var answer = new Answer
             {
                 Question = _session.Questions[_session.CurrentIndex].Text,
-                AudioUrl = answerDto.AudioUrl,
+                AudioUrl = audioUrl,
                 Transcript = answerDto.Transcript
             };
 
