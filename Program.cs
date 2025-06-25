@@ -51,11 +51,22 @@ if (app.Environment.IsDevelopment())
 }
 
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy.WithOrigins("http://localhost:3000") // 👈 frontend URL
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+});
+
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
 // HTTPS redirection
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontend");
 
 // AuthZ (optional - used for future JWT tokens or identity)
 app.UseAuthorization();
