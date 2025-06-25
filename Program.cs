@@ -1,7 +1,6 @@
 using Microsoft.OpenApi.Models;
-using AudioInterviewer.API.Services;           // InterviewService
-using AudioInterviewer.API.Data;               // MongoDBContext
-
+using AudioInterviewer.API.Services; // InterviewService
+using AudioInterviewer.API.Data;     // MongoDBContext
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,16 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection("MongoDB"));
 
-// Register MongoDBContext for DI
+// Register services
 builder.Services.AddSingleton<MongoDbContext>();
-
-// Register InterviewService for in-memory/business logic
 builder.Services.AddSingleton<InterviewService>();
-
-// Register Controllers
 builder.Services.AddControllers();
 
-// Add Swagger (API documentation)
+// Swagger setup
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -37,31 +32,34 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+//  Moved CORS setup BEFORE builder.Build()
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy.WithOrigins("http://localhost:3000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+});
+
+// Build app AFTER all services are registered
 var app = builder.Build();
 
-// Swagger UI configuration (Dev only)
+// Swagger UI (for development)
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "AI Audio Interview API V1");
-        c.RoutePrefix = string.Empty; // Swagger UI at root
+        c.RoutePrefix = string.Empty;
     });
 }
 
-
-app.UseSwagger();
-app.UseSwaggerUI();
-
-// HTTPS redirection
+// Middleware
 app.UseHttpsRedirection();
-
-// AuthZ (optional - used for future JWT tokens or identity)
+app.UseCors("AllowFrontend");
 app.UseAuthorization();
-
-// Map controller routes
 app.MapControllers();
 
-// Start the app
+// Run app
 app.Run();
