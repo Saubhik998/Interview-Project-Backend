@@ -85,13 +85,25 @@ namespace AudioInterviewer.API.Services
             totalAnswers = _session.Answers.Count
         };
 
-        public InterviewReport GenerateReport() => new()
+        /// <summary>
+        /// Generates the final report in the format expected by the frontend.
+        /// </summary>
+        public object GenerateReport()
         {
-            CandidateFitScore = 78,
-            Strengths = new List<string> { "Good communication", "Clear responses" },
-            ImprovementAreas = new List<string> { "More technical detail", "Confidence" },
-            SuggestedFollowUp = "Schedule technical round",
-            Answers = _session.Answers
-        };
+            return new
+            {
+                jd = _session.JobDescription ?? "No JD provided",
+                score = 78,
+                questions = _session.Questions.Select(q => q.Text).ToList(),
+                answers = _session.Answers.Select(a => new
+                {
+                    transcript = a.Transcript ?? "",
+                    audio = a.AudioUrl ?? ""
+                }).ToList(),
+                strengths = new List<string> { "Good communication", "Clear responses" },
+                improvements = new List<string> { "More technical detail", "Confidence" },
+                followUps = new List<string> { "Schedule technical round" }
+            };
+        }
     }
 }
