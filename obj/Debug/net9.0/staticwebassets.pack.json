@@ -13,6 +13,42 @@
       "PackagePath": "staticwebassets\\audio\\answer_638864401973538857.webm"
     },
     {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864411730265879.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864411730265879.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864411823719754.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864411823719754.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864411919141196.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864411919141196.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864418247241695.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864418247241695.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864418369378732.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864418369378732.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864418489469803.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864418489469803.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864434466228772.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864434466228772.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864434565846236.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864434565846236.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864434666470236.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864434666470236.webm"
+    },
+    {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.AudioInterviewer.API.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
