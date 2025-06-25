@@ -5,6 +5,7 @@ namespace AudioInterviewer.API.Models
     /// </summary>
     public class AnswerDto
     {
+        public string Question { get; set; } = "";
         /// <summary>
         /// Base64-encoded audio data from frontend.
         /// </summary>

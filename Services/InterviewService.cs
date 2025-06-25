@@ -50,7 +50,7 @@ namespace AudioInterviewer.API.Services
         }
 
         /// <summary>
-        /// Saves answer and updates the session document in MongoDB.
+        /// Saves the answer and updates the session document in MongoDB.
         /// Also saves the base64 audio to a local file and stores the URL.
         /// </summary>
         public bool SubmitAnswer(AnswerDto answerDto)
@@ -58,7 +58,7 @@ namespace AudioInterviewer.API.Services
             if (_session.CurrentIndex >= _session.Questions.Count)
                 return false;
 
-            // Save base64 audio as .webm file in wwwroot/audio
+            // Save base64 audio to file
             string fileName = $"answer_{DateTime.UtcNow.Ticks}.webm";
             string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "audio");
             if (!Directory.Exists(folderPath))
@@ -74,7 +74,7 @@ namespace AudioInterviewer.API.Services
 
             var answer = new Answer
             {
-                Question = _session.Questions[_session.CurrentIndex].Text,
+                Question = answerDto.Question,
                 AudioUrl = audioUrl,
                 Transcript = answerDto.Transcript
             };
@@ -82,7 +82,6 @@ namespace AudioInterviewer.API.Services
             _session.Answers.Add(answer);
             _session.CurrentIndex++;
 
-            // Update session in MongoDB
             var filter = Builders<InterviewSession>.Filter.Eq(s => s.Id, _session.Id);
             _dbContext.Sessions.ReplaceOne(filter, _session);
 
@@ -112,6 +111,7 @@ namespace AudioInterviewer.API.Services
                 questions = _session.Questions.Select(q => q.Text).ToList(),
                 answers = _session.Answers.Select(a => new
                 {
+                    question = a.Question,
                     transcript = a.Transcript ?? "",
                     audio = a.AudioUrl ?? ""
                 }).ToList(),
