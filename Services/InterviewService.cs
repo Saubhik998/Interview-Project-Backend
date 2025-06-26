@@ -1,6 +1,9 @@
 using AudioInterviewer.API.Data;
 using AudioInterviewer.API.Models;
 using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
+using System.Text;
+using MongoDB.Bson;
 
 namespace AudioInterviewer.API.Services
 {
@@ -17,9 +20,6 @@ namespace AudioInterviewer.API.Services
             _dbContext = dbContext;
         }
 
-        /// <summary>
-        /// Initializes a new interview session and stores it in MongoDB.
-        /// </summary>
         public void InitializeSession(string jobDescription)
         {
             _session = new InterviewSession
@@ -38,9 +38,6 @@ namespace AudioInterviewer.API.Services
             _dbContext.Sessions.InsertOne(_session);
         }
 
-        /// <summary>
-        /// Returns the next question or null if interview is complete.
-        /// </summary>
         public Question? GetNextQuestion()
         {
             if (_session.CurrentIndex >= _session.Questions.Count)
@@ -49,34 +46,30 @@ namespace AudioInterviewer.API.Services
             return _session.Questions[_session.CurrentIndex];
         }
 
-        /// <summary>
-        /// Saves the answer and updates the session document in MongoDB.
-        /// Also saves the base64 audio to a local file and stores the URL.
-        /// </summary>
         public bool SubmitAnswer(AnswerDto answerDto)
         {
             if (_session.CurrentIndex >= _session.Questions.Count)
                 return false;
 
-            // Save base64 audio to file
-            string fileName = $"answer_{DateTime.UtcNow.Ticks}.webm";
-            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "audio");
-            if (!Directory.Exists(folderPath))
+            // Convert base64 to bytes
+            byte[] audioBytes = Convert.FromBase64String(answerDto.AudioBase64);
+
+            // Generate a filename and upload to GridFS
+            string filename = $"answer_{DateTime.UtcNow.Ticks}.webm";
+            ObjectId fileId;
+            using (var stream = new MemoryStream(audioBytes))
             {
-                Directory.CreateDirectory(folderPath);
+                fileId = _dbContext.GridFsBucket.UploadFromStream(filename, stream);
             }
 
-            string filePath = Path.Combine(folderPath, fileName);
-            byte[] audioBytes = Convert.FromBase64String(answerDto.AudioBase64);
-            File.WriteAllBytes(filePath, audioBytes);
-
-            string audioUrl = $"/audio/{fileName}";
+            // The "audio URL" now becomes an endpoint to stream the audio by fileId
+            string audioUrl = $"/api/audio/{fileId}";
 
             var answer = new Answer
             {
                 Question = answerDto.Question,
-                AudioUrl = audioUrl,
-                Transcript = answerDto.Transcript
+                Transcript = answerDto.Transcript,
+                AudioUrl = audioUrl
             };
 
             _session.Answers.Add(answer);
@@ -99,9 +92,6 @@ namespace AudioInterviewer.API.Services
             totalAnswers = _session.Answers.Count
         };
 
-        /// <summary>
-        /// Generates the final report in the format expected by the frontend.
-        /// </summary>
         public object GenerateReport()
         {
             return new

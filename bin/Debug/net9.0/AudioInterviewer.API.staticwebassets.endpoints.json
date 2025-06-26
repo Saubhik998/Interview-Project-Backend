@@ -985,6 +985,252 @@
           "Value": "audio/answer_638864434666470236.webm"
         }
       ]
+    },
+    {
+      "Route": "audio/answer_638864439376124470.webm",
+      "AssetFile": "audio/answer_638864439376124470.webm",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "146027"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "video/webm"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"jMR8tOgfNlTLcvIHqRTrCEF9AJC6mY/j74EF/Lk/4TM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Jun 2025 10:25:37 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-jMR8tOgfNlTLcvIHqRTrCEF9AJC6mY/j74EF/Lk/4TM="
+        }
+      ]
+    },
+    {
+      "Route": "audio/answer_638864439376124470.whj75i3cuy.webm",
+      "AssetFile": "audio/answer_638864439376124470.webm",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "146027"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "video/webm"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"jMR8tOgfNlTLcvIHqRTrCEF9AJC6mY/j74EF/Lk/4TM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Jun 2025 10:25:37 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "whj75i3cuy"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-jMR8tOgfNlTLcvIHqRTrCEF9AJC6mY/j74EF/Lk/4TM="
+        },
+        {
+          "Name": "label",
+          "Value": "audio/answer_638864439376124470.webm"
+        }
+      ]
+    },
+    {
+      "Route": "audio/answer_638864439470969823.4fghn05jfg.webm",
+      "AssetFile": "audio/answer_638864439470969823.webm",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "105455"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "video/webm"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"YPQinola/RInTwY/G1pT0Yf6/IX50ctBDKg+7gucJX0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Jun 2025 10:25:47 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4fghn05jfg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-YPQinola/RInTwY/G1pT0Yf6/IX50ctBDKg+7gucJX0="
+        },
+        {
+          "Name": "label",
+          "Value": "audio/answer_638864439470969823.webm"
+        }
+      ]
+    },
+    {
+      "Route": "audio/answer_638864439470969823.webm",
+      "AssetFile": "audio/answer_638864439470969823.webm",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "105455"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "video/webm"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"YPQinola/RInTwY/G1pT0Yf6/IX50ctBDKg+7gucJX0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Jun 2025 10:25:47 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-YPQinola/RInTwY/G1pT0Yf6/IX50ctBDKg+7gucJX0="
+        }
+      ]
+    },
+    {
+      "Route": "audio/answer_638864439595806132.8ebobb2rfj.webm",
+      "AssetFile": "audio/answer_638864439595806132.webm",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "155687"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "video/webm"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"sCa6zKLxnmJufkQrVKfzCCsW8VXAzM84VNuYTkmVSQc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Jun 2025 10:25:59 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "8ebobb2rfj"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-sCa6zKLxnmJufkQrVKfzCCsW8VXAzM84VNuYTkmVSQc="
+        },
+        {
+          "Name": "label",
+          "Value": "audio/answer_638864439595806132.webm"
+        }
+      ]
+    },
+    {
+      "Route": "audio/answer_638864439595806132.webm",
+      "AssetFile": "audio/answer_638864439595806132.webm",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "155687"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "video/webm"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"sCa6zKLxnmJufkQrVKfzCCsW8VXAzM84VNuYTkmVSQc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 25 Jun 2025 10:25:59 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-sCa6zKLxnmJufkQrVKfzCCsW8VXAzM84VNuYTkmVSQc="
+        }
+      ]
     }
   ]
 }
