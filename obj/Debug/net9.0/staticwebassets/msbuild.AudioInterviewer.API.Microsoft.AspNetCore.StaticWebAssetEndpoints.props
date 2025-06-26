@@ -144,5 +144,41 @@
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"xob2bxy6cu"},{"Name":"integrity","Value":"sha256-sVa0j585NkB8/OtMxuMv4kZJ45nse97cm3SQnVvzWkE="},{"Name":"label","Value":"_content/AudioInterviewer.API/audio/answer_638864434666470236.webm"}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"117047"},{"Name":"Content-Type","Value":"video/webm"},{"Name":"ETag","Value":"\u0022sVa0j585NkB8/OtMxuMv4kZJ45nse97cm3SQnVvzWkE=\u0022"},{"Name":"Last-Modified","Value":"Wed, 25 Jun 2025 10:17:46 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/AudioInterviewer.API/audio/answer_638864439376124470.webm">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\audio\answer_638864439376124470.webm'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-jMR8tOgfNlTLcvIHqRTrCEF9AJC6mY/j74EF/Lk/4TM="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"146027"},{"Name":"Content-Type","Value":"video/webm"},{"Name":"ETag","Value":"\u0022jMR8tOgfNlTLcvIHqRTrCEF9AJC6mY/j74EF/Lk/4TM=\u0022"},{"Name":"Last-Modified","Value":"Wed, 25 Jun 2025 10:25:37 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/AudioInterviewer.API/audio/answer_638864439376124470.whj75i3cuy.webm">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\audio\answer_638864439376124470.webm'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"whj75i3cuy"},{"Name":"integrity","Value":"sha256-jMR8tOgfNlTLcvIHqRTrCEF9AJC6mY/j74EF/Lk/4TM="},{"Name":"label","Value":"_content/AudioInterviewer.API/audio/answer_638864439376124470.webm"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"146027"},{"Name":"Content-Type","Value":"video/webm"},{"Name":"ETag","Value":"\u0022jMR8tOgfNlTLcvIHqRTrCEF9AJC6mY/j74EF/Lk/4TM=\u0022"},{"Name":"Last-Modified","Value":"Wed, 25 Jun 2025 10:25:37 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/AudioInterviewer.API/audio/answer_638864439470969823.4fghn05jfg.webm">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\audio\answer_638864439470969823.webm'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"4fghn05jfg"},{"Name":"integrity","Value":"sha256-YPQinola/RInTwY/G1pT0Yf6/IX50ctBDKg\u002B7gucJX0="},{"Name":"label","Value":"_content/AudioInterviewer.API/audio/answer_638864439470969823.webm"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"105455"},{"Name":"Content-Type","Value":"video/webm"},{"Name":"ETag","Value":"\u0022YPQinola/RInTwY/G1pT0Yf6/IX50ctBDKg\u002B7gucJX0=\u0022"},{"Name":"Last-Modified","Value":"Wed, 25 Jun 2025 10:25:47 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/AudioInterviewer.API/audio/answer_638864439470969823.webm">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\audio\answer_638864439470969823.webm'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-YPQinola/RInTwY/G1pT0Yf6/IX50ctBDKg\u002B7gucJX0="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"105455"},{"Name":"Content-Type","Value":"video/webm"},{"Name":"ETag","Value":"\u0022YPQinola/RInTwY/G1pT0Yf6/IX50ctBDKg\u002B7gucJX0=\u0022"},{"Name":"Last-Modified","Value":"Wed, 25 Jun 2025 10:25:47 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/AudioInterviewer.API/audio/answer_638864439595806132.8ebobb2rfj.webm">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\audio\answer_638864439595806132.webm'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"8ebobb2rfj"},{"Name":"integrity","Value":"sha256-sCa6zKLxnmJufkQrVKfzCCsW8VXAzM84VNuYTkmVSQc="},{"Name":"label","Value":"_content/AudioInterviewer.API/audio/answer_638864439595806132.webm"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"155687"},{"Name":"Content-Type","Value":"video/webm"},{"Name":"ETag","Value":"\u0022sCa6zKLxnmJufkQrVKfzCCsW8VXAzM84VNuYTkmVSQc=\u0022"},{"Name":"Last-Modified","Value":"Wed, 25 Jun 2025 10:25:59 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/AudioInterviewer.API/audio/answer_638864439595806132.webm">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\audio\answer_638864439595806132.webm'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-sCa6zKLxnmJufkQrVKfzCCsW8VXAzM84VNuYTkmVSQc="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"155687"},{"Name":"Content-Type","Value":"video/webm"},{"Name":"ETag","Value":"\u0022sCa6zKLxnmJufkQrVKfzCCsW8VXAzM84VNuYTkmVSQc=\u0022"},{"Name":"Last-Modified","Value":"Wed, 25 Jun 2025 10:25:59 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
   </ItemGroup>
 </Project>

@@ -49,6 +49,18 @@
       "PackagePath": "staticwebassets\\audio\\answer_638864434666470236.webm"
     },
     {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864439376124470.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864439376124470.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864439470969823.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864439470969823.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864439595806132.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864439595806132.webm"
+    },
+    {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.AudioInterviewer.API.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
