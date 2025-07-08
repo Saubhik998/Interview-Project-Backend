@@ -1,8 +1,9 @@
 using Microsoft.OpenApi.Models;
-using AudioInterviewer.API.Services; // InterviewService
-using AudioInterviewer.API.Data;     // MongoDBContext
+using AudioInterviewer.API.Services;         // InterviewService
+using AudioInterviewer.API.Data;            // MongoDBContext
+using AudioInterviewer.API.Services.External; // ✅ FastApiClient
 using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.StaticFiles; // ✅ Needed for MIME mapping
+using Microsoft.AspNetCore.StaticFiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.Configure<MongoDbSettings>(
 
 // Register services
 builder.Services.AddSingleton<MongoDbContext>();
+builder.Services.AddHttpClient<FastApiClient>(); // ✅ Register HttpClient for FastAPI
 builder.Services.AddSingleton<InterviewService>();
 builder.Services.AddControllers();
 

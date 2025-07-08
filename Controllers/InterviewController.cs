@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using AudioInterviewer.API.Models;
 using AudioInterviewer.API.Services;
+using System.Threading.Tasks;
 
 namespace AudioInterviewer.API.Controllers
 {
@@ -15,37 +16,33 @@ namespace AudioInterviewer.API.Controllers
             _interviewService = interviewService;
         }
 
-        /// <summary>
-        /// Initializes the interview session with a given Job Description.
-        /// </summary>
+        // POST: /api/interview/init
         [HttpPost("init")]
-        public IActionResult InitializeInterview([FromBody] string jobDescription)
+        public async Task<IActionResult> InitializeInterview([FromBody] string jobDescription)
         {
-            _interviewService.InitializeSession(jobDescription);
+            await _interviewService.InitializeSessionAsync(jobDescription);
+
             return Ok(new
             {
                 message = "Interview initialized",
                 jd = jobDescription,
-                questions = _interviewService.GetQuestions().Select(q => q.Text).ToList()
+                firstQuestion = _interviewService.GetQuestions().FirstOrDefault()?.Text ?? "No question generated."
             });
         }
 
-        /// <summary>
-        /// Retrieves the next question in the session.
-        /// </summary>
+        // GET: /api/interview/question
         [HttpGet("question")]
-        public IActionResult GetNextQuestion()
+        public async Task<IActionResult> GetNextQuestion()
         {
-            var question = _interviewService.GetNextQuestion();
-            if (question == null)
+            var nextQuestion = await _interviewService.GetNextQuestionAsync();
+
+            if (string.IsNullOrWhiteSpace(nextQuestion))
                 return Ok(new { message = "Interview complete" });
 
-            return Ok(new { index = _interviewService.CurrentIndex, question = question.Text });
+            return Ok(new { index = _interviewService.CurrentIndex, question = nextQuestion });
         }
 
-        /// <summary>
-        /// Stores the candidate’s answer for the current question.
-        /// </summary>
+        // POST: /api/interview/answer
         [HttpPost("answer")]
         public IActionResult SubmitAnswer([FromBody] AnswerDto answerDto)
         {
@@ -56,9 +53,7 @@ namespace AudioInterviewer.API.Controllers
             return Ok(new { message = "Answer recorded", index = _interviewService.CurrentIndex });
         }
 
-        /// <summary>
-        /// Completes the interview.
-        /// </summary>
+        // POST: /api/interview/complete
         [HttpPost("complete")]
         public IActionResult CompleteInterview()
         {
@@ -66,13 +61,12 @@ namespace AudioInterviewer.API.Controllers
             return Ok(summary);
         }
 
-        /// <summary>
-        /// Returns a mock interview report.
-        /// </summary>
+        // GET: /api/interview/report
         [HttpGet("report")]
-        public IActionResult GetReport()
+        public async Task<IActionResult> GetReport()
         {
-            return Ok(_interviewService.GenerateReport());
+            var report = await _interviewService.GenerateReportAsync();
+            return Ok(report);
         }
     }
 }

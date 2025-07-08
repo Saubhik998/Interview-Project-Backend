@@ -9,7 +9,7 @@ namespace AudioInterviewer.API.Models
     /// </summary>
     public class InterviewSession
     {
-        [BsonId] // Marks this property as the MongoDB document ID
+        [BsonId] // Marks this property as the MongoDB document IDA
         [BsonRepresentation(BsonType.ObjectId)] // Allows passing it as a string instead of ObjectId
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 

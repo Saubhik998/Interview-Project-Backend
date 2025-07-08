@@ -4,7 +4,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 
 namespace AudioInterviewer.API.Data
-{
+{   
     public class MongoDbContext
     {
         private readonly IMongoDatabase _database;
