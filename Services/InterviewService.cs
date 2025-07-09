@@ -25,12 +25,14 @@ namespace AudioInterviewer.API.Services
             _httpClient = httpClientFactory.CreateClient();
         }
 
-        public async Task InitializeSessionAsync(string jobDescription)
+        // Initialize interview session with JD and Email
+        public async Task InitializeSessionAsync(string jobDescription, string email)
         {
             string firstQuestion = await _fastApiClient.GetFirstQuestionAsync(jobDescription);
 
             _session = new InterviewSession
             {
+                Email = email,
                 JobDescription = jobDescription,
                 CurrentIndex = 0,
                 Answers = new List<Answer>(),
@@ -66,7 +68,6 @@ namespace AudioInterviewer.API.Services
 
                     var filter = Builders<InterviewSession>.Filter.Eq(s => s.Id, _session.Id);
                     _dbContext.Sessions.ReplaceOne(filter, _session);
-
                     return nextQuestion;
                 }
 
@@ -120,7 +121,6 @@ namespace AudioInterviewer.API.Services
 
         public async Task<object> GenerateReportAsync()
         {
-            // Send only JD, Questions, and Transcripts to the AI
             var aiPayload = new
             {
                 jd = _session.JobDescription ?? "",
@@ -129,15 +129,11 @@ namespace AudioInterviewer.API.Services
             };
 
             var aiResponse = await _httpClient.PostAsJsonAsync("http://localhost:8000/api/evaluate", aiPayload);
-
             if (!aiResponse.IsSuccessStatusCode)
-            {
                 throw new Exception("Failed to get evaluation from AI service");
-            }
 
             var aiReport = await aiResponse.Content.ReadFromJsonAsync<JsonElement>();
 
-            // Patch: insert audio & transcript from original session
             var enrichedAnswers = _session.Questions.Select(q =>
             {
                 var matchingAnswer = _session.Answers.FirstOrDefault(a => a.Question == q.Text);
@@ -149,16 +145,46 @@ namespace AudioInterviewer.API.Services
                 };
             }).ToList();
 
+            var dbReport = new InterviewReport
+            {
+                Email = _session.Email ?? "",
+                JobDescription = _session.JobDescription ?? "",
+                CandidateFitScore = aiReport.GetProperty("score").GetInt32(),
+                Strengths = aiReport.GetProperty("strengths").EnumerateArray().Select(s => s.GetString() ?? "").ToList(),
+                ImprovementAreas = aiReport.GetProperty("improvements").EnumerateArray().Select(s => s.GetString() ?? "").ToList(),
+                SuggestedFollowUp = aiReport.GetProperty("followUps").EnumerateArray().Select(f => f.GetString() ?? "").ToList(),
+                Answers = _session.Answers
+            };
+
+            _dbContext.Reports.InsertOne(dbReport);
+
             return new
             {
                 jd = aiReport.GetProperty("jd").GetString() ?? "",
-                score = aiReport.GetProperty("score").GetInt32(),
-                questions = aiReport.GetProperty("questions").EnumerateArray().Select(q => q.GetString()).ToList(),
+                score = dbReport.CandidateFitScore,
+                questions = aiReport.GetProperty("questions").EnumerateArray().Select(q => q.GetString() ?? "").ToList(),
                 answers = enrichedAnswers,
-                strengths = aiReport.GetProperty("strengths").EnumerateArray().Select(s => s.GetString()).ToList(),
-                improvements = aiReport.GetProperty("improvements").EnumerateArray().Select(s => s.GetString()).ToList(),
-                followUps = aiReport.GetProperty("followUps").EnumerateArray().Select(s => s.GetString()).ToList()
+                strengths = dbReport.Strengths,
+                improvements = dbReport.ImprovementAreas,
+                followUps = dbReport.SuggestedFollowUp
             };
+        }
+
+        // Fetch all reports by candidate email
+        public async Task<List<InterviewReport>> GetReportsByEmailAsync(string email)
+        {
+            var filter = Builders<InterviewReport>.Filter.Eq(r => r.Email, email);
+            return await _dbContext.Reports.Find(filter).ToListAsync();
+        }
+
+        // Fetch one report by MongoDB ObjectId
+        public async Task<InterviewReport?> GetReportByIdAsync(string id)
+        {
+            if (!ObjectId.TryParse(id, out ObjectId objectId))
+                return null;
+
+            var filter = Builders<InterviewReport>.Filter.Eq("_id", objectId);
+            return await _dbContext.Reports.Find(filter).FirstOrDefaultAsync();
         }
     }
 }

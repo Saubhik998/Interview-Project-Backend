@@ -1,4 +1,6 @@
-using System.Collections.Generic;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System.Text.Json.Serialization;
 
 namespace AudioInterviewer.API.Models
 {
@@ -7,10 +9,17 @@ namespace AudioInterviewer.API.Models
     /// </summary>
     public class InterviewReport
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        [JsonPropertyName("_id")]
+        public string Id { get; set; } = "";
+
+        public string Email { get; set; } = "";
+        public string JobDescription { get; set; } = "";
         public int CandidateFitScore { get; set; }
         public List<string> Strengths { get; set; } = new();
         public List<string> ImprovementAreas { get; set; } = new();
-        public string SuggestedFollowUp { get; set; } = "";
+        public List<string> SuggestedFollowUp { get; set; } = new();
         public List<Answer> Answers { get; set; } = new();
     }
 }

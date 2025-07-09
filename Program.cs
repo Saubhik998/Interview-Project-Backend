@@ -1,7 +1,7 @@
 using Microsoft.OpenApi.Models;
 using AudioInterviewer.API.Services;         // InterviewService
 using AudioInterviewer.API.Data;            // MongoDBContext
-using AudioInterviewer.API.Services.External; // ✅ FastApiClient
+using AudioInterviewer.API.Services.External; //  FastApiClient
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.StaticFiles;
 
@@ -13,7 +13,7 @@ builder.Services.Configure<MongoDbSettings>(
 
 // Register services
 builder.Services.AddSingleton<MongoDbContext>();
-builder.Services.AddHttpClient<FastApiClient>(); // ✅ Register HttpClient for FastAPI
+builder.Services.AddHttpClient<FastApiClient>();
 builder.Services.AddSingleton<InterviewService>();
 builder.Services.AddControllers();
 
@@ -35,7 +35,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// ✅ CORS policy for frontend React app
+// CORS policy for frontend React app
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
@@ -58,7 +58,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// ✅ Serve static files with .webm MIME mapping
+//Serve static files with .webm MIME mapping
 var contentTypeProvider = new FileExtensionContentTypeProvider();
 contentTypeProvider.Mappings[".webm"] = "audio/webm";
 

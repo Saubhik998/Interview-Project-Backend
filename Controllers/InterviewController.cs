@@ -16,16 +16,25 @@ namespace AudioInterviewer.API.Controllers
             _interviewService = interviewService;
         }
 
-        // POST: /api/interview/init
-        [HttpPost("init")]
-        public async Task<IActionResult> InitializeInterview([FromBody] string jobDescription)
+        public class InitRequest
         {
-            await _interviewService.InitializeSessionAsync(jobDescription);
+            public string Email { get; set; } = "";
+            public string JobDescription { get; set; } = "";
+        }
+
+        //  POST: /api/interview/init
+        [HttpPost("init")]
+        public async Task<IActionResult> InitializeInterview([FromBody] InitRequest request)
+        {
+            await _interviewService.InitializeSessionAsync(
+                request.JobDescription,
+                request.Email
+            );
 
             return Ok(new
             {
                 message = "Interview initialized",
-                jd = jobDescription,
+                jd = request.JobDescription,
                 firstQuestion = _interviewService.GetQuestions().FirstOrDefault()?.Text ?? "No question generated."
             });
         }
@@ -53,7 +62,7 @@ namespace AudioInterviewer.API.Controllers
             return Ok(new { message = "Answer recorded", index = _interviewService.CurrentIndex });
         }
 
-        // POST: /api/interview/complete
+        //  POST: /api/interview/complete
         [HttpPost("complete")]
         public IActionResult CompleteInterview()
         {
@@ -61,12 +70,41 @@ namespace AudioInterviewer.API.Controllers
             return Ok(summary);
         }
 
-        // GET: /api/interview/report
+        //  GET: /api/interview/report
         [HttpGet("report")]
         public async Task<IActionResult> GetReport()
         {
             var report = await _interviewService.GenerateReportAsync();
             return Ok(report);
         }
+
+        //  NEW: GET /api/interview/reports?email=user@example.com
+        [HttpGet("reports")]
+        public async Task<IActionResult> GetReportsByEmail([FromQuery] string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return BadRequest("Email is required.");
+
+            var reports = await _interviewService.GetReportsByEmailAsync(email);
+            return Ok(reports);
+        }
+
+                //  NEW: GET /api/interview/report/{id}
+        [HttpGet("report/{id}")]
+        public async Task<IActionResult> GetReportById(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return BadRequest("Report ID is required.");
+
+            var report = await _interviewService.GetReportByIdAsync(id);
+
+            if (report == null)
+                return NotFound("Report not found.");
+
+            return Ok(report);
+        }
+    
+
+
     }
 }

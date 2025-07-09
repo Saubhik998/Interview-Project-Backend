@@ -9,13 +9,23 @@ namespace AudioInterviewer.API.Models
     /// </summary>
     public class InterviewSession
     {
-        [BsonId] // Marks this property as the MongoDB document IDA
-        [BsonRepresentation(BsonType.ObjectId)] // Allows passing it as a string instead of ObjectId
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
+        [BsonElement("email")] 
+        public string Email { get; set; } = "";
+
+        [BsonElement("jobDescription")]
         public string JobDescription { get; set; } = "";
+
+        [BsonElement("questions")]
         public List<Question> Questions { get; set; } = new();
+
+        [BsonElement("answers")]
         public List<Answer> Answers { get; set; } = new();
+
+        [BsonElement("currentIndex")]
         public int CurrentIndex { get; set; } = 0;
     }
 }
