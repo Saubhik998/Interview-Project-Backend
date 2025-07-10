@@ -1,0 +1,85 @@
+{
+  "Files": [
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864401772135865.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864401772135865.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864401876698512.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864401876698512.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864401973538857.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864401973538857.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864411730265879.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864411730265879.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864411823719754.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864411823719754.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864411919141196.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864411919141196.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864418247241695.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864418247241695.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864418369378732.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864418369378732.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864418489469803.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864418489469803.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864434466228772.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864434466228772.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864434565846236.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864434565846236.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864434666470236.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864434666470236.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864439376124470.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864439376124470.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864439470969823.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864439470969823.webm"
+    },
+    {
+      "Id": "F:\\MAIN PROJECT\\backend-audio-interviewer\\AudioInterviewer.API\\wwwroot\\audio\\answer_638864439595806132.webm",
+      "PackagePath": "staticwebassets\\audio\\answer_638864439595806132.webm"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.AudioInterviewer.API.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.AudioInterviewer.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.AudioInterviewer.API.props",
+      "PackagePath": "build\\AudioInterviewer.API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.AudioInterviewer.API.props",
+      "PackagePath": "buildMultiTargeting\\AudioInterviewer.API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.AudioInterviewer.API.props",
+      "PackagePath": "buildTransitive\\AudioInterviewer.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
