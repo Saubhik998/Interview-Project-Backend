@@ -1,6 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AudioInterviewer.API.Models
 {
@@ -13,9 +14,12 @@ namespace AudioInterviewer.API.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
-        [BsonElement("email")] 
+        [Required]
+        [EmailAddress(ErrorMessage = "Invalid email format.")]
+        [BsonElement("email")]
         public string Email { get; set; } = "";
 
+        [Required]
         [BsonElement("jobDescription")]
         public string JobDescription { get; set; } = "";
 
@@ -26,6 +30,7 @@ namespace AudioInterviewer.API.Models
         public List<Answer> Answers { get; set; } = new();
 
         [BsonElement("currentIndex")]
+        [Range(0, int.MaxValue)]
         public int CurrentIndex { get; set; } = 0;
     }
 }
