@@ -10,6 +10,17 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    services:
+      mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'" 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -24,6 +35,15 @@ jobs:
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
+
+      - name: Wait for MongoDB
+        run: |
+          for i in {1..10}; do
+            nc -z localhost 27017 && echo "MongoDB is up!" && exit 0
+            echo "Waiting for MongoDB..."
+            sleep 3
+          done
+          echo "MongoDB failed to start." && exit 1
 
       - name: Run Tests
         run: dotnet test --no-build --verbosity normal
