@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace AudioInterviewer.API.Services.External
 {
-    public class FastApiClient
+    public class FastApiClient : IApiClient
     {
         private readonly HttpClient _httpClient;
         private const string BaseUrl = "http://localhost:8000/api";

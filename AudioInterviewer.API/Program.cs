@@ -14,9 +14,10 @@ builder.Services.Configure<MongoDbSettings>(
 // Register services
 builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddHttpClient<FastApiClient>();
-builder.Services.AddSingleton<InterviewService>();
-builder.Services.AddControllers();
 
+builder.Services.AddControllers();
+builder.Services.AddScoped<IInterviewService, InterviewService>();
+builder.Services.AddScoped<IApiClient, FastApiClient>();
 // Swagger setup
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -68,7 +69,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 // Middleware
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.MapControllers();

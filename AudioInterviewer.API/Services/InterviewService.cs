@@ -9,16 +9,16 @@ using AudioInterviewer.API.Services.External;
 
 namespace AudioInterviewer.API.Services
 {
-    public class InterviewService
+    public class InterviewService : IInterviewService
     {
         private const int MaxQuestions = 5;
 
         private readonly MongoDbContext _dbContext;
-        private readonly FastApiClient _fastApiClient;
+        private readonly IApiClient _fastApiClient;
         private readonly HttpClient _httpClient;
         private InterviewSession _session = new();
 
-        public InterviewService(MongoDbContext dbContext, FastApiClient fastApiClient, IHttpClientFactory httpClientFactory)
+        public InterviewService(MongoDbContext dbContext, IApiClient fastApiClient, IHttpClientFactory httpClientFactory)
         {
             _dbContext = dbContext;
             _fastApiClient = fastApiClient;
