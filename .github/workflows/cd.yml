@@ -27,4 +27,4 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: yourdockerhubusername/audio-interviewer-api:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/audio-interviewer-api:latest
