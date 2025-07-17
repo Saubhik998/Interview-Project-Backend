@@ -7,7 +7,10 @@ namespace AudioInterviewer.API.Models
     /// </summary>
     public class Question
     {
-        [Required]
+        /// <summary>
+        /// The text content of the interview question.
+        /// </summary>
+        [Required(ErrorMessage = "Question text is required.")]
         [StringLength(300, ErrorMessage = "Question text is too long.")]
         public string Text { get; set; } = "";
     }

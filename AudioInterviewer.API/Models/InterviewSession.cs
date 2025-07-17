@@ -10,27 +10,45 @@ namespace AudioInterviewer.API.Models
     /// </summary>
     public class InterviewSession
     {
+        /// <summary>
+        /// Unique identifier for the session.
+        /// </summary>
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
-        [Required]
+        /// <summary>
+        /// Candidate's email address.
+        /// </summary>
+        [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email format.")]
         [BsonElement("email")]
         public string Email { get; set; } = "";
 
-        [Required]
+        /// <summary>
+        /// Job description provided by the candidate.
+        /// </summary>
+        [Required(ErrorMessage = "Job description is required.")]
         [BsonElement("jobDescription")]
         public string JobDescription { get; set; } = "";
 
+        /// <summary>
+        /// List of interview questions generated.
+        /// </summary>
         [BsonElement("questions")]
         public List<Question> Questions { get; set; } = new();
 
+        /// <summary>
+        /// List of answers provided by the candidate.
+        /// </summary>
         [BsonElement("answers")]
         public List<Answer> Answers { get; set; } = new();
 
+        /// <summary>
+        /// Index of the current question in the session.
+        /// </summary>
+        [Range(0, int.MaxValue, ErrorMessage = "Current index cannot be negative.")]
         [BsonElement("currentIndex")]
-        [Range(0, int.MaxValue)]
         public int CurrentIndex { get; set; } = 0;
     }
 }

@@ -6,10 +6,10 @@ namespace AudioInterviewer.API.Services
     {
         Task InitializeSessionAsync(string jobDescription, string email);
         Task<string?> GetNextQuestionAsync();
-        bool SubmitAnswer(AnswerDto answerDto);
+        Task<bool> SubmitAnswerAsync(AnswerDto answerDto);
         List<Question> GetQuestions();
         int CurrentIndex { get; }
-        object GetCompletionSummary();
+        Task<object> GetCompletionSummaryAsync();
         Task<object> GenerateReportAsync();
         Task<List<InterviewReport>> GetReportsByEmailAsync(string email);
         Task<InterviewReport?> GetReportByIdAsync(string id);

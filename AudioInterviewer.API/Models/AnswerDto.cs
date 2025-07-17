@@ -7,19 +7,24 @@ namespace AudioInterviewer.API.Models
     /// </summary>
     public class AnswerDto
     {
-        [Required]
+        /// <summary>
+        /// The question being answered.
+        /// </summary>
+        [Required(ErrorMessage = "Question is required.")]
+        [MinLength(10, ErrorMessage = "Question text is too short.")]
         public string Question { get; set; } = "";
 
         /// <summary>
         /// Base64-encoded audio data from frontend.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Audio data is required.")]
+        [MinLength(5000, ErrorMessage = "Audio data is too short or malformed.")]
         public string AudioBase64 { get; set; } = "";
 
         /// <summary>
         /// Text transcription of the spoken answer.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Transcript is required.")]
         [StringLength(1000, ErrorMessage = "Transcript is too long.")]
         public string Transcript { get; set; } = "";
     }

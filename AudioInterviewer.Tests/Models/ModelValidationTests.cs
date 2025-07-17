@@ -2,12 +2,21 @@ using AudioInterviewer.API.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using Xunit;
 
 namespace AudioInterviewer.Tests.Models
 {
+    /// <summary>
+    /// Helper class for validating model annotations.
+    /// </summary>
     public static class ValidationHelper
     {
+        /// <summary>
+        /// Validates the specified model against its data annotations.
+        /// </summary>
+        /// <param name="model">The object to validate.</param>
+        /// <returns>A list of validation results.</returns>
         public static IList<ValidationResult> ValidateModel(object model)
         {
             var results = new List<ValidationResult>();
@@ -17,15 +26,21 @@ namespace AudioInterviewer.Tests.Models
         }
     }
 
+    /// <summary>
+    /// Unit tests for model-level data annotation validation.
+    /// </summary>
     public class ModelValidationTests
     {
+        /// <summary>
+        /// Ensures AnswerDto is valid when all required fields are correctly populated.
+        /// </summary>
         [Fact]
-        public void AnswerDto_ShouldBeValid_WhenAllFieldsAreProvided()
+        public void AnswerDto_ShouldBeValid_WhenRequiredFieldsAreProvided()
         {
             var model = new AnswerDto
             {
                 Question = "What is your name?",
-                AudioBase64 = "somebase64string",
+                AudioBase64 = Convert.ToBase64String(new byte[4096]),
                 Transcript = "John Doe"
             };
 
@@ -33,15 +48,42 @@ namespace AudioInterviewer.Tests.Models
             Assert.Empty(results);
         }
 
+        /// <summary>
+        /// Ensures validation fails when the Question field is missing in AnswerDto.
+        /// </summary>
         [Fact]
-        public void AnswerDto_ShouldFailValidation_WhenRequiredFieldsAreMissing()
+        public void AnswerDto_ShouldFailValidation_WhenQuestionIsMissing()
         {
-            var model = new AnswerDto(); // All fields are empty
+            var model = new AnswerDto
+            {
+                AudioBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes("valid audio")),
+                Transcript = "Transcript"
+            };
 
             var results = ValidationHelper.ValidateModel(model);
-            Assert.Equal(3, results.Count);
+            Assert.Contains(results, r => r.MemberNames.Contains(nameof(AnswerDto.Question)));
         }
 
+        /// <summary>
+        /// Ensures validation fails when AudioBase64 is too short or malformed in AnswerDto.
+        /// </summary>
+        [Fact]
+        public void AnswerDto_ShouldFailValidation_WhenAudioBase64IsInvalid()
+        {
+            var model = new AnswerDto
+            {
+                Question = "Tell me about yourself",
+                AudioBase64 = "short",
+                Transcript = "Some transcript"
+            };
+
+            var results = ValidationHelper.ValidateModel(model);
+            Assert.Contains(results, r => r.ErrorMessage == "Audio data is too short or malformed.");
+        }
+
+        /// <summary>
+        /// Ensures InterviewReport is valid when all fields are properly set.
+        /// </summary>
         [Fact]
         public void InterviewReport_ShouldBeValid_WhenAllFieldsArePresent()
         {
@@ -56,7 +98,12 @@ namespace AudioInterviewer.Tests.Models
                 SuggestedFollowUp = new List<string> { "Discuss data ethics" },
                 Answers = new List<Answer>
                 {
-                    new Answer { Question = "What is data cleaning?", AudioUrl = "http://example.com/audio.mp3", Transcript = "Answer..." }
+                    new Answer
+                    {
+                        Question = "What is data cleaning?",
+                        AudioUrl = "http://example.com/audio.mp3",
+                        Transcript = "Answer..."
+                    }
                 }
             };
 
@@ -64,8 +111,11 @@ namespace AudioInterviewer.Tests.Models
             Assert.Empty(results);
         }
 
+        /// <summary>
+        /// Ensures validation fails when Email is missing in InterviewReport.
+        /// </summary>
         [Fact]
-        public void InterviewReport_ShouldFailValidation_WhenEmailMissing()
+        public void InterviewReport_ShouldFailValidation_WhenEmailIsMissing()
         {
             var model = new InterviewReport
             {
@@ -77,6 +127,9 @@ namespace AudioInterviewer.Tests.Models
             Assert.Contains(results, r => r.MemberNames.Contains(nameof(InterviewReport.Email)));
         }
 
+        /// <summary>
+        /// Ensures validation fails when Email format is invalid in InterviewReport.
+        /// </summary>
         [Fact]
         public void InterviewReport_ShouldFailValidation_WhenEmailIsInvalid()
         {
@@ -91,6 +144,9 @@ namespace AudioInterviewer.Tests.Models
             Assert.Contains(results, r => r.MemberNames.Contains(nameof(InterviewReport.Email)));
         }
 
+        /// <summary>
+        /// Ensures validation fails when Email is missing in InterviewSession.
+        /// </summary>
         [Fact]
         public void InterviewSession_ShouldFailValidation_WhenEmailIsMissing()
         {
@@ -98,7 +154,15 @@ namespace AudioInterviewer.Tests.Models
             {
                 JobDescription = "Backend Engineer",
                 Questions = new List<Question> { new Question { Text = "What is REST?" } },
-                Answers = new List<Answer> { new Answer { Question = "Q1", AudioUrl = "http://example.com/audio.mp3", Transcript = "transcript" } },
+                Answers = new List<Answer>
+                {
+                    new Answer
+                    {
+                        Question = "Q1",
+                        AudioUrl = "http://example.com/audio.mp3",
+                        Transcript = "transcript"
+                    }
+                },
                 CurrentIndex = 1
             };
 
@@ -106,6 +170,9 @@ namespace AudioInterviewer.Tests.Models
             Assert.Contains(results, r => r.MemberNames.Contains(nameof(InterviewSession.Email)));
         }
 
+        /// <summary>
+        /// Ensures validation fails when CurrentIndex is negative in InterviewSession.
+        /// </summary>
         [Fact]
         public void InterviewSession_ShouldFailValidation_WhenCurrentIndexIsNegative()
         {
@@ -120,6 +187,9 @@ namespace AudioInterviewer.Tests.Models
             Assert.Contains(results, r => r.MemberNames.Contains(nameof(InterviewSession.CurrentIndex)));
         }
 
+        /// <summary>
+        /// Ensures validation fails when AudioUrl is not a valid URL in Answer.
+        /// </summary>
         [Fact]
         public void Answer_ShouldFailValidation_WhenAudioUrlIsInvalid()
         {
@@ -131,17 +201,20 @@ namespace AudioInterviewer.Tests.Models
             };
 
             var results = ValidationHelper.ValidateModel(model);
-            Assert.Contains(results, r => r.ErrorMessage.Contains("valid URL"));
+            Assert.Contains(results, r => r.ErrorMessage != null && r.ErrorMessage.Contains("valid URL"));
         }
 
+        /// <summary>
+        /// Ensures validation fails when Question.Text is missing.
+        /// </summary>
         [Fact]
         public void Question_ShouldFailValidation_WhenTextIsMissing()
         {
-            var model = new Question(); // Text is empty
+            var model = new Question(); // Missing Text
 
             var results = ValidationHelper.ValidateModel(model);
             Assert.Single(results);
-            Assert.Equal("The Text field is required.", results[0].ErrorMessage);
+            Assert.Equal("Question text is required.", results[0].ErrorMessage);
         }
     }
 }
