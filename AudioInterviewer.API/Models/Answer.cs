@@ -7,15 +7,23 @@ namespace AudioInterviewer.API.Models
     /// </summary>
     public class Answer
     {
-        [Required]
+        /// <summary>
+        /// The interview question that was answered.
+        /// </summary>
+        [Required(ErrorMessage = "Question is required.")]
         public string Question { get; set; } = "";
 
-        [Required]
+        /// <summary>
+        /// A valid URL pointing to the audio file.
+        /// </summary>
+        [Required(ErrorMessage = "AudioUrl is required.")]
         [Url(ErrorMessage = "AudioUrl must be a valid URL.")]
         public string AudioUrl { get; set; } = "";
 
-        [Required]
-        [Url(ErrorMessage = "AudioUrl must be a valid URL.")]
+        /// <summary>
+        /// The transcript text of the answer.
+        /// </summary>
+        [Required(ErrorMessage = "Transcript is required.")]
         public string Transcript { get; set; } = "";
     }
 }

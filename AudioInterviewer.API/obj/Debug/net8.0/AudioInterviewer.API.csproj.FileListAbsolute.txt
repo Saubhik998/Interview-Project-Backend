@@ -57,3 +57,11 @@ F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\obj\Debug\net8.0\
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\obj\Debug\net8.0\AudioInterviewer.API.pdb
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\obj\Debug\net8.0\AudioInterviewer.API.genruntimeconfig.cache
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\obj\Debug\net8.0\ref\AudioInterviewer.API.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net8.0\HealthChecks.MongoDb.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.HealthChecks.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\bin\Debug\net8.0\Microsoft.Extensions.Options.dll

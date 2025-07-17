@@ -1,24 +1,58 @@
 using Microsoft.OpenApi.Models;
-using AudioInterviewer.API.Services;         // InterviewService
-using AudioInterviewer.API.Data;            // MongoDBContext
-using AudioInterviewer.API.Services.External; //  FastApiClient
+using AudioInterviewer.API.Services;
+using AudioInterviewer.API.Data;
+using AudioInterviewer.API.Services.External;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load MongoDB settings from appsettings.json
+// Load MongoDB settings
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection("MongoDB"));
 
-// Register services
+// Bind FastApiClient configuration section to ApiSettings
+builder.Services.Configure<ApiSettings>(
+    builder.Configuration.GetSection("FastApiClient"));
+
+// Register MongoDB context as singleton
 builder.Services.AddSingleton<MongoDbContext>();
-builder.Services.AddHttpClient<FastApiClient>();
+
+// Register FastApiClient as IApiClient with HttpClient and config, logging injected
+builder.Services.AddHttpClient<IApiClient, FastApiClient>();
+
+// Register InterviewService
+builder.Services.AddScoped<IInterviewService, InterviewService>();
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IInterviewService, InterviewService>();
-builder.Services.AddScoped<IApiClient, FastApiClient>();
-// Swagger setup
+
+// CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy.WithOrigins("http://localhost:3000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+});
+
+// Add Health Checks with MongoDB
+builder.Services.AddHealthChecks()
+    .AddMongoDb(
+        sp =>
+        {
+            var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+            return new MongoClient(settings.ConnectionString);
+        },
+        name: "MongoDB",
+        timeout: TimeSpan.FromSeconds(3),
+        tags: new[] { "db", "mongo" }
+    );
+
+// Optional: Add FastAPI health check
+// builder.Services.AddCheck<FastApiHealthCheck>("FastAPI");
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -36,19 +70,9 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// CORS policy for frontend React app
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontend",
-        policy => policy.WithOrigins("http://localhost:3000")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod());
-});
-
-// Build the app
 var app = builder.Build();
 
-// Swagger UI
+// Swagger in dev
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -59,7 +83,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-//Serve static files with .webm MIME mapping
+// Serve static files like .webm
 var contentTypeProvider = new FileExtensionContentTypeProvider();
 contentTypeProvider.Mappings[".webm"] = "audio/webm";
 
@@ -68,11 +92,11 @@ app.UseStaticFiles(new StaticFileOptions
     ContentTypeProvider = contentTypeProvider
 });
 
-// Middleware
-//app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.MapControllers();
 
-// Run the app
+// Add health check endpoint
+app.MapHealthChecks("/health");
+
 app.Run();
