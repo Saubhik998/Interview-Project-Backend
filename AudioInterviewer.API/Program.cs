@@ -6,10 +6,15 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MongoDB.Driver;
+using System.IO;
 
 
-
-var builder = WebApplication.CreateBuilder(args);
+var options = new WebApplicationOptions
+{
+    Args = args,
+    ContentRootPath = Directory.GetCurrentDirectory()
+};
+var builder = WebApplication.CreateBuilder(options);
 
 // Load MongoDB settings
 builder.Services.Configure<MongoDbSettings>(
