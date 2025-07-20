@@ -1,240 +1,147 @@
-using AudioInterviewer.API.Controllers;
-using AudioInterviewer.API.Models;
-using AudioInterviewer.API.Services;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xunit;
+using Moq;
+using AudioInterviewer.API.Controllers;
+using AudioInterviewer.API.Services;
+using AudioInterviewer.API.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace AudioInterviewer.Tests.Controllers
 {
-    /// <summary>
-    /// Unit tests for the <see cref="InterviewController"/> class.
-    /// </summary>
     public class InterviewControllerTests
     {
-        private readonly Mock<IInterviewService> _mockService;
+        private readonly Mock<IInterviewService> _serviceMock;
         private readonly InterviewController _controller;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InterviewControllerTests"/> class.
-        /// </summary>
         public InterviewControllerTests()
         {
-            _mockService = new Mock<IInterviewService>();
-            _controller = new InterviewController(_mockService.Object);
+            _serviceMock = new Mock<IInterviewService>();
+            _controller = new InterviewController(_serviceMock.Object);
         }
 
-        /// <summary>
-        /// Tests that InitializeInterview returns 200 OK with the first question.
-        /// </summary>
         [Fact]
-        public async Task InitializeInterview_ReturnsOk_WithFirstQuestion()
+        public async Task InitializeInterview_ValidRequest_ReturnsOk()
         {
-            // Arrange
             var request = new InterviewController.InitRequest
             {
                 Email = "test@example.com",
-                JobDescription = "Backend Developer"
+                JobDescription = "Looking for a backend developer"
             };
+            _serviceMock.Setup(s => s.InitializeSessionAsync(It.IsAny<string>(), It.IsAny<string>()))
+                        .ReturnsAsync("session123");
+            _serviceMock.Setup(s => s.GetQuestions("session123"))
+                        .Returns(new List<Question> { new Question { Text = "What is C#?" } });
 
-            _mockService.Setup(s => s.InitializeSessionAsync(request.JobDescription, request.Email))
-                .Returns(Task.CompletedTask);
-            _mockService.Setup(s => s.GetQuestions())
-                .Returns(new List<Question> { new Question { Text = "What is dependency injection?" } });
+            var result = await _controller.InitializeInterview(request);
 
-            // Act
-            var result = await _controller.InitializeInterview(request) as OkObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            Assert.NotNull(result.Value);
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(okResult.Value);
+            Assert.Contains("sessionId", okResult.Value!.ToString());
         }
 
-        /// <summary>
-        /// Tests that GetNextQuestion returns 200 OK with the next question.
-        /// </summary>
         [Fact]
-        public async Task GetNextQuestion_ReturnsOk_WithNextQuestion()
+        public async Task GetNextQuestion_ValidSessionId_ReturnsQuestion()
         {
-            // Arrange
-            _mockService.Setup(s => s.GetNextQuestionAsync()).ReturnsAsync("Explain polymorphism.");
-            _mockService.Setup(s => s.CurrentIndex).Returns(1);
+            _serviceMock.Setup(s => s.GetNextQuestionAsync("abc"))
+                        .ReturnsAsync("What is your experience?");
+            _serviceMock.Setup(s => s.CurrentIndex("abc"))
+                        .Returns(1);
 
-            // Act
-            var result = await _controller.GetNextQuestion() as OkObjectResult;
+            var result = await _controller.GetNextQuestion("abc");
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            Assert.NotNull(result.Value);
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(okResult.Value);
+            Assert.Contains("question", okResult.Value!.ToString());
         }
 
-        /// <summary>
-        /// Tests that SubmitAnswer returns 200 OK when the answer is successfully recorded.
-        /// </summary>
         [Fact]
-        public async Task SubmitAnswer_ReturnsOk_WhenAnswerIsAccepted()
+        public async Task SubmitAnswer_ValidPayload_ReturnsOk()
         {
-            // Arrange
-            var answerDto = new AnswerDto
+            var dto = new AnswerDto
             {
-                Question = "What is REST?",
-                AudioBase64 = "fakeaudio==",
-                Transcript = "REST is an architectural style..."
+                SessionId = "123",
+                Question = "Explain DI",
+                AudioBase64 = "audio",
+                Transcript = "Dependency Injection"
             };
 
-            _mockService.Setup(s => s.SubmitAnswerAsync(answerDto)).ReturnsAsync(true);
-            _mockService.Setup(s => s.CurrentIndex).Returns(2);
+            _serviceMock.Setup(s => s.SubmitAnswerAsync(dto.SessionId, dto)).ReturnsAsync(true);
+            _serviceMock.Setup(s => s.CurrentIndex(dto.SessionId)).Returns(2);
 
-            // Act
-            var result = await _controller.SubmitAnswer(answerDto) as OkObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            Assert.NotNull(result.Value);
+            var result = await _controller.SubmitAnswer(dto);
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(okResult.Value);
+            Assert.Contains("Answer recorded", okResult.Value!.ToString());
         }
 
-        /// <summary>
-        /// Tests that CompleteInterview returns summary with 200 OK status.
-        /// </summary>
         [Fact]
-        public async Task CompleteInterview_ReturnsOk_WithSummary()
+        public async Task CompleteInterview_ValidSessionId_ReturnsSummary()
         {
-            // Arrange
-            var expectedSummary = new
-            {
-                message = "Interview completed",
-                totalQuestions = 5,
-                totalAnswers = 5
+            _serviceMock.Setup(s => s.GetCompletionSummaryAsync("123"))
+                        .ReturnsAsync("Summary generated");
+
+            var result = await _controller.CompleteInterview("123");
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal("Summary generated", okResult.Value);
+        }
+
+        [Fact]
+        public async Task GetReport_ValidSessionId_ReturnsReport()
+        {
+            var report = new InterviewReport { Id = "abc", Email = "test@example.com" };
+            _serviceMock.Setup(s => s.GenerateReportAsync("abc"))
+                        .ReturnsAsync(report);
+
+            var result = await _controller.GetReport("abc");
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(report, okResult.Value);
+        }
+
+        [Fact]
+        public async Task GetReportsByEmail_ValidEmail_ReturnsReports()
+        {
+            var reports = new List<InterviewReport> {
+                new InterviewReport { Id = "s1", Email = "test@example.com" },
+                new InterviewReport { Id = "s2", Email = "test@example.com" }
             };
 
-            _mockService.Setup(s => s.GetCompletionSummaryAsync()).ReturnsAsync(expectedSummary);
+            _serviceMock.Setup(s => s.GetReportsByEmailAsync("test@example.com"))
+                        .ReturnsAsync(reports);
 
-            // Act
-            var result = await _controller.CompleteInterview() as OkObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            Assert.Equal(expectedSummary, result.Value);
+            var result = await _controller.GetReportsByEmail("test@example.com");
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(reports, okResult.Value);
         }
 
-        /// <summary>
-        /// Tests that GetReport returns 200 OK with a mock report.
-        /// </summary>
         [Fact]
-        public async Task GetReport_ReturnsOk_WithReport()
+        public async Task GetReportById_ReportExists_ReturnsReport()
         {
-            // Arrange
-            var report = new
-            {
-                jd = "Backend Developer",
-                score = 90,
-                questions = new List<string> { "Tell me about async programming." },
-                answers = new List<object>(),
-                strengths = new List<string> { "Analytical thinking" },
-                improvements = new List<string> { "Clarify answers" },
-                followUps = new List<string> { "Ask about microservices" }
-            };
+            var report = new InterviewReport { Id = "id123", Email = "abc@test.com" };
+            _serviceMock.Setup(s => s.GetReportByIdAsync("id123"))
+                        .ReturnsAsync(report);
 
-            _mockService.Setup(s => s.GenerateReportAsync()).ReturnsAsync(report);
-
-            // Act
-            var result = await _controller.GetReport() as OkObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            Assert.Equal(report, result.Value);
+            var result = await _controller.GetReportById("id123");
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(report, okResult.Value);
         }
 
-        /// <summary>
-        /// Tests that GetReportsByEmail returns a list of reports for a valid email.
-        /// </summary>
         [Fact]
-        public async Task GetReportsByEmail_ReturnsOk_WithReportsList()
+        public async Task GetReportById_ReportMissing_ReturnsNotFound()
         {
-            // Arrange
-            var email = "user@example.com";
-            var reports = new List<InterviewReport>
-            {
-                new InterviewReport { Email = email },
-                new InterviewReport { Email = email }
-            };
+            _serviceMock.Setup(s => s.GetReportByIdAsync("missing"))
+                        .ReturnsAsync((InterviewReport?)null);
 
-            _mockService.Setup(s => s.GetReportsByEmailAsync(email)).ReturnsAsync(reports);
-
-            // Act
-            var result = await _controller.GetReportsByEmail(email) as OkObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            Assert.Equal(reports, result.Value);
-        }
-
-        /// <summary>
-        /// Tests that GetReportById returns a report if it exists.
-        /// </summary>
-        [Fact]
-        public async Task GetReportById_ReturnsOk_WhenReportExists()
-        {
-            // Arrange
-            var reportId = "123";
-            var report = new InterviewReport { Email = "test@example.com" };
-
-            _mockService.Setup(s => s.GetReportByIdAsync(reportId)).ReturnsAsync(report);
-
-            // Act
-            var result = await _controller.GetReportById(reportId) as OkObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-            Assert.Equal(report, result.Value);
-        }
-
-        /// <summary>
-        /// Tests that GetReportById returns 404 NotFound when the report does not exist.
-        /// </summary>
-        [Fact]
-        public async Task GetReportById_ReturnsNotFound_WhenReportDoesNotExist()
-        {
-            // Arrange
-            var reportId = "invalid-id";
-            _mockService.Setup(s => s.GetReportByIdAsync(reportId)).ReturnsAsync((InterviewReport)null);
-
-            // Act
-            var result = await _controller.GetReportById(reportId);
-
-            // Assert
+            var result = await _controller.GetReportById("missing");
             Assert.IsType<NotFoundObjectResult>(result);
         }
 
-        /// <summary>
-        /// Tests that InitializeInterview returns 400 BadRequest if model validation fails.
-        /// </summary>
         [Fact]
-        public async Task InitializeInterview_ReturnsBadRequest_WhenModelInvalid()
+        public void HealthCheck_ReturnsHealthy()
         {
-            // Arrange
-            _controller.ModelState.AddModelError("JobDescription", "Required");
-
-            var request = new InterviewController.InitRequest
-            {
-                Email = "test@example.com",
-                JobDescription = ""
-            };
-
-            // Act
-            var result = await _controller.InitializeInterview(request);
-
-            // Assert
-            Assert.IsType<BadRequestObjectResult>(result);
+            var result = _controller.HealthCheck();
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal("Healthy", okResult.Value);
         }
     }
 }

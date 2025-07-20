@@ -8,6 +8,12 @@ namespace AudioInterviewer.API.Models
     public class AnswerDto
     {
         /// <summary>
+        /// The unique interview session identifier.
+        /// </summary>
+        [Required(ErrorMessage = "SessionId is required.")]
+        public string SessionId { get; set; } = string.Empty;
+
+        /// <summary>
         /// The question being answered.
         /// </summary>
         [Required(ErrorMessage = "Question is required.")]
@@ -17,15 +23,15 @@ namespace AudioInterviewer.API.Models
         /// <summary>
         /// Base64-encoded audio data from frontend.
         /// </summary>
-        [Required(ErrorMessage = "Audio data is required.")]
+        
         [MinLength(5000, ErrorMessage = "Audio data is too short or malformed.")]
         public string AudioBase64 { get; set; } = "";
 
         /// <summary>
         /// Text transcription of the spoken answer.
         /// </summary>
-        [Required(ErrorMessage = "Transcript is required.")]
-        [StringLength(1000, ErrorMessage = "Transcript is too long.")]
+        
+        [StringLength(5000, ErrorMessage = "Transcript is too long.")]
         public string Transcript { get; set; } = "";
     }
 }

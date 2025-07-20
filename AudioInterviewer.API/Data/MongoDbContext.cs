@@ -5,7 +5,7 @@ using MongoDB.Driver.GridFS;
 
 namespace AudioInterviewer.API.Data
 {   
-    public class MongoDbContext
+    public class MongoDbContext : IMongoDbContext
     {
         private readonly IMongoDatabase _database;
 
@@ -28,6 +28,6 @@ namespace AudioInterviewer.API.Data
         public IMongoCollection<InterviewReport> Reports => _database.GetCollection<InterviewReport>("InterviewReports");
 
         // GridFS bucket for audio files
-        public GridFSBucket GridFsBucket { get; }
+        public IGridFSBucket GridFsBucket { get; }
     }
 }

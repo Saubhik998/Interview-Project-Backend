@@ -6,6 +6,9 @@ using MongoDB.Bson;
 using System.Text.Json;
 using System.Net.Http.Json;
 using AudioInterviewer.API.Services.External;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AudioInterviewer.API.Services
 {
@@ -17,232 +20,249 @@ namespace AudioInterviewer.API.Services
         private const int MaxQuestions = 5;
         private const int MaxAudioSizeBytes = 5 * 1024 * 1024; // 5 MB
 
-        private readonly MongoDbContext _dbContext;
+        private readonly IMongoDbContext _dbContext;
         private readonly IApiClient _fastApiClient;
         private readonly HttpClient _httpClient;
-        private InterviewSession _session = new();
 
         /// <summary>
-        /// Constructor for InterviewService.
+        /// Initializes a new instance of the <see cref="InterviewService"/> class.
         /// </summary>
-        /// <param name="dbContext">MongoDB database context.</param>
-        /// <param name="fastApiClient">Client to fetch AI-generated questions.</param>
-        /// <param name="httpClientFactory">HTTP client factory for making API requests.</param>
-        public InterviewService(MongoDbContext dbContext, IApiClient fastApiClient, IHttpClientFactory httpClientFactory)
+        /// <param name="dbContext">MongoDB context for sessions and reports.</param>
+        /// <param name="fastApiClient">External API client for LLM question generation.</param>
+        /// <param name="httpClientFactory">Factory for creating HTTP clients.</param>
+        public InterviewService(IMongoDbContext dbContext, IApiClient fastApiClient, IHttpClientFactory httpClientFactory)
         {
-            _dbContext = dbContext;
-            _fastApiClient = fastApiClient;
-            _httpClient = httpClientFactory.CreateClient();
+            _dbContext      = dbContext;
+            _fastApiClient  = fastApiClient;
+            _httpClient     = httpClientFactory.CreateClient();
         }
 
         /// <summary>
-        /// Initializes a new interview session with job description and candidate email.
+        /// Creates a new interview session and returns its session ID.
         /// </summary>
-        public async Task InitializeSessionAsync(string jobDescription, string email)
+        /// <param name="jobDescription">The job description for the interview.</param>
+        /// <param name="email">Candidate's email address.</param>
+        /// <returns>The newly created session ID.</returns>
+        public async Task<string> InitializeSessionAsync(string jobDescription, string email)
         {
-            string firstQuestion = await _fastApiClient.GetFirstQuestionAsync(jobDescription);
-
-            _session = new InterviewSession
+            var firstQuestion = await _fastApiClient.GetFirstQuestionAsync(jobDescription);
+            var session = new InterviewSession
             {
-                Email = email.Trim().ToLowerInvariant(),
-                JobDescription = jobDescription.Trim(),
-                CurrentIndex = 0,
-                Answers = new List<Answer>(),
-                Questions = new List<Question>
-                {
-                    new Question { Text = firstQuestion }
-                }
+                Email           = email.Trim().ToLowerInvariant(),
+                JobDescription  = jobDescription.Trim(),
+                CurrentIndex    = 0,
+                Answers         = new List<Answer>(),
+                Questions       = new List<Question> { new Question { Text = firstQuestion } }
             };
 
-            await _dbContext.Sessions.InsertOneAsync(_session);
+            await _dbContext.Sessions.InsertOneAsync(session);
+            return session.Id;
         }
 
         /// <summary>
-        /// Retrieves the next question based on the previous answer.
+        /// Retrieves the next question for the given session, or null if the interview is complete.
         /// </summary>
-        /// <returns>The next question text, or null if limit reached.</returns>
-        public async Task<string?> GetNextQuestionAsync()
+        /// <param name="sessionId">The interview session ID.</param>
+        /// <returns>The next question text, or null if no more questions.</returns>
+        public async Task<string?> GetNextQuestionAsync(string sessionId)
         {
-            if (_session.CurrentIndex == 0)
-                return _session.Questions[0].Text;
+            var session = await LoadSessionAsync(sessionId);
+            if (session == null) return null;
 
-            if (_session.Questions.Count >= MaxQuestions)
+            if (session.CurrentIndex == 0)
+                return session.Questions[0].Text;
+
+            if (session.Questions.Count >= MaxQuestions)
                 return null;
 
-            if (_session.CurrentIndex >= _session.Questions.Count)
+            if (session.CurrentIndex >= session.Questions.Count)
             {
-                var previousAnswer = _session.Answers.Last();
-                string nextQuestion = await _fastApiClient.GetNextQuestionAsync(
-                    _session.JobDescription,
-                    previousAnswer.Question,
-                    previousAnswer.Transcript ?? ""
-                );
-
-                if (!string.IsNullOrWhiteSpace(nextQuestion))
+                var prevAns = session.Answers.Last();
+                var nextQ   = await _fastApiClient.GetNextQuestionAsync(
+                    session.JobDescription, prevAns.Question, prevAns.Transcript ?? string.Empty);
+                if (!string.IsNullOrWhiteSpace(nextQ))
                 {
-                    _session.Questions.Add(new Question { Text = nextQuestion });
-
-                    var filter = Builders<InterviewSession>.Filter.Eq(s => s.Id, _session.Id);
-                    await _dbContext.Sessions.ReplaceOneAsync(filter, _session);
-                    return nextQuestion;
+                    session.Questions.Add(new Question { Text = nextQ });
+                    await SaveSessionAsync(session);
+                    return nextQ;
                 }
-
                 return null;
             }
 
-            return _session.Questions[_session.CurrentIndex].Text;
+            return session.Questions[session.CurrentIndex].Text;
         }
 
         /// <summary>
-        /// Submits the candidate's answer, stores audio in GridFS, and updates the session.
+        /// Submits an answer, stores audio in GridFS, and updates the session index.
         /// </summary>
-        /// <param name="answerDto">Answer DTO containing audio and transcript.</param>
-        /// <returns>True if submission is successful.</returns>
-        public async Task<bool> SubmitAnswerAsync(AnswerDto answerDto)
+        /// <param name="sessionId">The interview session ID.</param>
+        /// <param name="answerDto">Answer payload including Base64 audio and transcript.</param>
+        /// <returns>True if the answer was accepted; otherwise false.</returns>
+        public async Task<bool> SubmitAnswerAsync(string sessionId, AnswerDto answerDto)
         {
-            if (_session.CurrentIndex >= _session.Questions.Count)
-                return false;
+            var session = await LoadSessionAsync(sessionId);
+            if (session == null || session.CurrentIndex >= session.Questions.Count) return false;
 
-            byte[] audioBytes;
-
+            byte[] audio;
             try
             {
-                audioBytes = Convert.FromBase64String(answerDto.AudioBase64);
+                audio = Convert.FromBase64String(answerDto.AudioBase64);
             }
             catch
             {
                 throw new InvalidOperationException("Invalid audio base64 string.");
             }
 
-            if (audioBytes.Length > MaxAudioSizeBytes)
+            if (audio.Length > MaxAudioSizeBytes)
                 throw new InvalidOperationException("Audio file too large (limit: 5MB).");
 
-            string filename = $"answer_{DateTime.UtcNow.Ticks}.webm";
-
+            var filename = $"answer_{DateTime.UtcNow.Ticks}.webm";
             ObjectId fileId;
-            using (var stream = new MemoryStream(audioBytes))
+            using (var ms = new MemoryStream(audio))
             {
-                fileId = await _dbContext.GridFsBucket.UploadFromStreamAsync(filename, stream);
+                fileId = await _dbContext.GridFsBucket.UploadFromStreamAsync(filename, ms);
             }
-
-            string audioUrl = $"/api/audio/{fileId}";
 
             var answer = new Answer
             {
-                Question = answerDto.Question,
+                Question   = answerDto.Question,
                 Transcript = answerDto.Transcript,
-                AudioUrl = audioUrl
+                AudioUrl   = $"/api/audio/{fileId}"
             };
-
-            _session.Answers.Add(answer);
-            _session.CurrentIndex++;
-
-            var filterUpdate = Builders<InterviewSession>.Filter.Eq(s => s.Id, _session.Id);
-            await _dbContext.Sessions.ReplaceOneAsync(filterUpdate, _session);
-
+            session.Answers.Add(answer);
+            session.CurrentIndex++;
+            await SaveSessionAsync(session);
             return true;
         }
 
         /// <summary>
-        /// Gets the list of questions for the current session.
+        /// Gets the list of questions posted so far in a session.
         /// </summary>
-        public List<Question> GetQuestions() => _session.Questions;
-
-        /// <summary>
-        /// Gets the current index in the session.
-        /// </summary>
-        public int CurrentIndex => _session.CurrentIndex;
-
-        /// <summary>
-        /// Returns a basic summary after interview completion.
-        /// </summary>
-        public async Task<object> GetCompletionSummaryAsync()
+        /// <param name="sessionId">The interview session ID.</param>
+        /// <returns>List of published questions.</returns>
+        public List<Question> GetQuestions(string sessionId)
         {
+            var session = _dbContext.Sessions.Find(s => s.Id == sessionId).FirstOrDefault();
+            return session?.Questions ?? new List<Question>();
+        }
+
+        /// <summary>
+        /// Gets the current question index for a session.
+        /// </summary>
+        /// <param name="sessionId">The interview session ID.</param>
+        /// <returns>Zero-based current index.</returns>
+        public int CurrentIndex(string sessionId)
+        {
+            var session = _dbContext.Sessions.Find(s => s.Id == sessionId).FirstOrDefault();
+            return session?.CurrentIndex ?? 0;
+        }
+
+        /// <summary>
+        /// Gets a summary of completion status for a session.
+        /// </summary>
+        /// <param name="sessionId">The interview session ID.</param>
+        /// <returns>Object containing a message and counts of questions and answers.</returns>
+        public async Task<object> GetCompletionSummaryAsync(string sessionId)
+        {
+            var session = await LoadSessionAsync(sessionId);
+            if (session == null)
+                return new { message = "Session not found." };
+
             return new
             {
-                message = "Interview completed",
-                totalQuestions = _session.Questions.Count,
-                totalAnswers = _session.Answers.Count
+                message        = "Interview completed",
+                totalQuestions = session.Questions.Count,
+                totalAnswers   = session.Answers.Count
             };
         }
 
         /// <summary>
-        /// Evaluates answers using the AI API and generates an interview report.
+        /// Generates a detailed AI evaluation report and persists it to MongoDB.
         /// </summary>
-        public async Task<object> GenerateReportAsync()
+        /// <param name="sessionId">The interview session ID.</param>
+        /// <returns>Evaluation result including questions, answers, and feedback.</returns>
+        public async Task<object> GenerateReportAsync(string sessionId)
         {
-            var aiPayload = new
-            {
-                jd = _session.JobDescription ?? "",
-                questions = _session.Questions.Select(q => q.Text).ToList(),
-                answers = _session.Answers.Select(a => a.Transcript ?? "").ToList()
-            };
+            var session = await LoadSessionAsync(sessionId);
+            if (session == null)
+                throw new Exception("Session not found");
 
-            var aiResponse = await _httpClient.PostAsJsonAsync("http://localhost:8000/api/evaluate", aiPayload);
-            if (!aiResponse.IsSuccessStatusCode)
+            var payload = new
+            {
+                jd        = session.JobDescription,
+                questions = session.Questions.Select(q => q.Text).ToList(),
+                answers   = session.Answers.Select(a => a.Transcript ?? string.Empty).ToList()
+            };
+            var resp = await _httpClient.PostAsJsonAsync("http://localhost:8000/api/evaluate", payload);
+            if (!resp.IsSuccessStatusCode)
                 throw new Exception("Failed to get evaluation from AI service");
 
-            var aiReport = await aiResponse.Content.ReadFromJsonAsync<JsonElement>();
-
-            var enrichedAnswers = _session.Questions.Select(q =>
-            {
-                var matchingAnswer = _session.Answers.FirstOrDefault(a => a.Question == q.Text);
-                return new
-                {
-                    question = q.Text,
-                    transcript = matchingAnswer?.Transcript ?? "",
-                    audio = matchingAnswer?.AudioUrl ?? ""
-                };
-            }).ToList();
+            var aiReport = await resp.Content.ReadFromJsonAsync<JsonElement>();
 
             var dbReport = new InterviewReport
             {
-                Email = _session.Email ?? "",
-                JobDescription = _session.JobDescription ?? "",
+                Email             = session.Email,
+                JobDescription    = session.JobDescription,
                 CandidateFitScore = aiReport.GetProperty("score").GetInt32(),
-                Strengths = aiReport.GetProperty("strengths").EnumerateArray().Select(s => s.GetString() ?? "").ToList(),
-                ImprovementAreas = aiReport.GetProperty("improvements").EnumerateArray().Select(s => s.GetString() ?? "").ToList(),
-                SuggestedFollowUp = aiReport.GetProperty("followUps").EnumerateArray().Select(f => f.GetString() ?? "").ToList(),
-                Answers = _session.Answers
+                Strengths         = aiReport.GetProperty("strengths").EnumerateArray().Select(s => s.GetString()!).ToList(),
+                ImprovementAreas  = aiReport.GetProperty("improvements").EnumerateArray().Select(s => s.GetString()!).ToList(),
+                SuggestedFollowUp = aiReport.GetProperty("followUps").EnumerateArray().Select(f => f.GetString()!).ToList(),
+                Answers           = session.Answers
             };
-
             await _dbContext.Reports.InsertOneAsync(dbReport);
 
             return new
             {
-                jd = aiReport.GetProperty("jd").GetString() ?? "",
-                score = dbReport.CandidateFitScore,
-                questions = aiReport.GetProperty("questions").EnumerateArray().Select(q => q.GetString() ?? "").ToList(),
-                answers = enrichedAnswers,
-                strengths = dbReport.Strengths,
-                improvements = dbReport.ImprovementAreas,
-                followUps = dbReport.SuggestedFollowUp
+                jd          = aiReport.GetProperty("jd").GetString(),
+                score       = dbReport.CandidateFitScore,
+                questions   = aiReport.GetProperty("questions").EnumerateArray().Select(q => q.GetString()!).ToList(),
+                answers     = session.Answers.Select(a => new { question = a.Question, transcript = a.Transcript, audio = a.AudioUrl }).ToList(),
+                strengths   = dbReport.Strengths,
+                improvements= dbReport.ImprovementAreas,
+                followUps   = dbReport.SuggestedFollowUp
             };
         }
 
         /// <summary>
-        /// Retrieves all reports by candidate email.
+        /// Retrieves all reports for a given email address.
         /// </summary>
-        public async Task<List<InterviewReport>> GetReportsByEmailAsync(string email)
-        {
-            if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
-                return new List<InterviewReport>();
+        /// <param name="email">Candidate's email address.</param>
+        /// <returns>List of interview reports.</returns>
+        public async Task<List<InterviewReport>> GetReportsByEmailAsync(string email) =>
+            await _dbContext.Reports.Find(r => r.Email == email.Trim().ToLowerInvariant()).ToListAsync();
 
-            var sanitizedEmail = email.Trim().ToLowerInvariant();
-            var filter = Builders<InterviewReport>.Filter.Eq(r => r.Email, sanitizedEmail);
-            return await _dbContext.Reports.Find(filter).ToListAsync();
+        /// <summary>
+        /// Retrieves a single report by its ID.
+        /// </summary>
+        /// <param name="id">The report ID.</param>
+        /// <returns>The interview report, or null if not found.</returns>
+        public async Task<InterviewReport?> GetReportByIdAsync(string id)
+        {
+            if (!ObjectId.TryParse(id, out var oid)) return null;
+            return await _dbContext.Reports.Find(r => r.Id == id).FirstOrDefaultAsync();
+        }
+
+        #region Helpers
+        
+        /// <summary>
+        /// Loads an interview session document from MongoDB.
+        /// </summary>
+        /// <param name="sessionId">The session ID.</param>
+        /// <returns>The interview session, or null if not found.</returns>
+        private async Task<InterviewSession?> LoadSessionAsync(string sessionId)
+        {
+            return await _dbContext.Sessions.Find(s => s.Id == sessionId).FirstOrDefaultAsync();
         }
 
         /// <summary>
-        /// Retrieves a specific report by its MongoDB ObjectId.
+        /// Saves updates to an interview session document in MongoDB.
         /// </summary>
-        public async Task<InterviewReport?> GetReportByIdAsync(string id)
+        /// <param name="session">The interview session object to save.</param>
+        private async Task SaveSessionAsync(InterviewSession session)
         {
-            if (!ObjectId.TryParse(id, out ObjectId objectId))
-                return null;
-
-            var filter = Builders<InterviewReport>.Filter.Eq("_id", objectId);
-            return await _dbContext.Reports.Find(filter).FirstOrDefaultAsync();
+            var filter = Builders<InterviewSession>.Filter.Eq(s => s.Id, session.Id);
+            await _dbContext.Sessions.ReplaceOneAsync(filter, session);
         }
+        #endregion
     }
 }

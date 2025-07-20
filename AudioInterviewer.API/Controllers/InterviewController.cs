@@ -29,38 +29,38 @@ namespace AudioInterviewer.API.Controllers
         /// </summary>
         public class InitRequest
         {
-            /// <summary>
-            /// Candidate's email address.
-            /// </summary>
             [Required]
             [EmailAddress]
-            public string Email { get; set; } = "";
+            public string Email { get; set; } = string.Empty;
 
-            /// <summary>
-            /// Job description provided by the recruiter or system.
-            /// </summary>
             [Required]
             [MinLength(10, ErrorMessage = "Job description must be at least 10 characters long.")]
-            public string JobDescription { get; set; } = "";
+            public string JobDescription { get; set; } = string.Empty;
         }
 
         /// <summary>
         /// Initializes a new interview session with the given email and job description.
         /// </summary>
-        /// <param name="request">Initialization request containing email and job description.</param>
         [HttpPost("init")]
         public async Task<IActionResult> InitializeInterview([FromBody] InitRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { error = "Invalid input", details = ModelState });
 
-            await _interviewService.InitializeSessionAsync(request.JobDescription, request.Email);
+            // service returns a new sessionId
+            var sessionId = await _interviewService.InitializeSessionAsync(request.JobDescription, request.Email);
+
+            // grab the first question from the in‐memory session
+            var firstQuestion = _interviewService
+                .GetQuestions(sessionId)
+                .FirstOrDefault()?.Text
+                ?? "No question generated.";
 
             return Ok(new
             {
                 message = "Interview initialized",
-                jd = request.JobDescription,
-                firstQuestion = _interviewService.GetQuestions().FirstOrDefault()?.Text ?? "No question generated."
+                sessionId,
+                firstQuestion
             });
         }
 
@@ -68,41 +68,58 @@ namespace AudioInterviewer.API.Controllers
         /// Gets the next question in the current interview session.
         /// </summary>
         [HttpGet("question")]
-        public async Task<IActionResult> GetNextQuestion()
+        public async Task<IActionResult> GetNextQuestion([FromQuery, Required] string sessionId)
         {
-            var nextQuestion = await _interviewService.GetNextQuestionAsync();
+            if (!ModelState.IsValid)
+                return BadRequest(new { error = "SessionId is required." });
+
+            var nextQuestion = await _interviewService.GetNextQuestionAsync(sessionId);
 
             if (string.IsNullOrWhiteSpace(nextQuestion))
                 return Ok(new { message = "Interview complete" });
 
-            return Ok(new { index = _interviewService.CurrentIndex, question = nextQuestion });
+            return Ok(new
+            {
+                index = _interviewService.CurrentIndex(sessionId),
+                question = nextQuestion
+            });
         }
 
         /// <summary>
         /// Submits an answer to the current question.
         /// </summary>
-        /// <param name="answerDto">Answer payload including transcript and base64 audio.</param>
         [HttpPost("answer")]
         public async Task<IActionResult> SubmitAnswer([FromBody] AnswerDto answerDto)
         {
-            if (answerDto == null || string.IsNullOrWhiteSpace(answerDto.Question))
+            // AnswerDto now includes SessionId, Question, AudioBase64, Transcript
+            if (answerDto == null
+                || string.IsNullOrWhiteSpace(answerDto.SessionId)
+                || string.IsNullOrWhiteSpace(answerDto.Question))
+            {
                 return BadRequest(new { error = "Invalid answer payload." });
+            }
 
-            bool success = await _interviewService.SubmitAnswerAsync(answerDto);
-
-            if (!success)
+            bool ok = await _interviewService.SubmitAnswerAsync(answerDto.SessionId, answerDto);
+            if (!ok)
                 return BadRequest(new { error = "No more questions." });
 
-            return Ok(new { message = "Answer recorded", index = _interviewService.CurrentIndex });
+            return Ok(new
+            {
+                message = "Answer recorded",
+                index = _interviewService.CurrentIndex(answerDto.SessionId)
+            });
         }
 
         /// <summary>
-        /// Completes the current interview and returns a summary.
+        /// Completes the current interview and returns a brief summary.
         /// </summary>
         [HttpPost("complete")]
-        public async Task<IActionResult> CompleteInterview()
+        public async Task<IActionResult> CompleteInterview([FromQuery, Required] string sessionId)
         {
-            var summary = await _interviewService.GetCompletionSummaryAsync();
+            if (!ModelState.IsValid)
+                return BadRequest(new { error = "SessionId is required." });
+
+            var summary = await _interviewService.GetCompletionSummaryAsync(sessionId);
             return Ok(summary);
         }
 
@@ -110,20 +127,22 @@ namespace AudioInterviewer.API.Controllers
         /// Generates and returns a detailed interview report after evaluation.
         /// </summary>
         [HttpGet("report")]
-        public async Task<IActionResult> GetReport()
+        public async Task<IActionResult> GetReport([FromQuery, Required] string sessionId)
         {
-            var report = await _interviewService.GenerateReportAsync();
+            if (!ModelState.IsValid)
+                return BadRequest(new { error = "SessionId is required." });
+
+            var report = await _interviewService.GenerateReportAsync(sessionId);
             return Ok(report);
         }
 
         /// <summary>
         /// Fetches all interview reports associated with a given email address.
         /// </summary>
-        /// <param name="email">Candidate email address.</param>
         [HttpGet("reports")]
-        public async Task<IActionResult> GetReportsByEmail([FromQuery] string email)
+        public async Task<IActionResult> GetReportsByEmail([FromQuery, Required] string email)
         {
-            if (string.IsNullOrWhiteSpace(email))
+            if (!ModelState.IsValid)
                 return BadRequest(new { error = "Email is required." });
 
             var reports = await _interviewService.GetReportsByEmailAsync(email);
@@ -133,15 +152,13 @@ namespace AudioInterviewer.API.Controllers
         /// <summary>
         /// Fetches a specific interview report by its unique ID.
         /// </summary>
-        /// <param name="id">MongoDB ObjectId string of the report.</param>
         [HttpGet("report/{id}")]
-        public async Task<IActionResult> GetReportById(string id)
+        public async Task<IActionResult> GetReportById([FromRoute] string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return BadRequest(new { error = "Report ID is required." });
 
             var report = await _interviewService.GetReportByIdAsync(id);
-
             if (report == null)
                 return NotFound(new { error = "Report not found." });
 
@@ -151,12 +168,9 @@ namespace AudioInterviewer.API.Controllers
         /// <summary>
         /// Health check endpoint to verify if the API is running.
         /// </summary>
-        /// <returns>200 OK with a health status message.</returns>
         [HttpGet("health")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult HealthCheck()
-        {
-            return Ok("Healthy");
-        }
+            => Ok("Healthy");
     }
 }
