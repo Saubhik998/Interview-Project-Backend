@@ -164,26 +164,30 @@ By default, it listens on `http://localhost:8000` for report generation requests
 
 ### `POST /api/interview/init`
 
-Initializes a new interview session. Returns a session ID.
+Initializes a new interview session with the given email and job description.
 
-### `GET /api/interview/{sessionId}/questions`
+### `GET /api/interview/questions`
 
-Fetches the list of interview questions for the specified session.
+Gets the next question in the current interview session.
 
-### `POST /api/interview/{sessionId}/answer`
+### `POST /api/interview/answer`
 
-Submits a textual answer for a specific question in the session.
+Submits an answer to the current question.
 
-### `POST /api/interview/{sessionId}/answer-audio`
+### `POST /api/interview/complete`
 
-Uploads an audio file as an answer for a specific question.
+Completes the current interview and returns a brief summary.
 
-### `GET /api/interview/{sessionId}/audio/{questionId}`
+### `GET /api/interview/report`
 
-Retrieves the uploaded audio file for a specific question.
+Fetches all interview reports associated with a given email address.
 
-### `POST /api/interview/{sessionId}/report`
+### `GET /api/interview/report/{id}`
 
-Triggers the generation of an AI-powered interview report.
+Fetches a specific interview report by its unique ID.
+
+### `GET /api/interview/health`
+
+Health check endpoint to verify if the API is running.
 
 ---
