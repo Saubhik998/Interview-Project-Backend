@@ -2,11 +2,9 @@ name: CI dotnet
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build-and-test:
@@ -14,7 +12,7 @@ jobs:
 
     services:
       mongodb:
-        image: mongo:6.0  
+        image: mongo:6.0
         ports:
           - 27017:27017
         options: >-
@@ -36,7 +34,19 @@ jobs:
         run: dotnet restore
 
       - name: Build Project
-        run: dotnet build
+        run: dotnet build --no-restore
+
+      - name: Set ASP.NET Core environment variables
+        run: |
+          echo "DOTNET_ENVIRONMENT=Development" >> $GITHUB_ENV
+          echo "ASPNETCORE_CONTENTROOT=$(pwd)/AudioInterviewer.API" >> $GITHUB_ENV
 
       - name: Run Tests
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: '**/TestResults/*.trx'

@@ -8,13 +8,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MongoDB.Driver;
 using System.IO;
 
-var options = new WebApplicationOptions
-{
-    Args = args,
-    ContentRootPath = Directory.GetCurrentDirectory()
-};
-
-var builder = WebApplication.CreateBuilder(options);
+var builder = WebApplication.CreateBuilder(args); // ✅ Let .NET resolve content root
 
 // Load MongoDB settings
 builder.Services.Configure<MongoDbSettings>(
@@ -107,7 +101,7 @@ app.MapControllers();
 
 app.UseHttpsRedirection();
 
-//app.MapHealthChecks("/health");
+app.MapHealthChecks("/health"); // ✅ Re-enabled for CI testing
 
 app.Run();
 
