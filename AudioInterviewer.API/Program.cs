@@ -8,12 +8,12 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MongoDB.Driver;
 using System.IO;
 
-
 var options = new WebApplicationOptions
 {
     Args = args,
     ContentRootPath = Directory.GetCurrentDirectory()
 };
+
 var builder = WebApplication.CreateBuilder(options);
 
 // Load MongoDB settings
@@ -35,13 +35,15 @@ builder.Services.AddScoped<IInterviewService, InterviewService>();
 
 builder.Services.AddControllers();
 
-// CORS policy
+// CORS policy – updated
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
-        policy => policy.WithOrigins("http://localhost:3000")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod());
+        policy => policy.WithOrigins(
+                            "http://localhost:3000", 
+                            "http://audio-interviewer-frontend") // Docker container name
+                      .AllowAnyHeader()
+                      .AllowAnyMethod());
 });
 
 // Add Health Checks with MongoDB
@@ -57,9 +59,7 @@ builder.Services.AddHealthChecks()
         tags: new[] { "db", "mongo" }
     );
 
-// Optional: Add FastAPI health check
-// builder.Services.AddCheck<FastApiHealthCheck>("FastAPI");
-
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -100,11 +100,15 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseCors("AllowFrontend");
+
 app.UseAuthorization();
+
 app.MapControllers();
 
-// Add health check endpoint
-app.MapHealthChecks("/health");
+app.UseHttpsRedirection();
+
+//app.MapHealthChecks("/health");
 
 app.Run();
+
 public partial class Program { }
