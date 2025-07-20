@@ -1,107 +1,226 @@
-// using System.Net.Http;
-// using System.Net.Http.Json;
-// using System.Text.Json;
-// using System.Threading.Tasks;
-// using AudioInterviewer.API;
-// using Microsoft.AspNetCore.Mvc.Testing;
-// using Xunit;
-// using System.IO;
-// using Microsoft.Extensions.Configuration;
+using System.Net;
+using System.Net.Http.Json;
+using Xunit;
+using FluentAssertions;
+using Moq;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
+using System.Collections.Generic;
+using AudioInterviewer.API.Models;
+using AudioInterviewer.API.Services; // Adjust accordingly
+using AudioInterviewer.API.Services.External;
 
-// namespace AudioInterviewer.Tests
-// {
-//     public class InterviewIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
-//     {
-//         private readonly HttpClient _client;
+// ===================== DTOs matching response shapes ======================
 
-//         public InterviewIntegrationTests()
-//         {
-//             var projectDir = Path.GetFullPath("../AudioInterviewer.API");
+public class InitInterviewResponse
+{
+    public string Message { get; set; } = "";
+    public string SessionId { get; set; } = "";
+    public string FirstQuestion { get; set; } = "";
+}
 
-//             var factory = new WebApplicationFactory<Program>()
-//                 .WithWebHostBuilder(builder =>
-//                 {
-//                     builder.ConfigureAppConfiguration((context, configBuilder) =>
-//                     {
-//                         context.HostingEnvironment.ContentRootPath = projectDir;
-//                     });
-//                 });
+public class NextQuestionResponse
+{
+    public int Index { get; set; }
+    public string Question { get; set; } = "";
+}
 
-//             _client = factory.CreateClient();
-//         }
+public class SubmitAnswerResponse
+{
+    public string Message { get; set; } = "";
+    public int Index { get; set; }
+}
 
-//         [Fact(DisplayName = "Should initialize interview and return first question")]
-//         public async Task InitializeInterview_ReturnsSessionAndFirstQuestion()
-//         {
-//             var payload = new
-//             {
-//                 email = "test@example.com",
-//                 jobDescription = "We are looking for a skilled software engineer with experience in .NET and cloud computing."
-//             };
+public class CompleteInterviewSummary
+{
+    public string Message { get; set; } = "";
+    public int TotalQuestions { get; set; }
+    public int TotalAnswers { get; set; }
+}
 
-//             var response = await _client.PostAsJsonAsync("/api/interview/init", payload);
+public class ReportResponse
+{
+    public string Jd { get; set; } = "";
+    public int Score { get; set; }
+    public List<string> Questions { get; set; } = new();
+    public List<object> Answers { get; set; } = new();
+    public List<string> Strengths { get; set; } = new();
+    public List<string> Improvements { get; set; } = new();
+    public List<string> FollowUps { get; set; } = new();
+}
 
-//             response.EnsureSuccessStatusCode();
-//             var json = await response.Content.ReadFromJsonAsync<JsonElement>();
+// ==========================================================================
 
-//             Assert.True(json.TryGetProperty("sessionId", out _));
-//             Assert.True(json.TryGetProperty("firstQuestion", out var question));
-//             Assert.False(string.IsNullOrWhiteSpace(question.GetString()));
-//         }
+public class InterviewControllerIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+{
+    private readonly WebApplicationFactory<Program> _factory;
+    private readonly HttpClient _client;
 
-//         [Fact(DisplayName = "Should retrieve the next question")]
-//         public async Task GetNextQuestion_ReturnsNextQuestionOrComplete()
-//         {
-//             var initPayload = new
-//             {
-//                 email = "test@example.com",
-//                 jobDescription = "Job requiring analytical and programming skills."
-//             };
+    public InterviewControllerIntegrationTests(WebApplicationFactory<Program> factory)
+    {
+        _factory = factory.WithWebHostBuilder(builder =>
+        {
+            builder.ConfigureServices(services =>
+            {
+                var interviewService = new Mock<IInterviewService>();
+                var fastApiClient = new Mock<IApiClient>();
 
-//             var initResponse = await _client.PostAsJsonAsync("/api/interview/init", initPayload);
-//             initResponse.EnsureSuccessStatusCode();
-//             var initJson = await initResponse.Content.ReadFromJsonAsync<JsonElement>();
-//             var sessionId = initJson.GetProperty("sessionId").GetString();
+                interviewService
+                    .Setup(s => s.InitializeSessionAsync(It.IsAny<string>(), It.IsAny<string>()))
+                    .ReturnsAsync("test-session-id");
 
-//             var questionResponse = await _client.GetAsync($"/api/interview/question?sessionId={sessionId}");
-//             questionResponse.EnsureSuccessStatusCode();
+                interviewService
+                    .Setup(s => s.GetQuestions("test-session-id"))
+                    .Returns(new List<Question> { new Question { Text = "What is your strength?" } });
 
-//             var questionJson = await questionResponse.Content.ReadFromJsonAsync<JsonElement>();
-//             Assert.True(questionJson.TryGetProperty("question", out _) || questionJson.TryGetProperty("message", out _));
-//         }
+                interviewService
+                    .Setup(s => s.GetNextQuestionAsync("test-session-id"))
+                    .ReturnsAsync("What is your biggest weakness?");
 
-//         [Fact(DisplayName = "Should submit an answer and receive next question or completion message")]
-//         public async Task SubmitAnswer_ReturnsNextQuestionOrCompletion()
-//         {
-//             var initPayload = new
-//             {
-//                 email = "test@example.com",
-//                 jobDescription = "Entry-level data analyst job."
-//             };
+                interviewService
+                    .Setup(s => s.SubmitAnswerAsync(It.IsAny<string>(), It.IsAny<AnswerDto>()))
+                    .ReturnsAsync(true);
 
-//             var initResponse = await _client.PostAsJsonAsync("/api/interview/init", initPayload);
-//             initResponse.EnsureSuccessStatusCode();
-//             var initJson = await initResponse.Content.ReadFromJsonAsync<JsonElement>();
-//             var sessionId = initJson.GetProperty("sessionId").GetString();
-//             var firstQuestion = initJson.GetProperty("firstQuestion").GetString();
+                interviewService
+                    .Setup(s => s.CurrentIndex("test-session-id"))
+                    .Returns(1);
 
-//             var validWavBase64 = Convert.ToBase64String(new byte[4000]).PadRight(5000, 'A');
+                interviewService
+                    .Setup(s => s.GetCompletionSummaryAsync("test-session-id"))
+                    .ReturnsAsync(new { message = "Interview completed", totalQuestions = 2, totalAnswers = 2 });
 
-//             var answerPayload = new
-//             {
-//                 sessionId = sessionId,
-//                 question = firstQuestion,
-//                 transcript = "I enjoy analyzing data to find trends and patterns.",
-//                 audioBase64 = validWavBase64
-//             };
+                interviewService
+                    .Setup(s => s.GenerateReportAsync("test-session-id"))
+                    .ReturnsAsync(new { 
+                        jd = "A test job description for QA automation", 
+                        score = 95,
+                        questions = new List<string> { "What is your strength?", "What is your biggest weakness?" },
+                        answers = new List<object> { 
+                            new { question = "What is your strength?", transcript = "I am detail-oriented.", audio = "/audio/1" } 
+                        },
+                        strengths = new[] { "Communication" }, 
+                        improvements = new[] { "Detail orientation" },
+                        followUps = new[] { "What motivates you?" }
+                    });
 
-//             var answerResponse = await _client.PostAsJsonAsync("/api/interview/answer", answerPayload);
-//             var body = await answerResponse.Content.ReadAsStringAsync();
+                interviewService
+                    .Setup(s => s.GetReportsByEmailAsync(It.IsAny<string>()))
+                    .ReturnsAsync(new List<InterviewReport> { 
+                        new InterviewReport { Id = "report-id", Email = "test@test.com", JobDescription = "Developer" } 
+                    });
 
-//             Assert.True(answerResponse.IsSuccessStatusCode, $"Status: {answerResponse.StatusCode}, Body: {body}");
+                interviewService
+                    .Setup(s => s.GetReportByIdAsync("report-id"))
+                    .ReturnsAsync(new InterviewReport { Id = "report-id", Email = "test@test.com", JobDescription = "Developer" });
 
-//             var answerJson = JsonDocument.Parse(body).RootElement;
-//             Assert.True(answerJson.TryGetProperty("question", out _) || answerJson.TryGetProperty("message", out _));
-//         }
-//     }
-// }
+                services.AddSingleton(interviewService.Object);
+                services.AddSingleton(fastApiClient.Object);
+            });
+        });
+
+        _client = _factory.CreateClient();
+    }
+
+    [Fact]
+    public async Task POST_InitInterview_ShouldReturnSessionIdAndFirstQuestion()
+    {
+        var payload = new
+        {
+            Email = "test@test.com",
+            JobDescription = "A test job description for QA automation"
+        };
+
+        var response = await _client.PostAsJsonAsync("/api/interview/init", payload);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var result = await response.Content.ReadFromJsonAsync<InitInterviewResponse>();
+        Assert.Equal("Interview initialized", result.Message);
+        Assert.Equal("test-session-id", result.SessionId);
+        Assert.Equal("What is your strength?", result.FirstQuestion);
+    }
+
+    [Fact]
+    public async Task GET_GetNextQuestion_ShouldReturnNextQuestion()
+    {
+        var response = await _client.GetAsync("/api/interview/question?sessionId=test-session-id");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var result = await response.Content.ReadFromJsonAsync<NextQuestionResponse>();
+        Assert.Equal(1, result.Index);
+        Assert.Equal("What is your biggest weakness?", result.Question);
+    }
+
+    [Fact]
+    public async Task POST_SubmitAnswer_ShouldSucceed()
+    {
+        var answer = new
+        {
+            SessionId = "test-session-id",
+            Question = "What is your strength?",
+            AudioBase64 = Convert.ToBase64String(Enumerable.Repeat((byte)0, 6000).ToArray()),
+            Transcript = "My strength is attention to detail."
+        };
+
+        var response = await _client.PostAsJsonAsync("/api/interview/answer", answer);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var result = await response.Content.ReadFromJsonAsync<SubmitAnswerResponse>();
+        Assert.Equal("Answer recorded", result.Message);
+        Assert.Equal(1, result.Index);
+    }
+
+    [Fact]
+    public async Task POST_CompleteInterview_ShouldReturnSummary()
+    {
+        var response = await _client.PostAsync("/api/interview/complete?sessionId=test-session-id", null);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var result = await response.Content.ReadFromJsonAsync<CompleteInterviewSummary>();
+        Assert.Equal("Interview completed", result.Message);
+        Assert.Equal(2, result.TotalQuestions);
+        Assert.Equal(2, result.TotalAnswers);
+    }
+
+    [Fact]
+    public async Task GET_GetReport_ShouldReturnReport()
+    {
+        var response = await _client.GetAsync("/api/interview/report?sessionId=test-session-id");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var result = await response.Content.ReadFromJsonAsync<ReportResponse>();
+        Assert.Equal(95, result.Score);
+        Assert.Contains("Communication", result.Strengths);
+    }
+
+    [Fact]
+    public async Task GET_GetReportsByEmail_ShouldReturnReports()
+    {
+        var response = await _client.GetAsync("/api/interview/reports?email=test@test.com");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var reports = await response.Content.ReadFromJsonAsync<InterviewReport[]>();
+        Assert.Single(reports);
+        Assert.Equal("test@test.com", reports[0].Email);
+    }
+
+    [Fact]
+    public async Task GET_GetReportById_ShouldReturnSpecificReport()
+    {
+        var response = await _client.GetAsync("/api/interview/report/report-id");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var report = await response.Content.ReadFromJsonAsync<InterviewReport>();
+        Assert.Equal("Developer", report.JobDescription);
+    }
+
+    [Fact]
+    public async Task GET_HealthCheck_ReturnsSuccess()
+    {
+        var response = await _client.GetAsync("/api/interview/health");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var body = await response.Content.ReadAsStringAsync();
+        Assert.Equal("Healthy", body.Trim('"')); // Might be JSON "Healthy"
+    }
+}
