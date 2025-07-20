@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using AudioInterviewer.API;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace AudioInterviewer.Tests
 {
@@ -12,8 +14,19 @@ namespace AudioInterviewer.Tests
     {
         private readonly HttpClient _client;
 
-        public InterviewIntegrationTests(WebApplicationFactory<Program> factory)
+        public InterviewIntegrationTests()
         {
+            var projectDir = Path.GetFullPath("../AudioInterviewer.API");
+
+            var factory = new WebApplicationFactory<Program>()
+                .WithWebHostBuilder(builder =>
+                {
+                    builder.ConfigureAppConfiguration((context, configBuilder) =>
+                    {
+                        context.HostingEnvironment.ContentRootPath = projectDir;
+                    });
+                });
+
             _client = factory.CreateClient();
         }
 
