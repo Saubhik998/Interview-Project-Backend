@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MongoDB.Driver;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Load MongoDB settings
@@ -18,7 +20,7 @@ builder.Services.Configure<ApiSettings>(
     builder.Configuration.GetSection("FastApiClient"));
 
 // Register MongoDB context as singleton
-builder.Services.AddSingleton<MongoDbContext>();
+builder.Services.AddSingleton<IMongoDbContext, MongoDbContext>();
 
 // Register FastApiClient as IApiClient with HttpClient and config, logging injected
 builder.Services.AddHttpClient<IApiClient, FastApiClient>();
@@ -100,3 +102,4 @@ app.MapControllers();
 app.MapHealthChecks("/health");
 
 app.Run();
+public partial class Program { }
