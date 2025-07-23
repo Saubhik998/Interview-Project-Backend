@@ -6,5 +6,6 @@ namespace AudioInterviewer.API.Services.External
     {
         Task<string> GetFirstQuestionAsync(string jd);
         Task<string> GetNextQuestionAsync(string jd, string previousQuestion, string answer);
+        
     }
 }

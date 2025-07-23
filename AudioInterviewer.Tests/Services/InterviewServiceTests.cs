@@ -1,204 +1,192 @@
-using AudioInterviewer.API.Data;
-using AudioInterviewer.API.Models;
+using Xunit;
+using Moq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
-using MongoDB.Bson;
+using System.Net.Http;
+using System.Net;
 using System.Text.Json;
-using System.Net.Http.Json;
+using System.Text;
+using System.IO;
+using AudioInterviewer.API.Models;
+using AudioInterviewer.API.Services;
 using AudioInterviewer.API.Services.External;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AudioInterviewer.API.Data;
 
-namespace AudioInterviewer.API.Services
+public class InterviewServiceTests
 {
-    /// <summary>
-    /// Service for managing interview sessions, handling questions, answers, audio storage, and evaluation.
-    /// </summary>
-    public class InterviewService : IInterviewService
+    private readonly Mock<IMongoDbContext> _mockDbContext;
+    private readonly Mock<IApiClient> _mockApiClient;
+    private readonly Mock<IHttpClientFactory> _mockHttpClientFactory;
+    private readonly Mock<IMongoCollection<InterviewSession>> _mockSessionCollection;
+    private readonly Mock<IMongoCollection<InterviewReport>> _mockReportCollection;
+    private readonly Mock<IGridFSBucket> _mockGridFsBucket;
+    private readonly InterviewService _service;
+    private readonly HttpClient _httpClient;
+
+    public InterviewServiceTests()
     {
-        private const int MaxQuestions = 5;
-        private const int MaxAudioSizeBytes = 5 * 1024 * 1024; // 5 MB
+        _mockDbContext = new Mock<IMongoDbContext>();
+        _mockApiClient = new Mock<IApiClient>();
+        _mockHttpClientFactory = new Mock<IHttpClientFactory>();
+        _mockSessionCollection = new Mock<IMongoCollection<InterviewSession>>();
+        _mockReportCollection = new Mock<IMongoCollection<InterviewReport>>();
+        _mockGridFsBucket = new Mock<IGridFSBucket>();
+        _httpClient = new HttpClient(new MockHttpMessageHandler());
 
-        private readonly IMongoDbContext _dbContext;
-        private readonly IApiClient _fastApiClient;
-        private readonly HttpClient _httpClient;
+        _mockDbContext.SetupGet(x => x.Sessions).Returns(_mockSessionCollection.Object);
+        _mockDbContext.SetupGet(x => x.Reports).Returns(_mockReportCollection.Object);
+        _mockDbContext.SetupGet(x => x.GridFsBucket).Returns(_mockGridFsBucket.Object);
+        _mockHttpClientFactory.Setup(f => f.CreateClient(It.IsAny<string>())).Returns(_httpClient);
 
-        public InterviewService(IMongoDbContext dbContext, IApiClient fastApiClient, IHttpClientFactory httpClientFactory)
+        _service = new InterviewService(
+            _mockDbContext.Object,
+            _mockApiClient.Object,
+            _mockHttpClientFactory.Object
+        );
+    }
+
+    [Fact]
+    public async Task InitializeSessionAsync_ShouldInsertSessionAndReturnId()
+    {
+        var jobDescription = "JD";
+        var email = "test@example.com";
+        var firstQuestion = "Tell me about yourself.";
+
+        _mockApiClient.Setup(x => x.GetFirstQuestionAsync(It.IsAny<string>())).ReturnsAsync(firstQuestion);
+
+        InterviewSession capturedSession = null!;
+        _mockSessionCollection
+            .Setup(x => x.InsertOneAsync(It.IsAny<InterviewSession>(), It.IsAny<InsertOneOptions>(), It.IsAny<CancellationToken>()))
+            .Callback<InterviewSession, InsertOneOptions, CancellationToken>((s, _, _) => capturedSession = s)
+            .Returns(Task.CompletedTask);
+
+        var sessionId = await _service.InitializeSessionAsync(jobDescription, email);
+
+        Assert.NotNull(sessionId);
+        Assert.NotNull(capturedSession);
+        Assert.Equal(firstQuestion, capturedSession.Questions[0].Text);
+        Assert.Equal(email.ToLowerInvariant(), capturedSession.Email);
+    }
+
+    [Fact]
+    public async Task GetNextQuestionAsync_ReturnsFirstQuestion_WhenCurrentIndexIsZero()
+    {
+        var sessionId = "session123";
+        var session = new InterviewSession
         {
-            _dbContext      = dbContext;
-            _fastApiClient  = fastApiClient;
-            _httpClient     = httpClientFactory.CreateClient();
-        }
+            Id = sessionId,
+            CurrentIndex = 0,
+            Questions = new List<Question> { new Question { Text = "Q1" } },
+            Answers = new List<Answer>()
+        };
 
-        public async Task<string> InitializeSessionAsync(string jobDescription, string email)
+        SetupSessionFind(sessionId, session);
+
+        var result = await _service.GetNextQuestionAsync(sessionId);
+
+        Assert.Equal("Q1", result);
+    }
+
+    [Fact]
+    public async Task SubmitAnswerAsync_StoresAudioAndUpdatesSession()
+    {
+        var sessionId = "session123";
+        var session = new InterviewSession
         {
-            var firstQuestion = await _fastApiClient.GetFirstQuestionAsync(jobDescription);
-            var session = new InterviewSession
+            Id = sessionId,
+            CurrentIndex = 0,
+            Questions = new List<Question> { new Question { Text = "Q1" } },
+            Answers = new List<Answer>()
+        };
+
+        SetupSessionFind(sessionId, session);
+
+        var audioBytes = new byte[3800];
+        new Random().NextBytes(audioBytes);
+        var base64 = Convert.ToBase64String(audioBytes);;
+
+        var answerDto = new AnswerDto
+        {
+            SessionId = sessionId,
+            AudioBase64 = base64,
+            Question = "Q1",
+            Transcript = "Answer text"
+        };
+
+        _mockGridFsBucket
+            .Setup(x => x.UploadFromStreamAsync(It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<GridFSUploadOptions>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(MongoDB.Bson.ObjectId.GenerateNewId());
+
+        _mockSessionCollection
+            .Setup(x => x.ReplaceOneAsync(
+                It.IsAny<FilterDefinition<InterviewSession>>(),
+                It.IsAny<InterviewSession>(),
+                It.IsAny<ReplaceOptions>(),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Mock.Of<ReplaceOneResult>(r => r.IsAcknowledged == true && r.ModifiedCount == 1));
+
+        var result = await _service.SubmitAnswerAsync(sessionId, answerDto);
+
+        Assert.True(result);
+        Assert.Single(session.Answers);
+        Assert.Equal(1, session.CurrentIndex);
+    }
+
+    [Fact]
+    public async Task GetCompletionSummaryAsync_ReturnsSummary()
+    {
+        var sessionId = "s1";
+        var session = new InterviewSession
+        {
+            Id = sessionId,
+            Questions = new List<Question> { new Question { Text = "Q1" } },
+            Answers = new List<Answer> { new Answer { Question = "Q1", AudioUrl = "url", Transcript = "txt" } }
+        };
+
+        SetupSessionFind(sessionId, session);
+
+        var result = await _service.GetCompletionSummaryAsync(sessionId);
+
+        var json = JsonSerializer.Serialize(result);
+        using var doc = JsonDocument.Parse(json);
+        var root = doc.RootElement;
+
+        Assert.Equal(1, root.GetProperty("totalQuestions").GetInt32());
+        Assert.Equal(1, root.GetProperty("totalAnswers").GetInt32());
+    }
+
+    private void SetupSessionFind(string sessionId, InterviewSession session)
+    {
+        var cursor = new Mock<IAsyncCursor<InterviewSession>>();
+        cursor.SetupSequence(x => x.MoveNextAsync(It.IsAny<CancellationToken>())).ReturnsAsync(true).ReturnsAsync(false);
+        cursor.Setup(x => x.Current).Returns(new List<InterviewSession> { session });
+
+        _mockSessionCollection
+            .Setup(x => x.FindAsync<InterviewSession>(It.IsAny<FilterDefinition<InterviewSession>>(), It.IsAny<FindOptions<InterviewSession, InterviewSession>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(cursor.Object);
+    }
+
+    private class MockHttpMessageHandler : HttpMessageHandler
+    {
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            var json = JsonSerializer.Serialize(new
             {
-                Email           = email.Trim().ToLowerInvariant(),
-                JobDescription  = jobDescription.Trim(),
-                CurrentIndex    = 0,
-                Answers         = new List<Answer>(),
-                Questions       = new List<Question> { new Question { Text = firstQuestion } }
-            };
+                score = 80,
+                strengths = new[] { "Communication", "Problem-solving" },
+                improvements = new[] { "Time management" },
+                followUps = new[] { "Can you give a specific example?" },
+                jd = "JD",
+                questions = new[] { "Q1", "Q2" }
+            });
 
-            await _dbContext.Sessions.InsertOneAsync(session);
-            return session.Id;
-        }
-
-        public async Task<string?> GetNextQuestionAsync(string sessionId)
-        {
-            var session = await LoadSessionAsync(sessionId);
-            if (session == null) return null;
-
-            if (session.CurrentIndex == 0)
-                return session.Questions[0].Text;
-
-            if (session.Questions.Count >= MaxQuestions)
-                return null;
-
-            if (session.CurrentIndex >= session.Questions.Count)
+            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
             {
-                var prevAns = session.Answers.Last();
-                var nextQ   = await _fastApiClient.GetNextQuestionAsync(
-                    session.JobDescription, prevAns.Question, prevAns.Transcript ?? string.Empty);
-                if (!string.IsNullOrWhiteSpace(nextQ))
-                {
-                    session.Questions.Add(new Question { Text = nextQ });
-                    await SaveSessionAsync(session);
-                    return nextQ;
-                }
-                return null;
-            }
-
-            return session.Questions[session.CurrentIndex].Text;
-        }
-
-        public async Task<bool> SubmitAnswerAsync(string sessionId, AnswerDto answerDto)
-        {
-            var session = await LoadSessionAsync(sessionId);
-            if (session == null || session.CurrentIndex >= session.Questions.Count) return false;
-
-            byte[] audio;
-            try
-            {
-                audio = Convert.FromBase64String(answerDto.AudioBase64);
-            }
-            catch
-            {
-                throw new InvalidOperationException("Invalid audio base64 string.");
-            }
-
-            if (audio.Length > MaxAudioSizeBytes)
-                throw new InvalidOperationException("Audio file too large (limit: 5MB).");
-
-            var filename = $"answer_{DateTime.UtcNow.Ticks}.webm";
-            ObjectId fileId;
-            using (var ms = new MemoryStream(audio))
-            {
-                fileId = await _dbContext.GridFsBucket.UploadFromStreamAsync(filename, ms);
-            }
-
-            var answer = new Answer
-            {
-                Question   = answerDto.Question,
-                Transcript = answerDto.Transcript,
-                AudioUrl   = $"/api/audio/{fileId}"
-            };
-            session.Answers.Add(answer);
-            session.CurrentIndex++;
-            await SaveSessionAsync(session);
-            return true;
-        }
-
-        public List<Question> GetQuestions(string sessionId)
-        {
-            var session = _dbContext.Sessions.Find(s => s.Id == sessionId).FirstOrDefault();
-            return session?.Questions ?? new List<Question>();
-        }
-
-        public int CurrentIndex(string sessionId)
-        {
-            var session = _dbContext.Sessions.Find(s => s.Id == sessionId).FirstOrDefault();
-            return session?.CurrentIndex ?? 0;
-        }
-
-        public async Task<object> GetCompletionSummaryAsync(string sessionId)
-        {
-            var session = await LoadSessionAsync(sessionId);
-            if (session == null)
-                return new { message = "Session not found." };
-
-            return new
-            {
-                message        = "Interview completed",
-                totalQuestions = session.Questions.Count,
-                totalAnswers   = session.Answers.Count
-            };
-        }
-
-        public async Task<object> GenerateReportAsync(string sessionId)
-        {
-            var session = await LoadSessionAsync(sessionId);
-            if (session == null)
-                throw new Exception("Session not found");
-
-            var payload = new
-            {
-                jd        = session.JobDescription,
-                questions = session.Questions.Select(q => q.Text).ToList(),
-                answers   = session.Answers.Select(a => a.Transcript ?? string.Empty).ToList()
-            };
-            var resp = await _httpClient.PostAsJsonAsync("http://localhost:8000/api/evaluate", payload);
-            if (!resp.IsSuccessStatusCode)
-                throw new Exception("Failed to get evaluation from AI service");
-
-            var aiReport = await resp.Content.ReadFromJsonAsync<JsonElement>();
-
-            var dbReport = new InterviewReport
-            {
-                Email             = session.Email,
-                JobDescription    = session.JobDescription,
-                CandidateFitScore = aiReport.GetProperty("score").GetInt32(),
-                Strengths         = aiReport.GetProperty("strengths").EnumerateArray().Select(s => s.GetString()!).ToList(),
-                ImprovementAreas  = aiReport.GetProperty("improvements").EnumerateArray().Select(s => s.GetString()!).ToList(),
-                SuggestedFollowUp = aiReport.GetProperty("followUps").EnumerateArray().Select(f => f.GetString()!).ToList(),
-                Answers           = session.Answers
-            };
-            await _dbContext.Reports.InsertOneAsync(dbReport);
-
-            return new
-            {
-                jd          = aiReport.GetProperty("jd").GetString(),
-                score       = dbReport.CandidateFitScore,
-                questions   = aiReport.GetProperty("questions").EnumerateArray().Select(q => q.GetString()!).ToList(),
-                answers     = session.Answers.Select(a => new { question = a.Question, transcript = a.Transcript, audio = a.AudioUrl }).ToList(),
-                strengths   = dbReport.Strengths,
-                improvements= dbReport.ImprovementAreas,
-                followUps   = dbReport.SuggestedFollowUp
-            };
-        }
-
-        public async Task<List<InterviewReport>> GetReportsByEmailAsync(string email) =>
-            await _dbContext.Reports.Find(r => r.Email == email.Trim().ToLowerInvariant()).ToListAsync();
-
-        public async Task<InterviewReport?> GetReportByIdAsync(string id)
-        {
-            if (!ObjectId.TryParse(id, out var oid)) return null;
-            return await _dbContext.Reports.Find(r => r.Id == id).FirstOrDefaultAsync();
-        }
-
-        // Helper to load and save
-        private async Task<InterviewSession?> LoadSessionAsync(string sessionId)
-        {
-            return await _dbContext.Sessions.Find(s => s.Id == sessionId).FirstOrDefaultAsync();
-        }
-
-        private async Task SaveSessionAsync(InterviewSession session)
-        {
-            var filter = Builders<InterviewSession>.Filter.Eq(s => s.Id, session.Id);
-            await _dbContext.Sessions.ReplaceOneAsync(filter, session);
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            });
         }
     }
 }

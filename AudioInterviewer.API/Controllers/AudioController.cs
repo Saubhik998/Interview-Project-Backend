@@ -9,9 +9,9 @@ namespace AudioInterviewer.API.Controllers
     [Route("api/audio")]
     public class AudioController : ControllerBase
     {
-        private readonly MongoDbContext _dbContext;
+        private readonly IMongoDbContext _dbContext;
 
-        public AudioController(MongoDbContext dbContext)
+        public AudioController(IMongoDbContext dbContext)
         {
             _dbContext = dbContext;
         }

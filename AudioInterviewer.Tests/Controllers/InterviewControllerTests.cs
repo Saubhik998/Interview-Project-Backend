@@ -1,23 +1,25 @@
 using Xunit;
 using Moq;
-using AudioInterviewer.API.Controllers;
-using AudioInterviewer.API.Services;
-using AudioInterviewer.API.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using AudioInterviewer.API.Controllers;
+using AudioInterviewer.API.Models;
+using AudioInterviewer.API.Services;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Text.Json;
+using System;
 
-namespace AudioInterviewer.Tests.Controllers
+namespace AudioInterviewer.UnitTests.Controllers
 {
     public class InterviewControllerTests
     {
-        private readonly Mock<IInterviewService> _serviceMock;
+        private readonly Mock<IInterviewService> _mockService;
         private readonly InterviewController _controller;
 
         public InterviewControllerTests()
         {
-            _serviceMock = new Mock<IInterviewService>();
-            _controller = new InterviewController(_serviceMock.Object);
+            _mockService = new Mock<IInterviewService>();
+            _controller = new InterviewController(_mockService.Object);
         }
 
         [Fact]
@@ -25,119 +27,209 @@ namespace AudioInterviewer.Tests.Controllers
         {
             var request = new InterviewController.InitRequest
             {
-                Email = "test@example.com",
-                JobDescription = "Looking for a backend developer"
+                Email = "user@site.com",
+                JobDescription = "Software developer role."
             };
-            _serviceMock.Setup(s => s.InitializeSessionAsync(It.IsAny<string>(), It.IsAny<string>()))
-                        .ReturnsAsync("session123");
-            _serviceMock.Setup(s => s.GetQuestions("session123"))
-                        .Returns(new List<Question> { new Question { Text = "What is C#?" } });
+
+            _mockService.Setup(s => s.InitializeSessionAsync(request.JobDescription, request.Email))
+                .ReturnsAsync("sessionId123");
+            _mockService.Setup(s => s.GetQuestions("sessionId123"))
+                .Returns(new List<Question> { new Question { Text = "First question?" } });
 
             var result = await _controller.InitializeInterview(request);
 
             var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.NotNull(okResult.Value);
-            Assert.Contains("sessionId", okResult.Value!.ToString());
+
+            // Serialize and parse value as JsonElement for safe property access
+            var json = JsonSerializer.Serialize(okResult.Value);
+            var jsonElement = JsonSerializer.Deserialize<JsonElement>(json);
+
+            Assert.Equal("Interview initialized", jsonElement.GetProperty("message").GetString());
+            Assert.Equal("sessionId123", jsonElement.GetProperty("sessionId").GetString());
+            Assert.Equal("First question?", jsonElement.GetProperty("firstQuestion").GetString());
         }
 
         [Fact]
-        public async Task GetNextQuestion_ValidSessionId_ReturnsQuestion()
+        public async Task InitializeInterview_InvalidRequest_ReturnsBadRequest()
         {
-            _serviceMock.Setup(s => s.GetNextQuestionAsync("abc"))
-                        .ReturnsAsync("What is your experience?");
-            _serviceMock.Setup(s => s.CurrentIndex("abc"))
-                        .Returns(1);
+            _controller.ModelState.AddModelError("Email", "Invalid");
+            var result = await _controller.InitializeInterview(new InterviewController.InitRequest());
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
 
-            var result = await _controller.GetNextQuestion("abc");
+        [Fact]
+        public async Task GetNextQuestion_ValidSession_ReturnsNextQuestion()
+        {
+            _mockService.Setup(s => s.GetNextQuestionAsync("session123")).ReturnsAsync("What is your strength?");
+            _mockService.Setup(s => s.CurrentIndex("session123")).Returns(2);
+
+            var result = await _controller.GetNextQuestion("session123");
 
             var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.NotNull(okResult.Value);
-            Assert.Contains("question", okResult.Value!.ToString());
+            var json = JsonSerializer.Serialize(okResult.Value);
+            var jsonElement = JsonSerializer.Deserialize<JsonElement>(json);
+
+            Assert.Equal(2, jsonElement.GetProperty("index").GetInt32());
+            Assert.Equal("What is your strength?", jsonElement.GetProperty("question").GetString());
         }
 
         [Fact]
-        public async Task SubmitAnswer_ValidPayload_ReturnsOk()
+        public async Task GetNextQuestion_Complete_ReturnsCompleteMessage()
         {
-            var dto = new AnswerDto
+            _mockService.Setup(s => s.GetNextQuestionAsync("session123")).ReturnsAsync(string.Empty);
+
+            var result = await _controller.GetNextQuestion("session123");
+
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var json = JsonSerializer.Serialize(okResult.Value);
+            var jsonElement = JsonSerializer.Deserialize<JsonElement>(json);
+
+            Assert.Equal("Interview complete", jsonElement.GetProperty("message").GetString());
+        }
+
+        [Fact]
+        public async Task GetNextQuestion_MissingSessionId_ReturnsBadRequest()
+        {
+            _controller.ModelState.AddModelError("SessionId", "Required");
+            var result = await _controller.GetNextQuestion(null!);
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task SubmitAnswer_ValidAnswer_ReturnsOk()
+        {
+            var answer = new AnswerDto
             {
-                SessionId = "123",
-                Question = "Explain DI",
-                AudioBase64 = "audio",
-                Transcript = "Dependency Injection"
+                SessionId = "sess001",
+                Question = "Describe your experience.",
+                AudioBase64 = new string('a', 5000),
+                Transcript = "Sample transcript."
             };
 
-            _serviceMock.Setup(s => s.SubmitAnswerAsync(dto.SessionId, dto)).ReturnsAsync(true);
-            _serviceMock.Setup(s => s.CurrentIndex(dto.SessionId)).Returns(2);
+            _mockService.Setup(s => s.SubmitAnswerAsync("sess001", answer)).ReturnsAsync(true);
+            _mockService.Setup(s => s.CurrentIndex("sess001")).Returns(2);
 
-            var result = await _controller.SubmitAnswer(dto);
+            var result = await _controller.SubmitAnswer(answer);
+
             var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.NotNull(okResult.Value);
-            Assert.Contains("Answer recorded", okResult.Value!.ToString());
+            var json = JsonSerializer.Serialize(okResult.Value);
+            var jsonElement = JsonSerializer.Deserialize<JsonElement>(json);
+
+            Assert.Equal("Answer recorded", jsonElement.GetProperty("message").GetString());
+            Assert.Equal(2, jsonElement.GetProperty("index").GetInt32());
         }
 
         [Fact]
-        public async Task CompleteInterview_ValidSessionId_ReturnsSummary()
+        public async Task SubmitAnswer_InvalidPayload_ReturnsBadRequest()
         {
-            _serviceMock.Setup(s => s.GetCompletionSummaryAsync("123"))
-                        .ReturnsAsync("Summary generated");
-
-            var result = await _controller.CompleteInterview("123");
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal("Summary generated", okResult.Value);
+            var answer = new AnswerDto { SessionId = "", Question = "" };
+            var result = await _controller.SubmitAnswer(answer);
+            Assert.IsType<BadRequestObjectResult>(result);
         }
 
         [Fact]
-        public async Task GetReport_ValidSessionId_ReturnsReport()
+        public async Task SubmitAnswer_ServiceReturnsFalse_ReturnsBadRequest()
         {
-            var report = new InterviewReport { Id = "abc", Email = "test@example.com" };
-            _serviceMock.Setup(s => s.GenerateReportAsync("abc"))
-                        .ReturnsAsync(report);
+            var answer = new AnswerDto
+            {
+                SessionId = "sess001",
+                Question = "Describe your experience.",
+                AudioBase64 = "validaudio",
+                Transcript = "transcript"
+            };
 
-            var result = await _controller.GetReport("abc");
+            _mockService.Setup(s => s.SubmitAnswerAsync("sess001", answer)).ReturnsAsync(false);
+
+            var result = await _controller.SubmitAnswer(answer);
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task CompleteInterview_Valid_ReturnsSummary()
+        {
+            _mockService.Setup(s => s.GetCompletionSummaryAsync("session123")).ReturnsAsync("Completed!");
+
+            var result = await _controller.CompleteInterview("session123");
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal("Completed!", okResult.Value);
+        }
+
+        [Fact]
+        public async Task CompleteInterview_MissingSessionId_ReturnsBadRequest()
+        {
+            _controller.ModelState.AddModelError("SessionId", "Required");
+            var result = await _controller.CompleteInterview(null!);
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task GetReport_Valid_ReturnsReport()
+        {
+            var report = new InterviewReport { Id = "r1", Email = "abc@test.com" };
+            _mockService.Setup(s => s.GenerateReportAsync("session123")).ReturnsAsync(report);
+
+            var result = await _controller.GetReport("session123");
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal(report, okResult.Value);
         }
 
         [Fact]
-        public async Task GetReportsByEmail_ValidEmail_ReturnsReports()
+        public async Task GetReport_MissingSessionId_ReturnsBadRequest()
         {
-            var reports = new List<InterviewReport> {
-                new InterviewReport { Id = "s1", Email = "test@example.com" },
-                new InterviewReport { Id = "s2", Email = "test@example.com" }
-            };
+            _controller.ModelState.AddModelError("SessionId", "Required");
+            var result = await _controller.GetReport(null!);
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
 
-            _serviceMock.Setup(s => s.GetReportsByEmailAsync("test@example.com"))
-                        .ReturnsAsync(reports);
+        [Fact]
+        public async Task GetReportsByEmail_Valid_ReturnsReports()
+        {
+            var reports = new List<InterviewReport> { new InterviewReport { Id = "r1" } };
+            _mockService.Setup(s => s.GetReportsByEmailAsync("user@t.com")).ReturnsAsync(reports);
 
-            var result = await _controller.GetReportsByEmail("test@example.com");
+            var result = await _controller.GetReportsByEmail("user@t.com");
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal(reports, okResult.Value);
         }
 
         [Fact]
-        public async Task GetReportById_ReportExists_ReturnsReport()
+        public async Task GetReportsByEmail_MissingEmail_ReturnsBadRequest()
         {
-            var report = new InterviewReport { Id = "id123", Email = "abc@test.com" };
-            _serviceMock.Setup(s => s.GetReportByIdAsync("id123"))
-                        .ReturnsAsync(report);
+            _controller.ModelState.AddModelError("Email", "Required");
+            var result = await _controller.GetReportsByEmail(null!);
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
 
-            var result = await _controller.GetReportById("id123");
+        [Fact]
+        public async Task GetReportById_Valid_ReturnsReport()
+        {
+            var report = new InterviewReport { Id = "id1" };
+            _mockService.Setup(s => s.GetReportByIdAsync("id1")).ReturnsAsync(report);
+
+            var result = await _controller.GetReportById("id1");
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal(report, okResult.Value);
         }
 
         [Fact]
-        public async Task GetReportById_ReportMissing_ReturnsNotFound()
+        public async Task GetReportById_InvalidId_ReturnsBadRequest()
         {
-            _serviceMock.Setup(s => s.GetReportByIdAsync("missing"))
-                        .ReturnsAsync((InterviewReport?)null);
+            var result = await _controller.GetReportById(""); // Empty ID
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
 
-            var result = await _controller.GetReportById("missing");
+        [Fact]
+        public async Task GetReportById_NotFound_ReturnsNotFound()
+        {
+            _mockService.Setup(s => s.GetReportByIdAsync("unknown")).ReturnsAsync((InterviewReport)null);
+
+            var result = await _controller.GetReportById("unknown");
             Assert.IsType<NotFoundObjectResult>(result);
         }
 
         [Fact]
-        public void HealthCheck_ReturnsHealthy()
+        public void HealthCheck_ReturnsOk()
         {
             var result = _controller.HealthCheck();
             var okResult = Assert.IsType<OkObjectResult>(result);

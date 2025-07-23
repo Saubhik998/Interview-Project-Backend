@@ -8,7 +8,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MongoDB.Driver;
 using System.IO;
 
-var builder = WebApplication.CreateBuilder(args); // ✅ Let .NET resolve content root
+var builder = WebApplication.CreateBuilder(args); 
 
 // Load MongoDB settings
 builder.Services.Configure<MongoDbSettings>(
@@ -97,11 +97,14 @@ app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 
+// ✅ Avoid HTTPS redirection warning during Testing
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    app.UseHttpsRedirection();
+}
+
 app.MapControllers();
-
-app.UseHttpsRedirection();
-
-app.MapHealthChecks("/health"); // ✅ Re-enabled for CI testing
+app.MapHealthChecks("/health");
 
 app.Run();
 
