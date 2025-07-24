@@ -97,7 +97,7 @@ app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 
-// ✅ Avoid HTTPS redirection warning during Testing
+//  Avoid HTTPS redirection warning during Testing
 if (!app.Environment.IsEnvironment("Testing"))
 {
     app.UseHttpsRedirection();

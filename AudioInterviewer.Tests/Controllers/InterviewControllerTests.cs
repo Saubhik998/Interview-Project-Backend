@@ -11,17 +11,28 @@ using System;
 
 namespace AudioInterviewer.UnitTests.Controllers
 {
+    /// <summary>
+    /// Contains unit tests for the <see cref="InterviewController"/> API endpoints,
+    /// validating their behavior in response to various scenarios.
+    /// </summary>
     public class InterviewControllerTests
     {
         private readonly Mock<IInterviewService> _mockService;
         private readonly InterviewController _controller;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="InterviewControllerTests"/>, setting up mocks and controller.
+        /// </summary>
         public InterviewControllerTests()
         {
             _mockService = new Mock<IInterviewService>();
             _controller = new InterviewController(_mockService.Object);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.InitializeInterview"/> returns <see cref="OkObjectResult"/>
+        /// with correct payload when the request is valid.
+        /// </summary>
         [Fact]
         public async Task InitializeInterview_ValidRequest_ReturnsOk()
         {
@@ -40,7 +51,6 @@ namespace AudioInterviewer.UnitTests.Controllers
 
             var okResult = Assert.IsType<OkObjectResult>(result);
 
-            // Serialize and parse value as JsonElement for safe property access
             var json = JsonSerializer.Serialize(okResult.Value);
             var jsonElement = JsonSerializer.Deserialize<JsonElement>(json);
 
@@ -49,6 +59,10 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.Equal("First question?", jsonElement.GetProperty("firstQuestion").GetString());
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.InitializeInterview"/> returns <see cref="BadRequestObjectResult"/>
+        /// when the request model state is invalid.
+        /// </summary>
         [Fact]
         public async Task InitializeInterview_InvalidRequest_ReturnsBadRequest()
         {
@@ -57,6 +71,9 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.GetNextQuestion"/> returns the next question and index given a valid session.
+        /// </summary>
         [Fact]
         public async Task GetNextQuestion_ValidSession_ReturnsNextQuestion()
         {
@@ -73,6 +90,9 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.Equal("What is your strength?", jsonElement.GetProperty("question").GetString());
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.GetNextQuestion"/> returns a completion message if there are no more questions.
+        /// </summary>
         [Fact]
         public async Task GetNextQuestion_Complete_ReturnsCompleteMessage()
         {
@@ -87,6 +107,10 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.Equal("Interview complete", jsonElement.GetProperty("message").GetString());
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.GetNextQuestion"/> returns <see cref="BadRequestObjectResult"/>
+        /// when sessionId parameter is missing or model state is invalid.
+        /// </summary>
         [Fact]
         public async Task GetNextQuestion_MissingSessionId_ReturnsBadRequest()
         {
@@ -95,6 +119,10 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.SubmitAnswer"/> returns <see cref="OkObjectResult"/>
+        /// and the correct index when a valid answer is submitted.
+        /// </summary>
         [Fact]
         public async Task SubmitAnswer_ValidAnswer_ReturnsOk()
         {
@@ -119,6 +147,10 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.Equal(2, jsonElement.GetProperty("index").GetInt32());
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.SubmitAnswer"/> returns <see cref="BadRequestObjectResult"/>
+        /// when the answer payload is invalid.
+        /// </summary>
         [Fact]
         public async Task SubmitAnswer_InvalidPayload_ReturnsBadRequest()
         {
@@ -127,6 +159,10 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.SubmitAnswer"/> returns <see cref="BadRequestObjectResult"/>
+        /// if the service reports no more questions.
+        /// </summary>
         [Fact]
         public async Task SubmitAnswer_ServiceReturnsFalse_ReturnsBadRequest()
         {
@@ -145,6 +181,9 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.CompleteInterview"/> returns the expected summary object on completion.
+        /// </summary>
         [Fact]
         public async Task CompleteInterview_Valid_ReturnsSummary()
         {
@@ -155,6 +194,10 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.Equal("Completed!", okResult.Value);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.CompleteInterview"/> returns <see cref="BadRequestObjectResult"/>
+        /// when sessionId is missing or model state is invalid.
+        /// </summary>
         [Fact]
         public async Task CompleteInterview_MissingSessionId_ReturnsBadRequest()
         {
@@ -163,6 +206,9 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.GetReport"/> returns the correct report for a valid session.
+        /// </summary>
         [Fact]
         public async Task GetReport_Valid_ReturnsReport()
         {
@@ -174,6 +220,10 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.Equal(report, okResult.Value);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.GetReport"/> returns <see cref="BadRequestObjectResult"/>
+        /// when sessionId is missing or model state is invalid.
+        /// </summary>
         [Fact]
         public async Task GetReport_MissingSessionId_ReturnsBadRequest()
         {
@@ -182,6 +232,9 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.GetReportsByEmail"/> returns all reports for the provided email.
+        /// </summary>
         [Fact]
         public async Task GetReportsByEmail_Valid_ReturnsReports()
         {
@@ -193,6 +246,10 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.Equal(reports, okResult.Value);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.GetReportsByEmail"/> returns <see cref="BadRequestObjectResult"/>
+        /// when email is missing or model state is invalid.
+        /// </summary>
         [Fact]
         public async Task GetReportsByEmail_MissingEmail_ReturnsBadRequest()
         {
@@ -201,6 +258,9 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.GetReportById"/> returns the expected report when found by ID.
+        /// </summary>
         [Fact]
         public async Task GetReportById_Valid_ReturnsReport()
         {
@@ -212,6 +272,10 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.Equal(report, okResult.Value);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.GetReportById"/> returns <see cref="BadRequestObjectResult"/>
+        /// if the report ID is missing or empty.
+        /// </summary>
         [Fact]
         public async Task GetReportById_InvalidId_ReturnsBadRequest()
         {
@@ -219,6 +283,10 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.GetReportById"/> returns <see cref="NotFoundObjectResult"/>
+        /// when the report is not found.
+        /// </summary>
         [Fact]
         public async Task GetReportById_NotFound_ReturnsNotFound()
         {
@@ -228,6 +296,10 @@ namespace AudioInterviewer.UnitTests.Controllers
             Assert.IsType<NotFoundObjectResult>(result);
         }
 
+        /// <summary>
+        /// Tests that <see cref="InterviewController.HealthCheck"/> returns <see cref="OkObjectResult"/>
+        /// with the value "Healthy".
+        /// </summary>
         [Fact]
         public void HealthCheck_ReturnsOk()
         {
