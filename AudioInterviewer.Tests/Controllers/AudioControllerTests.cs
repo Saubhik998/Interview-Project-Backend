@@ -8,12 +8,18 @@ using MongoDB.Bson;
 using MongoDB.Driver.GridFS;
 using Xunit;
 
+/// <summary>
+/// Contains unit tests for <see cref="AudioController"/>, focusing on audio retrieval error handling.
+/// </summary>
 public class AudioControllerTests
 {
     private readonly Mock<IGridFSBucket> _mockGridFsBucket;
     private readonly Mock<IMongoDbContext> _mockDbContext;
     private readonly AudioController _controller;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="AudioControllerTests"/> and sets up mocks.
+    /// </summary>
     public AudioControllerTests()
     {
         _mockGridFsBucket = new Mock<IGridFSBucket>();
@@ -23,6 +29,10 @@ public class AudioControllerTests
         _controller = new AudioController(_mockDbContext.Object);
     }
 
+    /// <summary>
+    /// Tests that <see cref="AudioController.GetAudio(string)"/> returns <see cref="NotFoundObjectResult"/>
+    /// when the audio file is not found in the database.
+    /// </summary>
     [Fact]
     public async Task GetAudio_ReturnsNotFound_WhenFileNotInDatabase()
     {
@@ -38,6 +48,10 @@ public class AudioControllerTests
         Assert.Equal("Audio file not found in database.", notFound.Value);
     }
 
+    /// <summary>
+    /// Tests that <see cref="AudioController.GetAudio(string)"/> returns a <see cref="ObjectResult"/>
+    /// with status code 500 when an unexpected exception occurs.
+    /// </summary>
     [Fact]
     public async Task GetAudio_ReturnsServerError_WhenOtherErrorOccurs()
     {

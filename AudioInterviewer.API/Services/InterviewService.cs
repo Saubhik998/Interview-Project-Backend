@@ -14,10 +14,18 @@ namespace AudioInterviewer.API.Services
 {
     /// <summary>
     /// Service for managing interview sessions, handling questions, answers, audio storage, and evaluation.
+    /// Implements the <see cref="IInterviewService"/> interface.
     /// </summary>
     public class InterviewService : IInterviewService
     {
+        /// <summary>
+        /// The maximum number of questions allowed per interview session.
+        /// </summary>
         private const int MaxQuestions = 5;
+
+        /// <summary>
+        /// The maximum allowed audio size in bytes (5MB).
+        /// </summary>
         private const int MaxAudioSizeBytes = 5 * 1024 * 1024; // 5 MB
 
         private readonly IMongoDbContext _dbContext;
@@ -38,11 +46,11 @@ namespace AudioInterviewer.API.Services
         }
 
         /// <summary>
-        /// Creates a new interview session and returns its session ID.
+        /// Creates a new interview session in the database and returns its session ID.
         /// </summary>
         /// <param name="jobDescription">The job description for the interview.</param>
         /// <param name="email">Candidate's email address.</param>
-        /// <returns>The newly created session ID.</returns>
+        /// <returns>The newly created session ID as a string.</returns>
         public async Task<string> InitializeSessionAsync(string jobDescription, string email)
         {
             var firstQuestion = await _fastApiClient.GetFirstQuestionAsync(jobDescription);
@@ -63,7 +71,9 @@ namespace AudioInterviewer.API.Services
         /// Retrieves the next question for the given session, or null if the interview is complete.
         /// </summary>
         /// <param name="sessionId">The interview session ID.</param>
-        /// <returns>The next question text, or null if no more questions.</returns>
+        /// <returns>
+        /// The next question text as a string, or null if the session is completed or not found.
+        /// </returns>
         public async Task<string?> GetNextQuestionAsync(string sessionId)
         {
             var session = await LoadSessionAsync(sessionId);
@@ -93,11 +103,16 @@ namespace AudioInterviewer.API.Services
         }
 
         /// <summary>
-        /// Submits an answer, stores audio in GridFS, and updates the session index.
+        /// Submits an answer, stores the audio in GridFS, and updates the session index.
         /// </summary>
         /// <param name="sessionId">The interview session ID.</param>
         /// <param name="answerDto">Answer payload including Base64 audio and transcript.</param>
-        /// <returns>True if the answer was accepted; otherwise false.</returns>
+        /// <returns>
+        /// True if the answer was accepted and processed; otherwise, false.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when the audio is too large or the Base64 string is invalid.
+        /// </exception>
         public async Task<bool> SubmitAnswerAsync(string sessionId, AnswerDto answerDto)
         {
             var session = await LoadSessionAsync(sessionId);
@@ -125,9 +140,9 @@ namespace AudioInterviewer.API.Services
 
             var answer = new Answer
             {
-                Question   = answerDto.Question,
-                Transcript = answerDto.Transcript,
-                AudioUrl   = $"/api/audio/{fileId}"
+                Question    = answerDto.Question,
+                Transcript  = answerDto.Transcript,
+                AudioUrl    = $"/api/audio/{fileId}"
             };
             session.Answers.Add(answer);
             session.CurrentIndex++;
@@ -136,10 +151,12 @@ namespace AudioInterviewer.API.Services
         }
 
         /// <summary>
-        /// Gets the list of questions posted so far in a session.
+        /// Retrieves the list of questions posted so far in a session.
         /// </summary>
         /// <param name="sessionId">The interview session ID.</param>
-        /// <returns>List of published questions.</returns>
+        /// <returns>
+        /// List of <see cref="Question"/> objects asked so far; empty list if session not found.
+        /// </returns>
         public List<Question> GetQuestions(string sessionId)
         {
             var session = _dbContext.Sessions.Find(s => s.Id == sessionId).FirstOrDefault();
@@ -150,7 +167,7 @@ namespace AudioInterviewer.API.Services
         /// Gets the current question index for a session.
         /// </summary>
         /// <param name="sessionId">The interview session ID.</param>
-        /// <returns>Zero-based current index.</returns>
+        /// <returns>Zero-based current index. Returns 0 if session not found.</returns>
         public int CurrentIndex(string sessionId)
         {
             var session = _dbContext.Sessions.Find(s => s.Id == sessionId).FirstOrDefault();
@@ -161,7 +178,9 @@ namespace AudioInterviewer.API.Services
         /// Gets a summary of completion status for a session.
         /// </summary>
         /// <param name="sessionId">The interview session ID.</param>
-        /// <returns>Object containing a message and counts of questions and answers.</returns>
+        /// <returns>
+        /// Object containing a summary message, and counts of questions and answers.
+        /// </returns>
         public async Task<object> GetCompletionSummaryAsync(string sessionId)
         {
             var session = await LoadSessionAsync(sessionId);
@@ -170,9 +189,9 @@ namespace AudioInterviewer.API.Services
 
             return new
             {
-                message        = "Interview completed",
-                totalQuestions = session.Questions.Count,
-                totalAnswers   = session.Answers.Count
+                message         = "Interview completed",
+                totalQuestions  = session.Questions.Count,
+                totalAnswers    = session.Answers.Count
             };
         }
 
@@ -180,7 +199,12 @@ namespace AudioInterviewer.API.Services
         /// Generates a detailed AI evaluation report and persists it to MongoDB.
         /// </summary>
         /// <param name="sessionId">The interview session ID.</param>
-        /// <returns>Evaluation result including questions, answers, and feedback.</returns>
+        /// <returns>
+        /// An object containing the AI evaluation, questions, answers, and recommendations.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Thrown if the session is not found or if the AI evaluation call fails.
+        /// </exception>
         public async Task<object> GenerateReportAsync(string sessionId)
         {
             var session = await LoadSessionAsync(sessionId);
@@ -201,13 +225,13 @@ namespace AudioInterviewer.API.Services
 
             var dbReport = new InterviewReport
             {
-                Email             = session.Email,
-                JobDescription    = session.JobDescription,
-                CandidateFitScore = aiReport.GetProperty("score").GetInt32(),
-                Strengths         = aiReport.GetProperty("strengths").EnumerateArray().Select(s => s.GetString()!).ToList(),
-                ImprovementAreas  = aiReport.GetProperty("improvements").EnumerateArray().Select(s => s.GetString()!).ToList(),
-                SuggestedFollowUp = aiReport.GetProperty("followUps").EnumerateArray().Select(f => f.GetString()!).ToList(),
-                Answers           = session.Answers
+                Email               = session.Email,
+                JobDescription      = session.JobDescription,
+                CandidateFitScore   = aiReport.GetProperty("score").GetInt32(),
+                Strengths           = aiReport.GetProperty("strengths").EnumerateArray().Select(s => s.GetString()!).ToList(),
+                ImprovementAreas    = aiReport.GetProperty("improvements").EnumerateArray().Select(s => s.GetString()!).ToList(),
+                SuggestedFollowUp   = aiReport.GetProperty("followUps").EnumerateArray().Select(f => f.GetString()!).ToList(),
+                Answers             = session.Answers
             };
             await _dbContext.Reports.InsertOneAsync(dbReport);
 
@@ -227,7 +251,7 @@ namespace AudioInterviewer.API.Services
         /// Retrieves all reports for a given email address.
         /// </summary>
         /// <param name="email">Candidate's email address.</param>
-        /// <returns>List of interview reports.</returns>
+        /// <returns>List of <see cref="InterviewReport"/> for the specified email.</returns>
         public async Task<List<InterviewReport>> GetReportsByEmailAsync(string email) =>
             await _dbContext.Reports.Find(r => r.Email == email.Trim().ToLowerInvariant()).ToListAsync();
 
@@ -235,7 +259,9 @@ namespace AudioInterviewer.API.Services
         /// Retrieves a single report by its ID.
         /// </summary>
         /// <param name="id">The report ID.</param>
-        /// <returns>The interview report, or null if not found.</returns>
+        /// <returns>
+        /// The <see cref="InterviewReport"/> if found; otherwise null.
+        /// </returns>
         public async Task<InterviewReport?> GetReportByIdAsync(string id)
         {
             if (!ObjectId.TryParse(id, out var oid)) return null;
@@ -243,12 +269,14 @@ namespace AudioInterviewer.API.Services
         }
 
         #region Helpers
-        
+
         /// <summary>
-        /// Loads an interview session document from MongoDB.
+        /// Loads an interview session document from MongoDB by session ID.
         /// </summary>
         /// <param name="sessionId">The session ID.</param>
-        /// <returns>The interview session, or null if not found.</returns>
+        /// <returns>
+        /// The <see cref="InterviewSession"/> if found; otherwise, null.
+        /// </returns>
         private async Task<InterviewSession?> LoadSessionAsync(string sessionId)
         {
             return await _dbContext.Sessions.Find(s => s.Id == sessionId).FirstOrDefaultAsync();
@@ -263,6 +291,7 @@ namespace AudioInterviewer.API.Services
             var filter = Builders<InterviewSession>.Filter.Eq(s => s.Id, session.Id);
             await _dbContext.Sessions.ReplaceOneAsync(filter, session);
         }
+
         #endregion
     }
 }

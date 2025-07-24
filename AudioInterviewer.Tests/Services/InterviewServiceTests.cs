@@ -15,6 +15,9 @@ using AudioInterviewer.API.Services;
 using AudioInterviewer.API.Services.External;
 using AudioInterviewer.API.Data;
 
+/// <summary>
+/// Unit tests for <see cref="InterviewService"/> logic, database, and integration behavior.
+/// </summary>
 public class InterviewServiceTests
 {
     private readonly Mock<IMongoDbContext> _mockDbContext;
@@ -26,6 +29,9 @@ public class InterviewServiceTests
     private readonly InterviewService _service;
     private readonly HttpClient _httpClient;
 
+    /// <summary>
+    /// Initializes the mocks and the <see cref="InterviewService"/> for testing.
+    /// </summary>
     public InterviewServiceTests()
     {
         _mockDbContext = new Mock<IMongoDbContext>();
@@ -48,6 +54,10 @@ public class InterviewServiceTests
         );
     }
 
+    /// <summary>
+    /// Verifies that <see cref="InterviewService.InitializeSessionAsync"/> inserts a new session
+    /// with the correct question and returns the session ID.
+    /// </summary>
     [Fact]
     public async Task InitializeSessionAsync_ShouldInsertSessionAndReturnId()
     {
@@ -71,6 +81,10 @@ public class InterviewServiceTests
         Assert.Equal(email.ToLowerInvariant(), capturedSession.Email);
     }
 
+    /// <summary>
+    /// Verifies that <see cref="InterviewService.GetNextQuestionAsync"/> returns the first question
+    /// when the current index is zero.
+    /// </summary>
     [Fact]
     public async Task GetNextQuestionAsync_ReturnsFirstQuestion_WhenCurrentIndexIsZero()
     {
@@ -90,6 +104,10 @@ public class InterviewServiceTests
         Assert.Equal("Q1", result);
     }
 
+    /// <summary>
+    /// Verifies that <see cref="InterviewService.SubmitAnswerAsync"/> stores audio data,
+    /// adds the answer, and increments the session index.
+    /// </summary>
     [Fact]
     public async Task SubmitAnswerAsync_StoresAudioAndUpdatesSession()
     {
@@ -135,6 +153,9 @@ public class InterviewServiceTests
         Assert.Equal(1, session.CurrentIndex);
     }
 
+    /// <summary>
+    /// Verifies that <see cref="InterviewService.GetCompletionSummaryAsync"/> returns the correct summary object.
+    /// </summary>
     [Fact]
     public async Task GetCompletionSummaryAsync_ReturnsSummary()
     {
@@ -158,6 +179,11 @@ public class InterviewServiceTests
         Assert.Equal(1, root.GetProperty("totalAnswers").GetInt32());
     }
 
+    /// <summary>
+    /// Sets up the .FindAsync() mock for the session collection to yield the given session.
+    /// </summary>
+    /// <param name="sessionId">Session ID that will be searched.</param>
+    /// <param name="session">Session object to return.</param>
     private void SetupSessionFind(string sessionId, InterviewSession session)
     {
         var cursor = new Mock<IAsyncCursor<InterviewSession>>();
@@ -169,8 +195,14 @@ public class InterviewServiceTests
             .ReturnsAsync(cursor.Object);
     }
 
+    /// <summary>
+    /// A test message handler that returns a canned JSON response for evaluation API calls.
+    /// </summary>
     private class MockHttpMessageHandler : HttpMessageHandler
     {
+        /// <summary>
+        /// Synchronously returns a successful JSON response simulating an LLM evaluation.
+        /// </summary>
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var json = JsonSerializer.Serialize(new

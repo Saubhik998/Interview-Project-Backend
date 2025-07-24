@@ -19,6 +19,7 @@ namespace AudioInterviewer.API.Controllers
         /// <summary>
         /// Constructor that injects the interview service.
         /// </summary>
+        /// <param name="interviewService">Service responsible for interview business logic.</param>
         public InterviewController(IInterviewService interviewService)
         {
             _interviewService = interviewService;
@@ -29,10 +30,16 @@ namespace AudioInterviewer.API.Controllers
         /// </summary>
         public class InitRequest
         {
+            /// <summary>
+            /// Email of the interviewee. Required and must be a valid email address.
+            /// </summary>
             [Required]
             [EmailAddress]
             public string Email { get; set; } = string.Empty;
 
+            /// <summary>
+            /// Job description related to the interview. Minimum length 10 characters.
+            /// </summary>
             [Required]
             [MinLength(10, ErrorMessage = "Job description must be at least 10 characters long.")]
             public string JobDescription { get; set; } = string.Empty;
@@ -41,16 +48,21 @@ namespace AudioInterviewer.API.Controllers
         /// <summary>
         /// Initializes a new interview session with the given email and job description.
         /// </summary>
+        /// <param name="request">The initialization request payload containing email and job description.</param>
+        /// <returns>
+        /// Returns OK with a new session ID and the first question if successful;
+        /// otherwise, returns BadRequest with validation errors.
+        /// </returns>
+        /// <response code="200">Interview session initialized successfully.</response>
+        /// <response code="400">Request payload validation failed.</response>
         [HttpPost("init")]
         public async Task<IActionResult> InitializeInterview([FromBody] InitRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { error = "Invalid input", details = ModelState });
 
-            // service returns a new sessionId
             var sessionId = await _interviewService.InitializeSessionAsync(request.JobDescription, request.Email);
 
-            // grab the first question from the in‐memory session
             var firstQuestion = _interviewService
                 .GetQuestions(sessionId)
                 .FirstOrDefault()?.Text
@@ -67,6 +79,14 @@ namespace AudioInterviewer.API.Controllers
         /// <summary>
         /// Gets the next question in the current interview session.
         /// </summary>
+        /// <param name="sessionId">The unique identifier for the interview session.</param>
+        /// <returns>
+        /// Returns the next question with its index if available;
+        /// else indicates the interview is complete.
+        /// Returns BadRequest if sessionId is missing or invalid.
+        /// </returns>
+        /// <response code="200">Next question retrieved or interview marked complete.</response>
+        /// <response code="400">SessionId missing or invalid.</response>
         [HttpGet("question")]
         public async Task<IActionResult> GetNextQuestion([FromQuery, Required] string sessionId)
         {
@@ -86,12 +106,18 @@ namespace AudioInterviewer.API.Controllers
         }
 
         /// <summary>
-        /// Submits an answer to the current question.
+        /// Submits an answer to the current question in the interview session.
         /// </summary>
+        /// <param name="answerDto">Answer data including session ID, question, audio, and transcript.</param>
+        /// <returns>
+        /// Returns OK on successful recording of answer;
+        /// returns BadRequest if input is invalid or if no more questions remain.
+        /// </returns>
+        /// <response code="200">Answer recorded successfully.</response>
+        /// <response code="400">Invalid answer payload or no more questions.</response>
         [HttpPost("answer")]
         public async Task<IActionResult> SubmitAnswer([FromBody] AnswerDto answerDto)
         {
-            // AnswerDto now includes SessionId, Question, AudioBase64, Transcript
             if (answerDto == null
                 || string.IsNullOrWhiteSpace(answerDto.SessionId)
                 || string.IsNullOrWhiteSpace(answerDto.Question))
@@ -111,8 +137,15 @@ namespace AudioInterviewer.API.Controllers
         }
 
         /// <summary>
-        /// Completes the current interview and returns a brief summary.
+        /// Completes the current interview session and returns a brief summary.
         /// </summary>
+        /// <param name="sessionId">The interview session identifier.</param>
+        /// <returns>
+        /// Returns interview summary on successful completion;
+        /// returns BadRequest if sessionId is missing or invalid.
+        /// </returns>
+        /// <response code="200">Interview completed with summary returned.</response>
+        /// <response code="400">SessionId missing or invalid.</response>
         [HttpPost("complete")]
         public async Task<IActionResult> CompleteInterview([FromQuery, Required] string sessionId)
         {
@@ -126,6 +159,13 @@ namespace AudioInterviewer.API.Controllers
         /// <summary>
         /// Generates and returns a detailed interview report after evaluation.
         /// </summary>
+        /// <param name="sessionId">The interview session identifier.</param>
+        /// <returns>
+        /// Returns the detailed report if available;
+        /// returns BadRequest if sessionId is missing or invalid.
+        /// </returns>
+        /// <response code="200">Detailed report returned successfully.</response>
+        /// <response code="400">SessionId missing or invalid.</response>
         [HttpGet("report")]
         public async Task<IActionResult> GetReport([FromQuery, Required] string sessionId)
         {
@@ -139,6 +179,13 @@ namespace AudioInterviewer.API.Controllers
         /// <summary>
         /// Fetches all interview reports associated with a given email address.
         /// </summary>
+        /// <param name="email">Email address of the interviewee.</param>
+        /// <returns>
+        /// Returns a collection of reports related to the specified email;
+        /// returns BadRequest if email is missing or invalid.
+        /// </returns>
+        /// <response code="200">Reports retrieved successfully.</response>
+        /// <response code="400">Email missing or invalid.</response>
         [HttpGet("reports")]
         public async Task<IActionResult> GetReportsByEmail([FromQuery, Required] string email)
         {
@@ -152,6 +199,14 @@ namespace AudioInterviewer.API.Controllers
         /// <summary>
         /// Fetches a specific interview report by its unique ID.
         /// </summary>
+        /// <param name="id">Unique identifier of the report.</param>
+        /// <returns>
+        /// Returns the report if found;
+        /// returns BadRequest if the ID is missing or NotFound if no report matches the ID.
+        /// </returns>
+        /// <response code="200">Report retrieved successfully.</response>
+        /// <response code="400">Report ID missing or invalid.</response>
+        /// <response code="404">Report not found with the given ID.</response>
         [HttpGet("report/{id}")]
         public async Task<IActionResult> GetReportById([FromRoute] string id)
         {
@@ -168,6 +223,7 @@ namespace AudioInterviewer.API.Controllers
         /// <summary>
         /// Health check endpoint to verify if the API is running.
         /// </summary>
+        /// <returns>Returns "Healthy" if the API is operational.</returns>
         [HttpGet("health")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult HealthCheck()
