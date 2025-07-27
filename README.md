@@ -1,7 +1,5 @@
 # AudioInterviewer Backend 
 
-This structured README provides an in-depth report for the **AudioInterviewer Backend** project. It covers project architecture, environment setup, a detailed API reference in tabular form, storage internals, and a comprehensive testing strategy. This document is meant for engineering, QA, and DevOps audiences who need actionable, reference-quality technical information.
-
 ## 1. Project Overview
 
 **AudioInterviewer Backend** is a C#/.NET 8 Web API for conducting AI-powered, audio-based technical interviews.  
