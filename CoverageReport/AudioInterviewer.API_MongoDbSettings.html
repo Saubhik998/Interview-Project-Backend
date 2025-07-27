@@ -41,7 +41,7 @@
 <table>
 <tr>
 <th>Covered lines:</th>
-<td class="limit-width right" title="2">2</td>
+<td class="limit-width right" title="4">4</td>
 </tr>
 <tr>
 <th>Uncovered lines:</th>
@@ -49,15 +49,15 @@
 </tr>
 <tr>
 <th>Coverable lines:</th>
-<td class="limit-width right" title="2">2</td>
+<td class="limit-width right" title="4">4</td>
 </tr>
 <tr>
 <th>Total lines:</th>
-<td class="limit-width right" title="8">8</td>
+<td class="limit-width right" title="18">18</td>
 </tr>
 <tr>
 <th>Line coverage:</th>
-<td class="limit-width right" title="2 of 2">100%</td>
+<td class="limit-width right" title="4 of 4">100%</td>
 </tr>
 </table>
 </div>
@@ -109,6 +109,8 @@
 <tbody>
 <tr><td title="get_ConnectionString()"><a href="#file0_line5" class="navigatetohash">get_ConnectionString()</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
 <tr><td title="get_DatabaseName()"><a href="#file0_line6" class="navigatetohash">get_DatabaseName()</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
+<tr><td title="get_ConnectionString()"><a href="#file0_line11" class="navigatetohash">get_ConnectionString()</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
+<tr><td title="get_DatabaseName()"><a href="#file0_line16" class="navigatetohash">get_DatabaseName()</a></td><td>100%</td><td>1</td><td>1</td><td>100%</td></tr>
 </tbody>
 </table>
 </div>
@@ -120,21 +122,33 @@
 <tbody>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line1"></a><code>1</code></td><td></td><td class="lightgray"><code>namespace&nbsp;AudioInterviewer.API.Data</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line2"></a><code>2</code></td><td></td><td class="lightgray"><code>{</code></td></tr>
-<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line3"></a><code>3</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;MongoDbSettings</code></td></tr>
-<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line4"></a><code>4</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class="coverableline" title="Covered (188 visits)" data-coverage="{'AllTestMethods': {'VC': '188', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">188</td><td class="rightmargin right"><a id="file0_line5"></a><code>5</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;string&nbsp;ConnectionString&nbsp;{&nbsp;get;&nbsp;set;&nbsp;}&nbsp;=&nbsp;string.Empty;</code></td></tr>
-<tr class="coverableline" title="Covered (178 visits)" data-coverage="{'AllTestMethods': {'VC': '178', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">178</td><td class="rightmargin right"><a id="file0_line6"></a><code>6</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;string&nbsp;DatabaseName&nbsp;{&nbsp;get;&nbsp;set;&nbsp;}&nbsp;=&nbsp;string.Empty;</code></td></tr>
-<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line7"></a><code>7</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line8"></a><code>8</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line3"></a><code>3</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;summary&gt;</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line4"></a><code>4</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;Represents&nbsp;configuration&nbsp;settings&nbsp;required&nbsp;to&nbsp;connect&nbsp;to&nbsp;a&nbsp;MongoDB&nbsp;database.</code></td></tr>
+<tr class="coverableline" title="Covered (188 visits)" data-coverage="{'AllTestMethods': {'VC': '188', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">188</td><td class="rightmargin right"><a id="file0_line5"></a><code>5</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;/summary&gt;</code></td></tr>
+<tr class="coverableline" title="Covered (178 visits)" data-coverage="{'AllTestMethods': {'VC': '178', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">178</td><td class="rightmargin right"><a id="file0_line6"></a><code>6</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;MongoDbSettings</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line7"></a><code>7</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line8"></a><code>8</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;summary&gt;</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line9"></a><code>9</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;Gets&nbsp;or&nbsp;sets&nbsp;the&nbsp;connection&nbsp;string&nbsp;used&nbsp;to&nbsp;connect&nbsp;to&nbsp;the&nbsp;MongoDB&nbsp;instance.</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line10"></a><code>10</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;/summary&gt;</code></td></tr>
+<tr class="coverableline" title="Covered (861 visits)" data-coverage="{'AllTestMethods': {'VC': '861', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">861</td><td class="rightmargin right"><a id="file0_line11"></a><code>11</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;string&nbsp;ConnectionString&nbsp;{&nbsp;get;&nbsp;set;&nbsp;}&nbsp;=&nbsp;string.Empty;</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line12"></a><code>12</code></td><td></td><td class="lightgray"><code></code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line13"></a><code>13</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;summary&gt;</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line14"></a><code>14</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;Gets&nbsp;or&nbsp;sets&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;MongoDB&nbsp;database&nbsp;to&nbsp;be&nbsp;used.</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line15"></a><code>15</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;/summary&gt;</code></td></tr>
+<tr class="coverableline" title="Covered (840 visits)" data-coverage="{'AllTestMethods': {'VC': '840', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">840</td><td class="rightmargin right"><a id="file0_line16"></a><code>16</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;string&nbsp;DatabaseName&nbsp;{&nbsp;get;&nbsp;set;&nbsp;}&nbsp;=&nbsp;string.Empty;</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line17"></a><code>17</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line18"></a><code>18</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
 </tbody>
 </table>
 </div>
-<div class="footer">Generated by: ReportGenerator 5.4.8.0<br />7/23/2025 - 3:00:51 PM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="https://reportgenerator.io">reportgenerator.io</a></div></div>
+<div class="footer">Generated by: ReportGenerator 5.4.10.0<br />7/25/2025 - 3:33:47 AM<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="https://reportgenerator.io">reportgenerator.io</a></div></div>
 <div class="containerright">
 <div class="containerrightfixed">
 <h1>Methods/Properties</h1>
 <a href="#file0_line5" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - get_ConnectionString()"><i class="icon-wrench"></i>get_ConnectionString()</a><br />
 <a href="#file0_line6" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - get_DatabaseName()"><i class="icon-wrench"></i>get_DatabaseName()</a><br />
+<a href="#file0_line11" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - get_ConnectionString()"><i class="icon-wrench"></i>get_ConnectionString()</a><br />
+<a href="#file0_line16" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - get_DatabaseName()"><i class="icon-wrench"></i>get_DatabaseName()</a><br />
 <br/></div>
 </div></div>
 <script type="text/javascript">

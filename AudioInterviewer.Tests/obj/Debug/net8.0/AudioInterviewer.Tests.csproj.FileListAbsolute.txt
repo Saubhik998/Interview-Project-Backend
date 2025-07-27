@@ -1,12 +1,5 @@
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\bin\Debug\net8.0\.msCoverageSourceRootsMapping_AudioInterviewer.Tests
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\bin\Debug\net8.0\CoverletSourceRootsMapping_AudioInterviewer.Tests
-F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInterviewer.Tests.csproj.AssemblyReference.cache
-F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\MvcTestingAppManifest.json
-F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInterviewer.Tests.GeneratedMSBuildEditorConfig.editorconfig
-F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInterviewer.Tests.AssemblyInfoInputs.cache
-F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInterviewer.Tests.AssemblyInfo.cs
-F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInterviewer.Tests.csproj.CoreCompileInputs.cache
-F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInterviewer.Tests.sourcelink.json
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\bin\Debug\net8.0\testhost.dll
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\bin\Debug\net8.0\xunit.abstractions.dll
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\bin\Debug\net8.0\AudioInterviewer.API.deps.json
@@ -457,6 +450,13 @@ F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\bin\Debug\net8.
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\bin\Debug\net8.0\AudioInterviewer.API.dll
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\bin\Debug\net8.0\AudioInterviewer.API.pdb
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInterviewer.Tests.csproj.AssemblyReference.cache
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\MvcTestingAppManifest.json
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInterviewer.Tests.GeneratedMSBuildEditorConfig.editorconfig
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInterviewer.Tests.AssemblyInfoInputs.cache
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInterviewer.Tests.AssemblyInfo.cs
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInterviewer.Tests.csproj.CoreCompileInputs.cache
+F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInterviewer.Tests.sourcelink.json
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInt.54DF5DFE.Up2Date
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\AudioInterviewer.Tests.dll
 F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.Tests\obj\Debug\net8.0\refint\AudioInterviewer.Tests.dll

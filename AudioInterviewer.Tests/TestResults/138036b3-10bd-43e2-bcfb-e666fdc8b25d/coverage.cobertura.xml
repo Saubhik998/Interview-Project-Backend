@@ -1,0 +1,1530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<coverage line-rate="0.8451000000000001" branch-rate="0.625" version="1.9" timestamp="1753380443" lines-covered="322" lines-valid="381" branches-covered="50" branches-valid="80">
+  <sources>
+    <source>F:\MAIN PROJECT\backend-audio-interviewer\AudioInterviewer.API\</source>
+  </sources>
+  <packages>
+    <package name="AudioInterviewer.API" line-rate="0.8451000000000001" branch-rate="0.625" complexity="129">
+      <classes>
+        <class name="Program" filename="Program.cs" line-rate="0.9428" branch-rate="1" complexity="4">
+          <methods>
+            <method name="&lt;Main&gt;$" signature="(System.String[])" line-rate="0.9428" branch-rate="1" complexity="4">
+              <lines>
+                <line number="11" hits="12" branch="False" />
+                <line number="14" hits="12" branch="False" />
+                <line number="15" hits="12" branch="False" />
+                <line number="18" hits="12" branch="False" />
+                <line number="19" hits="12" branch="False" />
+                <line number="22" hits="12" branch="False" />
+                <line number="25" hits="12" branch="False" />
+                <line number="28" hits="12" branch="False" />
+                <line number="30" hits="12" branch="False" />
+                <line number="33" hits="12" branch="False" />
+                <line number="34" hits="12" branch="False" />
+                <line number="35" hits="12" branch="False" />
+                <line number="36" hits="24" branch="False" />
+                <line number="37" hits="24" branch="False" />
+                <line number="38" hits="24" branch="False" />
+                <line number="39" hits="24" branch="False" />
+                <line number="40" hits="24" branch="False" />
+                <line number="41" hits="24" branch="False" />
+                <line number="44" hits="12" branch="False" />
+                <line number="45" hits="12" branch="False" />
+                <line number="46" hits="12" branch="False" />
+                <line number="47" hits="0" branch="False" />
+                <line number="48" hits="0" branch="False" />
+                <line number="49" hits="0" branch="False" />
+                <line number="50" hits="0" branch="False" />
+                <line number="51" hits="12" branch="False" />
+                <line number="52" hits="12" branch="False" />
+                <line number="53" hits="12" branch="False" />
+                <line number="54" hits="12" branch="False" />
+                <line number="57" hits="12" branch="False" />
+                <line number="58" hits="12" branch="False" />
+                <line number="59" hits="12" branch="False" />
+                <line number="60" hits="12" branch="False" />
+                <line number="61" hits="12" branch="False" />
+                <line number="62" hits="12" branch="False" />
+                <line number="63" hits="12" branch="False" />
+                <line number="64" hits="12" branch="False" />
+                <line number="65" hits="12" branch="False" />
+                <line number="66" hits="12" branch="False" />
+                <line number="67" hits="12" branch="False" />
+                <line number="68" hits="12" branch="False" />
+                <line number="69" hits="12" branch="False" />
+                <line number="70" hits="12" branch="False" />
+                <line number="71" hits="12" branch="False" />
+                <line number="72" hits="24" branch="False" />
+                <line number="74" hits="12" branch="False" />
+                <line number="77" hits="12" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="343" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="78" hits="12" branch="False" />
+                <line number="79" hits="12" branch="False" />
+                <line number="80" hits="12" branch="False" />
+                <line number="81" hits="12" branch="False" />
+                <line number="82" hits="12" branch="False" />
+                <line number="83" hits="12" branch="False" />
+                <line number="84" hits="24" branch="False" />
+                <line number="85" hits="12" branch="False" />
+                <line number="88" hits="12" branch="False" />
+                <line number="89" hits="12" branch="False" />
+                <line number="91" hits="12" branch="False" />
+                <line number="92" hits="12" branch="False" />
+                <line number="93" hits="12" branch="False" />
+                <line number="94" hits="12" branch="False" />
+                <line number="96" hits="12" branch="False" />
+                <line number="98" hits="12" branch="False" />
+                <line number="101" hits="12" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="483" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="102" hits="12" branch="False" />
+                <line number="103" hits="12" branch="False" />
+                <line number="104" hits="12" branch="False" />
+                <line number="106" hits="12" branch="False" />
+                <line number="107" hits="12" branch="False" />
+                <line number="109" hits="12" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="11" hits="12" branch="False" />
+            <line number="14" hits="12" branch="False" />
+            <line number="15" hits="12" branch="False" />
+            <line number="18" hits="12" branch="False" />
+            <line number="19" hits="12" branch="False" />
+            <line number="22" hits="12" branch="False" />
+            <line number="25" hits="12" branch="False" />
+            <line number="28" hits="12" branch="False" />
+            <line number="30" hits="12" branch="False" />
+            <line number="33" hits="12" branch="False" />
+            <line number="34" hits="12" branch="False" />
+            <line number="35" hits="12" branch="False" />
+            <line number="36" hits="24" branch="False" />
+            <line number="37" hits="24" branch="False" />
+            <line number="38" hits="24" branch="False" />
+            <line number="39" hits="24" branch="False" />
+            <line number="40" hits="24" branch="False" />
+            <line number="41" hits="24" branch="False" />
+            <line number="44" hits="12" branch="False" />
+            <line number="45" hits="12" branch="False" />
+            <line number="46" hits="12" branch="False" />
+            <line number="47" hits="0" branch="False" />
+            <line number="48" hits="0" branch="False" />
+            <line number="49" hits="0" branch="False" />
+            <line number="50" hits="0" branch="False" />
+            <line number="51" hits="12" branch="False" />
+            <line number="52" hits="12" branch="False" />
+            <line number="53" hits="12" branch="False" />
+            <line number="54" hits="12" branch="False" />
+            <line number="57" hits="12" branch="False" />
+            <line number="58" hits="12" branch="False" />
+            <line number="59" hits="12" branch="False" />
+            <line number="60" hits="12" branch="False" />
+            <line number="61" hits="12" branch="False" />
+            <line number="62" hits="12" branch="False" />
+            <line number="63" hits="12" branch="False" />
+            <line number="64" hits="12" branch="False" />
+            <line number="65" hits="12" branch="False" />
+            <line number="66" hits="12" branch="False" />
+            <line number="67" hits="12" branch="False" />
+            <line number="68" hits="12" branch="False" />
+            <line number="69" hits="12" branch="False" />
+            <line number="70" hits="12" branch="False" />
+            <line number="71" hits="12" branch="False" />
+            <line number="72" hits="24" branch="False" />
+            <line number="74" hits="12" branch="False" />
+            <line number="77" hits="12" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="343" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="78" hits="12" branch="False" />
+            <line number="79" hits="12" branch="False" />
+            <line number="80" hits="12" branch="False" />
+            <line number="81" hits="12" branch="False" />
+            <line number="82" hits="12" branch="False" />
+            <line number="83" hits="12" branch="False" />
+            <line number="84" hits="24" branch="False" />
+            <line number="85" hits="12" branch="False" />
+            <line number="88" hits="12" branch="False" />
+            <line number="89" hits="12" branch="False" />
+            <line number="91" hits="12" branch="False" />
+            <line number="92" hits="12" branch="False" />
+            <line number="93" hits="12" branch="False" />
+            <line number="94" hits="12" branch="False" />
+            <line number="96" hits="12" branch="False" />
+            <line number="98" hits="12" branch="False" />
+            <line number="101" hits="12" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="483" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="102" hits="12" branch="False" />
+            <line number="103" hits="12" branch="False" />
+            <line number="104" hits="12" branch="False" />
+            <line number="106" hits="12" branch="False" />
+            <line number="107" hits="12" branch="False" />
+            <line number="109" hits="12" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.InterviewService" filename="Services\InterviewService.cs" line-rate="1" branch-rate="0.5" complexity="7">
+          <methods>
+            <method name="GetQuestions" signature="(System.String)" line-rate="1" branch-rate="0.5" complexity="4">
+              <lines>
+                <line number="161" hits="2" branch="False" />
+                <line number="162" hits="2" branch="False" />
+                <line number="163" hits="2" branch="True" condition-coverage="50% (2/4)">
+                  <conditions>
+                    <condition number="140" type="jump" coverage="50%" />
+                    <condition number="152" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="164" hits="2" branch="False" />
+              </lines>
+            </method>
+            <method name="CurrentIndex" signature="(System.String)" line-rate="1" branch-rate="0.5" complexity="2">
+              <lines>
+                <line number="172" hits="2" branch="False" />
+                <line number="173" hits="2" branch="False" />
+                <line number="174" hits="2" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="140" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="175" hits="2" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(AudioInterviewer.API.Data.IMongoDbContext,AudioInterviewer.API.Services.External.IApiClient,System.Net.Http.IHttpClientFactory)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="41" hits="13" branch="False" />
+                <line number="42" hits="13" branch="False" />
+                <line number="43" hits="13" branch="False" />
+                <line number="44" hits="13" branch="False" />
+                <line number="45" hits="13" branch="False" />
+                <line number="46" hits="13" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="161" hits="2" branch="False" />
+            <line number="162" hits="2" branch="False" />
+            <line number="163" hits="2" branch="True" condition-coverage="50% (2/4)">
+              <conditions>
+                <condition number="140" type="jump" coverage="50%" />
+                <condition number="152" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="164" hits="2" branch="False" />
+            <line number="172" hits="2" branch="False" />
+            <line number="173" hits="2" branch="False" />
+            <line number="174" hits="2" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="140" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="175" hits="2" branch="False" />
+            <line number="41" hits="13" branch="False" />
+            <line number="42" hits="13" branch="False" />
+            <line number="43" hits="13" branch="False" />
+            <line number="44" hits="13" branch="False" />
+            <line number="45" hits="13" branch="False" />
+            <line number="46" hits="13" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.InterviewService/&lt;&gt;c" filename="Services\InterviewService.cs" line-rate="0.2857" branch-rate="0.5" complexity="8">
+          <methods>
+            <method name="&lt;GenerateReportAsync&gt;b__12_0" signature="(AudioInterviewer.API.Models.Question)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="217" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method name="&lt;GenerateReportAsync&gt;b__12_1" signature="(AudioInterviewer.API.Models.Answer)" line-rate="1" branch-rate="0.5" complexity="2">
+              <lines>
+                <line number="218" hits="1" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="7" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+              </lines>
+            </method>
+            <method name="&lt;GenerateReportAsync&gt;b__12_4" signature="(System.Text.Json.JsonElement)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="231" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="&lt;GenerateReportAsync&gt;b__12_5" signature="(System.Text.Json.JsonElement)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="232" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="&lt;GenerateReportAsync&gt;b__12_6" signature="(System.Text.Json.JsonElement)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="233" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="&lt;GenerateReportAsync&gt;b__12_2" signature="(System.Text.Json.JsonElement)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="242" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="&lt;GenerateReportAsync&gt;b__12_3" signature="(AudioInterviewer.API.Models.Answer)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="243" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="217" hits="1" branch="False" />
+            <line number="218" hits="1" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="7" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="231" hits="0" branch="False" />
+            <line number="232" hits="0" branch="False" />
+            <line number="233" hits="0" branch="False" />
+            <line number="242" hits="0" branch="False" />
+            <line number="243" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.InterviewService/&lt;GenerateReportAsync&gt;d__12" filename="Services\InterviewService.cs" line-rate="0.2758" branch-rate="0.25" complexity="4">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0.2758" branch-rate="0.25" complexity="4">
+              <lines>
+                <line number="209" hits="1" branch="False" />
+                <line number="210" hits="1" branch="False" />
+                <line number="211" hits="1" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="193" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="212" hits="0" branch="False" />
+                <line number="214" hits="1" branch="False" />
+                <line number="215" hits="1" branch="False" />
+                <line number="216" hits="1" branch="False" />
+                <line number="219" hits="1" branch="False" />
+                <line number="220" hits="1" branch="False" />
+                <line number="221" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="505" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="222" hits="0" branch="False" />
+                <line number="224" hits="0" branch="False" />
+                <line number="226" hits="0" branch="False" />
+                <line number="227" hits="0" branch="False" />
+                <line number="228" hits="0" branch="False" />
+                <line number="229" hits="0" branch="False" />
+                <line number="230" hits="0" branch="False" />
+                <line number="234" hits="0" branch="False" />
+                <line number="235" hits="0" branch="False" />
+                <line number="236" hits="0" branch="False" />
+                <line number="238" hits="0" branch="False" />
+                <line number="239" hits="0" branch="False" />
+                <line number="240" hits="0" branch="False" />
+                <line number="241" hits="0" branch="False" />
+                <line number="244" hits="0" branch="False" />
+                <line number="245" hits="0" branch="False" />
+                <line number="246" hits="0" branch="False" />
+                <line number="247" hits="0" branch="False" />
+                <line number="248" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="209" hits="1" branch="False" />
+            <line number="210" hits="1" branch="False" />
+            <line number="211" hits="1" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="193" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="212" hits="0" branch="False" />
+            <line number="214" hits="1" branch="False" />
+            <line number="215" hits="1" branch="False" />
+            <line number="216" hits="1" branch="False" />
+            <line number="219" hits="1" branch="False" />
+            <line number="220" hits="1" branch="False" />
+            <line number="221" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="505" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="222" hits="0" branch="False" />
+            <line number="224" hits="0" branch="False" />
+            <line number="226" hits="0" branch="False" />
+            <line number="227" hits="0" branch="False" />
+            <line number="228" hits="0" branch="False" />
+            <line number="229" hits="0" branch="False" />
+            <line number="230" hits="0" branch="False" />
+            <line number="234" hits="0" branch="False" />
+            <line number="235" hits="0" branch="False" />
+            <line number="236" hits="0" branch="False" />
+            <line number="238" hits="0" branch="False" />
+            <line number="239" hits="0" branch="False" />
+            <line number="240" hits="0" branch="False" />
+            <line number="241" hits="0" branch="False" />
+            <line number="244" hits="0" branch="False" />
+            <line number="245" hits="0" branch="False" />
+            <line number="246" hits="0" branch="False" />
+            <line number="247" hits="0" branch="False" />
+            <line number="248" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.InterviewService/&lt;GetCompletionSummaryAsync&gt;d__11" filename="Services\InterviewService.cs" line-rate="0.909" branch-rate="0.5" complexity="2">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0.909" branch-rate="0.5" complexity="2">
+              <lines>
+                <line number="185" hits="2" branch="False" />
+                <line number="186" hits="2" branch="False" />
+                <line number="187" hits="2" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="159" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="188" hits="0" branch="False" />
+                <line number="190" hits="2" branch="False" />
+                <line number="191" hits="2" branch="False" />
+                <line number="192" hits="2" branch="False" />
+                <line number="193" hits="2" branch="False" />
+                <line number="194" hits="2" branch="False" />
+                <line number="195" hits="2" branch="False" />
+                <line number="196" hits="2" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="185" hits="2" branch="False" />
+            <line number="186" hits="2" branch="False" />
+            <line number="187" hits="2" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="159" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="188" hits="0" branch="False" />
+            <line number="190" hits="2" branch="False" />
+            <line number="191" hits="2" branch="False" />
+            <line number="192" hits="2" branch="False" />
+            <line number="193" hits="2" branch="False" />
+            <line number="194" hits="2" branch="False" />
+            <line number="195" hits="2" branch="False" />
+            <line number="196" hits="2" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.InterviewService/&lt;GetNextQuestionAsync&gt;d__7" filename="Services\InterviewService.cs" line-rate="0.3" branch-rate="0.1666" complexity="12">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0.3" branch-rate="0.1666" complexity="12">
+              <lines>
+                <line number="78" hits="2" branch="False" />
+                <line number="79" hits="2" branch="False" />
+                <line number="80" hits="2" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="184" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="82" hits="2" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="211" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="83" hits="2" branch="False" />
+                <line number="85" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="267" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="86" hits="0" branch="False" />
+                <line number="88" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="312" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="89" hits="0" branch="False" />
+                <line number="90" hits="0" branch="False" />
+                <line number="91" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="385" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="92" hits="0" branch="False" />
+                <line number="93" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="533" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="94" hits="0" branch="False" />
+                <line number="95" hits="0" branch="False" />
+                <line number="96" hits="0" branch="False" />
+                <line number="97" hits="0" branch="False" />
+                <line number="99" hits="0" branch="False" />
+                <line number="102" hits="0" branch="False" />
+                <line number="103" hits="2" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="78" hits="2" branch="False" />
+            <line number="79" hits="2" branch="False" />
+            <line number="80" hits="2" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="184" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="82" hits="2" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="211" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="83" hits="2" branch="False" />
+            <line number="85" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="267" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="86" hits="0" branch="False" />
+            <line number="88" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="312" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="89" hits="0" branch="False" />
+            <line number="90" hits="0" branch="False" />
+            <line number="91" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="385" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="92" hits="0" branch="False" />
+            <line number="93" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="533" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="94" hits="0" branch="False" />
+            <line number="95" hits="0" branch="False" />
+            <line number="96" hits="0" branch="False" />
+            <line number="97" hits="0" branch="False" />
+            <line number="99" hits="0" branch="False" />
+            <line number="102" hits="0" branch="False" />
+            <line number="103" hits="2" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.InterviewService/&lt;GetReportByIdAsync&gt;d__14" filename="Services\InterviewService.cs" line-rate="0" branch-rate="0" complexity="2">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0" branch-rate="0" complexity="2">
+              <lines>
+                <line number="266" hits="0" branch="False" />
+                <line number="267" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="73" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="268" hits="0" branch="False" />
+                <line number="269" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="266" hits="0" branch="False" />
+            <line number="267" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="73" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="268" hits="0" branch="False" />
+            <line number="269" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.InterviewService/&lt;GetReportsByEmailAsync&gt;d__13" filename="Services\InterviewService.cs" line-rate="0" branch-rate="1" complexity="1">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="256" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="256" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.InterviewService/&lt;InitializeSessionAsync&gt;d__6" filename="Services\InterviewService.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="55" hits="3" branch="False" />
+                <line number="56" hits="3" branch="False" />
+                <line number="57" hits="3" branch="False" />
+                <line number="58" hits="3" branch="False" />
+                <line number="59" hits="3" branch="False" />
+                <line number="60" hits="3" branch="False" />
+                <line number="61" hits="3" branch="False" />
+                <line number="62" hits="3" branch="False" />
+                <line number="63" hits="3" branch="False" />
+                <line number="64" hits="3" branch="False" />
+                <line number="66" hits="3" branch="False" />
+                <line number="67" hits="3" branch="False" />
+                <line number="68" hits="3" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="55" hits="3" branch="False" />
+            <line number="56" hits="3" branch="False" />
+            <line number="57" hits="3" branch="False" />
+            <line number="58" hits="3" branch="False" />
+            <line number="59" hits="3" branch="False" />
+            <line number="60" hits="3" branch="False" />
+            <line number="61" hits="3" branch="False" />
+            <line number="62" hits="3" branch="False" />
+            <line number="63" hits="3" branch="False" />
+            <line number="64" hits="3" branch="False" />
+            <line number="66" hits="3" branch="False" />
+            <line number="67" hits="3" branch="False" />
+            <line number="68" hits="3" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.InterviewService/&lt;LoadSessionAsync&gt;d__15" filename="Services\InterviewService.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="281" hits="7" branch="False" />
+                <line number="282" hits="7" branch="False" />
+                <line number="283" hits="7" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="281" hits="7" branch="False" />
+            <line number="282" hits="7" branch="False" />
+            <line number="283" hits="7" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.InterviewService/&lt;SaveSessionAsync&gt;d__16" filename="Services\InterviewService.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="290" hits="2" branch="False" />
+                <line number="291" hits="2" branch="False" />
+                <line number="292" hits="2" branch="False" />
+                <line number="293" hits="2" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="290" hits="2" branch="False" />
+            <line number="291" hits="2" branch="False" />
+            <line number="292" hits="2" branch="False" />
+            <line number="293" hits="2" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.InterviewService/&lt;SubmitAnswerAsync&gt;d__8" filename="Services\InterviewService.cs" line-rate="0.8518000000000001" branch-rate="0.5" complexity="6">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0.8518000000000001" branch-rate="0.5" complexity="6">
+              <lines>
+                <line number="117" hits="2" branch="False" />
+                <line number="118" hits="2" branch="False" />
+                <line number="119" hits="2" branch="True" condition-coverage="50% (2/4)">
+                  <conditions>
+                    <condition number="177" type="jump" coverage="50%" />
+                    <condition number="218" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="123" hits="2" branch="False" />
+                <line number="124" hits="2" branch="False" />
+                <line number="125" hits="2" branch="False" />
+                <line number="126" hits="0" branch="False" />
+                <line number="127" hits="0" branch="False" />
+                <line number="128" hits="0" branch="False" />
+                <line number="131" hits="2" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="286" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="132" hits="0" branch="False" />
+                <line number="134" hits="2" branch="False" />
+                <line number="136" hits="2" branch="False" />
+                <line number="137" hits="2" branch="False" />
+                <line number="138" hits="2" branch="False" />
+                <line number="139" hits="2" branch="False" />
+                <line number="141" hits="2" branch="False" />
+                <line number="142" hits="2" branch="False" />
+                <line number="143" hits="2" branch="False" />
+                <line number="144" hits="2" branch="False" />
+                <line number="145" hits="2" branch="False" />
+                <line number="146" hits="2" branch="False" />
+                <line number="147" hits="2" branch="False" />
+                <line number="148" hits="2" branch="False" />
+                <line number="149" hits="2" branch="False" />
+                <line number="150" hits="2" branch="False" />
+                <line number="151" hits="2" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="117" hits="2" branch="False" />
+            <line number="118" hits="2" branch="False" />
+            <line number="119" hits="2" branch="True" condition-coverage="50% (2/4)">
+              <conditions>
+                <condition number="177" type="jump" coverage="50%" />
+                <condition number="218" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="123" hits="2" branch="False" />
+            <line number="124" hits="2" branch="False" />
+            <line number="125" hits="2" branch="False" />
+            <line number="126" hits="0" branch="False" />
+            <line number="127" hits="0" branch="False" />
+            <line number="128" hits="0" branch="False" />
+            <line number="131" hits="2" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="286" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="132" hits="0" branch="False" />
+            <line number="134" hits="2" branch="False" />
+            <line number="136" hits="2" branch="False" />
+            <line number="137" hits="2" branch="False" />
+            <line number="138" hits="2" branch="False" />
+            <line number="139" hits="2" branch="False" />
+            <line number="141" hits="2" branch="False" />
+            <line number="142" hits="2" branch="False" />
+            <line number="143" hits="2" branch="False" />
+            <line number="144" hits="2" branch="False" />
+            <line number="145" hits="2" branch="False" />
+            <line number="146" hits="2" branch="False" />
+            <line number="147" hits="2" branch="False" />
+            <line number="148" hits="2" branch="False" />
+            <line number="149" hits="2" branch="False" />
+            <line number="150" hits="2" branch="False" />
+            <line number="151" hits="2" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.External.ApiSettings" filename="Services\External\FastApiClient.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_BaseUrl" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="18" hits="31" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="18" hits="31" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.External.FastApiClient" filename="Services\External\FastApiClient.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name=".ctor" signature="(System.Net.Http.HttpClient,Microsoft.Extensions.Options.IOptions`1&lt;AudioInterviewer.API.Services.External.ApiSettings&gt;,Microsoft.Extensions.Logging.ILogger`1&lt;AudioInterviewer.API.Services.External.FastApiClient&gt;)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="36" hits="15" branch="False" />
+                <line number="37" hits="15" branch="False" />
+                <line number="38" hits="15" branch="False" />
+                <line number="39" hits="15" branch="False" />
+                <line number="40" hits="15" branch="False" />
+                <line number="41" hits="15" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="36" hits="15" branch="False" />
+            <line number="37" hits="15" branch="False" />
+            <line number="38" hits="15" branch="False" />
+            <line number="39" hits="15" branch="False" />
+            <line number="40" hits="15" branch="False" />
+            <line number="41" hits="15" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.External.FastApiClient/GenerateResponse" filename="Services\External\FastApiClient.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_Questions" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="121" hits="3" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="121" hits="3" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.External.FastApiClient/NextQuestionResponse" filename="Services\External\FastApiClient.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_NextQuestion" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="133" hits="3" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="133" hits="3" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.External.FastApiClient/&lt;GetFirstQuestionAsync&gt;d__4" filename="Services\External\FastApiClient.cs" line-rate="1" branch-rate="0.625" complexity="8">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="0.625" complexity="8">
+              <lines>
+                <line number="49" hits="4" branch="False" />
+                <line number="50" hits="4" branch="False" />
+                <line number="52" hits="4" branch="False" />
+                <line number="53" hits="4" branch="False" />
+                <line number="54" hits="2" branch="False" />
+                <line number="56" hits="2" branch="False" />
+                <line number="58" hits="2" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="410" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="59" hits="1" branch="False" />
+                <line number="60" hits="1" branch="False" />
+                <line number="61" hits="1" branch="False" />
+                <line number="64" hits="1" branch="False" />
+                <line number="65" hits="1" branch="True" condition-coverage="50% (3/6)">
+                  <conditions>
+                    <condition number="508" type="jump" coverage="50%" />
+                    <condition number="520" type="jump" coverage="50%" />
+                    <condition number="532" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="67" hits="2" branch="False" />
+                <line number="68" hits="2" branch="False" />
+                <line number="69" hits="2" branch="False" />
+                <line number="70" hits="2" branch="False" />
+                <line number="72" hits="4" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="49" hits="4" branch="False" />
+            <line number="50" hits="4" branch="False" />
+            <line number="52" hits="4" branch="False" />
+            <line number="53" hits="4" branch="False" />
+            <line number="54" hits="2" branch="False" />
+            <line number="56" hits="2" branch="False" />
+            <line number="58" hits="2" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="410" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="59" hits="1" branch="False" />
+            <line number="60" hits="1" branch="False" />
+            <line number="61" hits="1" branch="False" />
+            <line number="64" hits="1" branch="False" />
+            <line number="65" hits="1" branch="True" condition-coverage="50% (3/6)">
+              <conditions>
+                <condition number="508" type="jump" coverage="50%" />
+                <condition number="520" type="jump" coverage="50%" />
+                <condition number="532" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="67" hits="2" branch="False" />
+            <line number="68" hits="2" branch="False" />
+            <line number="69" hits="2" branch="False" />
+            <line number="70" hits="2" branch="False" />
+            <line number="72" hits="4" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Services.External.FastApiClient/&lt;GetNextQuestionAsync&gt;d__5" filename="Services\External\FastApiClient.cs" line-rate="0.8181" branch-rate="0.6666" complexity="6">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0.8181" branch-rate="0.6666" complexity="6">
+              <lines>
+                <line number="82" hits="2" branch="False" />
+                <line number="83" hits="2" branch="False" />
+                <line number="84" hits="2" branch="False" />
+                <line number="85" hits="2" branch="False" />
+                <line number="86" hits="2" branch="False" />
+                <line number="87" hits="2" branch="False" />
+                <line number="88" hits="2" branch="False" />
+                <line number="91" hits="2" branch="False" />
+                <line number="92" hits="2" branch="False" />
+                <line number="93" hits="2" branch="False" />
+                <line number="95" hits="2" branch="False" />
+                <line number="97" hits="2" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="422" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="98" hits="1" branch="False" />
+                <line number="99" hits="1" branch="False" />
+                <line number="100" hits="1" branch="False" />
+                <line number="103" hits="1" branch="False" />
+                <line number="104" hits="1" branch="True" condition-coverage="50% (2/4)">
+                  <conditions>
+                    <condition number="520" type="jump" coverage="50%" />
+                    <condition number="532" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="106" hits="0" branch="False" />
+                <line number="107" hits="0" branch="False" />
+                <line number="108" hits="0" branch="False" />
+                <line number="109" hits="0" branch="False" />
+                <line number="111" hits="2" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="82" hits="2" branch="False" />
+            <line number="83" hits="2" branch="False" />
+            <line number="84" hits="2" branch="False" />
+            <line number="85" hits="2" branch="False" />
+            <line number="86" hits="2" branch="False" />
+            <line number="87" hits="2" branch="False" />
+            <line number="88" hits="2" branch="False" />
+            <line number="91" hits="2" branch="False" />
+            <line number="92" hits="2" branch="False" />
+            <line number="93" hits="2" branch="False" />
+            <line number="95" hits="2" branch="False" />
+            <line number="97" hits="2" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="422" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="98" hits="1" branch="False" />
+            <line number="99" hits="1" branch="False" />
+            <line number="100" hits="1" branch="False" />
+            <line number="103" hits="1" branch="False" />
+            <line number="104" hits="1" branch="True" condition-coverage="50% (2/4)">
+              <conditions>
+                <condition number="520" type="jump" coverage="50%" />
+                <condition number="532" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="106" hits="0" branch="False" />
+            <line number="107" hits="0" branch="False" />
+            <line number="108" hits="0" branch="False" />
+            <line number="109" hits="0" branch="False" />
+            <line number="111" hits="2" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Models.Answer" filename="Models\Answer.cs" line-rate="1" branch-rate="1" complexity="3">
+          <methods>
+            <method name="get_Question" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="14" hits="20" branch="False" />
+              </lines>
+            </method>
+            <method name="get_AudioUrl" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="21" hits="20" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Transcript" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="27" hits="21" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="14" hits="20" branch="False" />
+            <line number="21" hits="20" branch="False" />
+            <line number="27" hits="21" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Models.AnswerDto" filename="Models\AnswerDto.cs" line-rate="1" branch-rate="1" complexity="4">
+          <methods>
+            <method name="get_SessionId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="14" hits="42" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Question" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="21" hits="36" branch="False" />
+              </lines>
+            </method>
+            <method name="get_AudioBase64" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="28" hits="31" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Transcript" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="35" hits="31" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="14" hits="42" branch="False" />
+            <line number="21" hits="36" branch="False" />
+            <line number="28" hits="31" branch="False" />
+            <line number="35" hits="31" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Models.InterviewReport" filename="Models\InterviewReport.cs" line-rate="1" branch-rate="1" complexity="8">
+          <methods>
+            <method name="get_Id" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="19" hits="48" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Email" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="26" hits="52" branch="False" />
+              </lines>
+            </method>
+            <method name="get_JobDescription" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="32" hits="51" branch="False" />
+              </lines>
+            </method>
+            <method name="get_CandidateFitScore" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="38" hits="8" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Strengths" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="43" hits="30" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ImprovementAreas" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="48" hits="30" branch="False" />
+              </lines>
+            </method>
+            <method name="get_SuggestedFollowUp" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="53" hits="30" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Answers" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="58" hits="30" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="19" hits="48" branch="False" />
+            <line number="26" hits="52" branch="False" />
+            <line number="32" hits="51" branch="False" />
+            <line number="38" hits="8" branch="False" />
+            <line number="43" hits="30" branch="False" />
+            <line number="48" hits="30" branch="False" />
+            <line number="53" hits="30" branch="False" />
+            <line number="58" hits="30" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Models.InterviewSession" filename="Models\InterviewSession.cs" line-rate="1" branch-rate="1" complexity="6">
+          <methods>
+            <method name="get_Id" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="18" hits="39" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Email" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="26" hits="38" branch="False" />
+              </lines>
+            </method>
+            <method name="get_JobDescription" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="33" hits="38" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Questions" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="39" hits="46" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Answers" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="45" hits="42" branch="False" />
+              </lines>
+            </method>
+            <method name="get_CurrentIndex" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="52" hits="50" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="18" hits="39" branch="False" />
+            <line number="26" hits="38" branch="False" />
+            <line number="33" hits="38" branch="False" />
+            <line number="39" hits="46" branch="False" />
+            <line number="45" hits="42" branch="False" />
+            <line number="52" hits="50" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Models.Question" filename="Models\Question.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_Text" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="15" hits="64" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="15" hits="64" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Data.MongoDbContext" filename="Data\MongoDbContext.cs" line-rate="1" branch-rate="1" complexity="4">
+          <methods>
+            <method name="get_Sessions" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="38" hits="13" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Reports" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="43" hits="2" branch="False" />
+              </lines>
+            </method>
+            <method name="get_GridFsBucket" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="48" hits="2" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(Microsoft.Extensions.Options.IOptions`1&lt;AudioInterviewer.API.Data.MongoDbSettings&gt;)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="20" hits="8" branch="False" />
+                <line number="21" hits="8" branch="False" />
+                <line number="22" hits="8" branch="False" />
+                <line number="23" hits="6" branch="False" />
+                <line number="26" hits="5" branch="False" />
+                <line number="27" hits="5" branch="False" />
+                <line number="28" hits="5" branch="False" />
+                <line number="29" hits="5" branch="False" />
+                <line number="30" hits="5" branch="False" />
+                <line number="31" hits="5" branch="False" />
+                <line number="32" hits="5" branch="False" />
+                <line number="33" hits="5" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="38" hits="13" branch="False" />
+            <line number="43" hits="2" branch="False" />
+            <line number="48" hits="2" branch="False" />
+            <line number="20" hits="8" branch="False" />
+            <line number="21" hits="8" branch="False" />
+            <line number="22" hits="8" branch="False" />
+            <line number="23" hits="6" branch="False" />
+            <line number="26" hits="5" branch="False" />
+            <line number="27" hits="5" branch="False" />
+            <line number="28" hits="5" branch="False" />
+            <line number="29" hits="5" branch="False" />
+            <line number="30" hits="5" branch="False" />
+            <line number="31" hits="5" branch="False" />
+            <line number="32" hits="5" branch="False" />
+            <line number="33" hits="5" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Data.MongoDbSettings" filename="Data\MongoDbSettings.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="get_ConnectionString" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="11" hits="29" branch="False" />
+              </lines>
+            </method>
+            <method name="get_DatabaseName" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="16" hits="28" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="11" hits="29" branch="False" />
+            <line number="16" hits="28" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Controllers.AudioController" filename="Controllers\AudioController.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name=".ctor" signature="(AudioInterviewer.API.Data.IMongoDbContext)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="21" hits="2" branch="False" />
+                <line number="22" hits="2" branch="False" />
+                <line number="23" hits="2" branch="False" />
+                <line number="24" hits="2" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="21" hits="2" branch="False" />
+            <line number="22" hits="2" branch="False" />
+            <line number="23" hits="2" branch="False" />
+            <line number="24" hits="2" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Controllers.AudioController/&lt;GetAudio&gt;d__2" filename="Controllers\AudioController.cs" line-rate="0.9166" branch-rate="1" complexity="1">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="0.9166" branch-rate="1" complexity="1">
+              <lines>
+                <line number="39" hits="2" branch="False" />
+                <line number="41" hits="2" branch="False" />
+                <line number="42" hits="2" branch="False" />
+                <line number="43" hits="2" branch="False" />
+                <line number="44" hits="0" branch="False" />
+                <line number="46" hits="1" branch="False" />
+                <line number="47" hits="1" branch="False" />
+                <line number="48" hits="1" branch="False" />
+                <line number="50" hits="1" branch="False" />
+                <line number="51" hits="1" branch="False" />
+                <line number="52" hits="1" branch="False" />
+                <line number="54" hits="2" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="39" hits="2" branch="False" />
+            <line number="41" hits="2" branch="False" />
+            <line number="42" hits="2" branch="False" />
+            <line number="43" hits="2" branch="False" />
+            <line number="44" hits="0" branch="False" />
+            <line number="46" hits="1" branch="False" />
+            <line number="47" hits="1" branch="False" />
+            <line number="48" hits="1" branch="False" />
+            <line number="50" hits="1" branch="False" />
+            <line number="51" hits="1" branch="False" />
+            <line number="52" hits="1" branch="False" />
+            <line number="54" hits="2" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Controllers.InterviewController" filename="Controllers\InterviewController.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="HealthCheck" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="230" hits="3" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(AudioInterviewer.API.Services.IInterviewService)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="23" hits="35" branch="False" />
+                <line number="24" hits="35" branch="False" />
+                <line number="25" hits="35" branch="False" />
+                <line number="26" hits="35" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="230" hits="3" branch="False" />
+            <line number="23" hits="35" branch="False" />
+            <line number="24" hits="35" branch="False" />
+            <line number="25" hits="35" branch="False" />
+            <line number="26" hits="35" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Controllers.InterviewController/InitRequest" filename="Controllers\InterviewController.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="get_Email" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="38" hits="21" branch="False" />
+              </lines>
+            </method>
+            <method name="get_JobDescription" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="45" hits="21" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="38" hits="21" branch="False" />
+            <line number="45" hits="21" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Controllers.InterviewController/&lt;CompleteInterview&gt;d__6" filename="Controllers\InterviewController.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="151" hits="4" branch="False" />
+                <line number="152" hits="4" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="39" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="153" hits="1" branch="False" />
+                <line number="155" hits="3" branch="False" />
+                <line number="156" hits="3" branch="False" />
+                <line number="157" hits="4" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="151" hits="4" branch="False" />
+            <line number="152" hits="4" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="39" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="153" hits="1" branch="False" />
+            <line number="155" hits="3" branch="False" />
+            <line number="156" hits="3" branch="False" />
+            <line number="157" hits="4" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Controllers.InterviewController/&lt;GetNextQuestion&gt;d__4" filename="Controllers\InterviewController.cs" line-rate="1" branch-rate="1" complexity="4">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="92" hits="5" branch="False" />
+                <line number="93" hits="5" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="39" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="94" hits="1" branch="False" />
+                <line number="96" hits="4" branch="False" />
+                <line number="98" hits="4" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="220" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="99" hits="1" branch="False" />
+                <line number="101" hits="3" branch="False" />
+                <line number="102" hits="3" branch="False" />
+                <line number="103" hits="3" branch="False" />
+                <line number="104" hits="3" branch="False" />
+                <line number="105" hits="3" branch="False" />
+                <line number="106" hits="5" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="92" hits="5" branch="False" />
+            <line number="93" hits="5" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="39" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="94" hits="1" branch="False" />
+            <line number="96" hits="4" branch="False" />
+            <line number="98" hits="4" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="220" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="99" hits="1" branch="False" />
+            <line number="101" hits="3" branch="False" />
+            <line number="102" hits="3" branch="False" />
+            <line number="103" hits="3" branch="False" />
+            <line number="104" hits="3" branch="False" />
+            <line number="105" hits="3" branch="False" />
+            <line number="106" hits="5" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Controllers.InterviewController/&lt;GetReport&gt;d__7" filename="Controllers\InterviewController.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="171" hits="4" branch="False" />
+                <line number="172" hits="4" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="39" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="173" hits="1" branch="False" />
+                <line number="175" hits="3" branch="False" />
+                <line number="176" hits="2" branch="False" />
+                <line number="177" hits="3" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="171" hits="4" branch="False" />
+            <line number="172" hits="4" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="39" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="173" hits="1" branch="False" />
+            <line number="175" hits="3" branch="False" />
+            <line number="176" hits="2" branch="False" />
+            <line number="177" hits="3" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Controllers.InterviewController/&lt;GetReportById&gt;d__9" filename="Controllers\InterviewController.cs" line-rate="1" branch-rate="1" complexity="4">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="212" hits="4" branch="False" />
+                <line number="213" hits="4" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="28" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="214" hits="1" branch="False" />
+                <line number="216" hits="3" branch="False" />
+                <line number="217" hits="3" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="207" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="218" hits="1" branch="False" />
+                <line number="220" hits="2" branch="False" />
+                <line number="221" hits="4" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="212" hits="4" branch="False" />
+            <line number="213" hits="4" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="28" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="214" hits="1" branch="False" />
+            <line number="216" hits="3" branch="False" />
+            <line number="217" hits="3" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="207" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="218" hits="1" branch="False" />
+            <line number="220" hits="2" branch="False" />
+            <line number="221" hits="4" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Controllers.InterviewController/&lt;GetReportsByEmail&gt;d__8" filename="Controllers\InterviewController.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="191" hits="3" branch="False" />
+                <line number="192" hits="3" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="39" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="193" hits="1" branch="False" />
+                <line number="195" hits="2" branch="False" />
+                <line number="196" hits="2" branch="False" />
+                <line number="197" hits="3" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="191" hits="3" branch="False" />
+            <line number="192" hits="3" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="39" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="193" hits="1" branch="False" />
+            <line number="195" hits="2" branch="False" />
+            <line number="196" hits="2" branch="False" />
+            <line number="197" hits="3" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Controllers.InterviewController/&lt;InitializeInterview&gt;d__3" filename="Controllers\InterviewController.cs" line-rate="1" branch-rate="0.6666" complexity="6">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="0.6666" complexity="6">
+              <lines>
+                <line number="60" hits="5" branch="False" />
+                <line number="61" hits="5" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="39" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="62" hits="1" branch="False" />
+                <line number="64" hits="4" branch="False" />
+                <line number="66" hits="4" branch="True" condition-coverage="50% (2/4)">
+                  <conditions>
+                    <condition number="261" type="jump" coverage="50%" />
+                    <condition number="273" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="67" hits="4" branch="False" />
+                <line number="68" hits="4" branch="False" />
+                <line number="69" hits="4" branch="False" />
+                <line number="71" hits="4" branch="False" />
+                <line number="72" hits="4" branch="False" />
+                <line number="73" hits="4" branch="False" />
+                <line number="74" hits="4" branch="False" />
+                <line number="75" hits="4" branch="False" />
+                <line number="76" hits="4" branch="False" />
+                <line number="77" hits="5" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="60" hits="5" branch="False" />
+            <line number="61" hits="5" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="39" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="62" hits="1" branch="False" />
+            <line number="64" hits="4" branch="False" />
+            <line number="66" hits="4" branch="True" condition-coverage="50% (2/4)">
+              <conditions>
+                <condition number="261" type="jump" coverage="50%" />
+                <condition number="273" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="67" hits="4" branch="False" />
+            <line number="68" hits="4" branch="False" />
+            <line number="69" hits="4" branch="False" />
+            <line number="71" hits="4" branch="False" />
+            <line number="72" hits="4" branch="False" />
+            <line number="73" hits="4" branch="False" />
+            <line number="74" hits="4" branch="False" />
+            <line number="75" hits="4" branch="False" />
+            <line number="76" hits="4" branch="False" />
+            <line number="77" hits="5" branch="False" />
+          </lines>
+        </class>
+        <class name="AudioInterviewer.API.Controllers.InterviewController/&lt;SubmitAnswer&gt;d__5" filename="Controllers\InterviewController.cs" line-rate="1" branch-rate="1" complexity="8">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="8">
+              <lines>
+                <line number="120" hits="5" branch="False" />
+                <line number="121" hits="5" branch="True" condition-coverage="100% (6/6)">
+                  <conditions>
+                    <condition number="24" type="jump" coverage="100%" />
+                    <condition number="42" type="jump" coverage="100%" />
+                    <condition number="65" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="122" hits="5" branch="False" />
+                <line number="123" hits="5" branch="False" />
+                <line number="124" hits="1" branch="False" />
+                <line number="125" hits="1" branch="False" />
+                <line number="128" hits="4" branch="False" />
+                <line number="129" hits="4" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="249" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="130" hits="1" branch="False" />
+                <line number="132" hits="3" branch="False" />
+                <line number="133" hits="3" branch="False" />
+                <line number="134" hits="3" branch="False" />
+                <line number="135" hits="3" branch="False" />
+                <line number="136" hits="3" branch="False" />
+                <line number="137" hits="5" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="120" hits="5" branch="False" />
+            <line number="121" hits="5" branch="True" condition-coverage="100% (6/6)">
+              <conditions>
+                <condition number="24" type="jump" coverage="100%" />
+                <condition number="42" type="jump" coverage="100%" />
+                <condition number="65" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="122" hits="5" branch="False" />
+            <line number="123" hits="5" branch="False" />
+            <line number="124" hits="1" branch="False" />
+            <line number="125" hits="1" branch="False" />
+            <line number="128" hits="4" branch="False" />
+            <line number="129" hits="4" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="249" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="130" hits="1" branch="False" />
+            <line number="132" hits="3" branch="False" />
+            <line number="133" hits="3" branch="False" />
+            <line number="134" hits="3" branch="False" />
+            <line number="135" hits="3" branch="False" />
+            <line number="136" hits="3" branch="False" />
+            <line number="137" hits="5" branch="False" />
+          </lines>
+        </class>
+      </classes>
+    </package>
+  </packages>
+</coverage>
