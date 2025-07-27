@@ -33,11 +33,7 @@ Key features:
 
 ## 3. API Reference
 
-**All endpoints are under** `/api/interview` **or** `/api/audio`.
-
-Certainly! Here is a **detailed, structured list format** of all AudioInterviewer Backend API endpoints, including HTTP method, path, inputs, outputs, and important behavior, referencing the actual implementation and models from your codebase:
-
-## API Endpoint Reference (Detailed List)
+## API Endpoint 
 
 ### 1. Interview Initialization
 
