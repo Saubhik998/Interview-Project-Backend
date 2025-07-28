@@ -124,7 +124,7 @@ public class InterviewServiceTests
 
         var audioBytes = new byte[3800];
         new Random().NextBytes(audioBytes);
-        var base64 = Convert.ToBase64String(audioBytes);;
+        var base64 = Convert.ToBase64String(audioBytes); ;
 
         var answerDto = new AnswerDto
         {
@@ -220,5 +220,13 @@ public class InterviewServiceTests
                 Content = new StringContent(json, Encoding.UTF8, "application/json")
             });
         }
+    }
+    
+    [Fact]
+    public async Task GetNextQuestionAsync_ReturnsNull_WhenSessionNotFound()
+    {
+    SetupSessionFind("bad_id", null!);
+    var result = await _service.GetNextQuestionAsync("bad_id");
+    Assert.Null(result); // or default
     }
 }
