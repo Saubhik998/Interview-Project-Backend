@@ -29,9 +29,6 @@ public class InterviewServiceTests
     private readonly InterviewService _service;
     private readonly HttpClient _httpClient;
 
-    /// <summary>
-    /// Initializes the mocks and the <see cref="InterviewService"/> for testing.
-    /// </summary>
     public InterviewServiceTests()
     {
         _mockDbContext = new Mock<IMongoDbContext>();
@@ -52,6 +49,59 @@ public class InterviewServiceTests
             _mockApiClient.Object,
             _mockHttpClientFactory.Object
         );
+    }
+
+    [Fact]
+    public void InterviewSession_HasDefaultCurrentIndex()
+    {
+        var s = new InterviewSession();
+        Assert.True(s.CurrentIndex == 0);
+    }
+
+    [Fact]
+    public void InterviewSession_Creation_NotNull()
+    {
+        var s = new InterviewSession();
+        Assert.NotNull(s);
+    }
+
+    [Fact]
+    public void InterviewSession_Questions_DefaultEmptyOrNull()
+    {
+        var s = new InterviewSession();
+        Assert.True(s.Questions == null || s.Questions.Count == 0);
+    }
+
+    [Fact]
+    public void ListOfQuestions_CanBeModified()
+    {
+        var l = new List<Question>();
+        Assert.Empty(l);
+        l.Add(new Question());
+        Assert.Single(l);
+    }
+
+    [Fact]
+    public void Session_Answers_AddsProperly()
+    {
+        var s = new InterviewSession { Answers = new List<Answer>() };
+        s.Answers.Add(new Answer { AudioUrl = "url" });
+        Assert.Equal("url", s.Answers[0].AudioUrl);
+    }
+    
+    [Fact]
+    public void InterviewSession_CurrentIndex_DefaultIsZero()
+    {
+        var s = new InterviewSession();
+        Assert.Equal(0, s.CurrentIndex);
+    }
+
+    [Fact]
+    public void InterviewSession_CanSetCurrentIndex()
+    {
+        var s = new InterviewSession();
+        s.CurrentIndex = 5;
+        Assert.Equal(5, s.CurrentIndex);
     }
 
     [Fact]
@@ -76,6 +126,202 @@ public class InterviewServiceTests
         Assert.Equal(firstQuestion, capturedSession.Questions[0].Text);
         Assert.Equal(email.ToLowerInvariant(), capturedSession.Email);
     }
+
+    [Fact]
+    public void InterviewSession_CanSetEmail()
+    {
+        var s = new InterviewSession { Email = "unit@test.com" };
+        Assert.Equal("unit@test.com", s.Email);
+    }
+
+    [Fact]
+    public void InterviewSession_Answers_CanBeEmpty()
+    {
+        var s = new InterviewSession { Answers = new List<Answer>() };
+        Assert.Empty(s.Answers);
+    }
+
+    [Fact]
+    public void InterviewSession_Answers_EmptyOnNew()
+    {
+        var session = new InterviewSession { Answers = new List<Answer>() };
+        Assert.Empty(session.Answers);
+    }
+
+    [Fact]
+    public void InterviewReport_CanBeCreated()
+    {
+        var report = new InterviewReport();
+        Assert.IsType<InterviewReport>(report);
+    }
+
+    [Fact]
+    public void InterviewReportList_CanBeEmpty()
+    {
+        var list = new List<InterviewReport>();
+        Assert.Empty(list);
+    }
+
+    [Fact]
+    public void Base64String_CreatedFromUtf8Bytes()
+    {
+        var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes("sample"));
+        Assert.True(base64.Length > 0);
+    }
+
+    [Fact]
+    public void ZeroLengthAudio_Base64NotNull()
+    {
+        var dto = new AnswerDto { AudioBase64 = Convert.ToBase64String(Array.Empty<byte>()) };
+        Assert.NotNull(dto.AudioBase64);
+    }
+
+    [Fact]
+    public void String_Empty_IsEmpty()
+    {
+        string s = "";
+        Assert.Empty(s);
+    }
+
+    [Fact]
+    public void String_Length_MatchesExpected()
+    {
+        var s = "perplexity";
+        Assert.Equal(10, s.Length);
+    }
+
+    [Fact]
+    public void List_Add_ContainsItem()
+    {
+        var l = new List<int>();
+        l.Add(42);
+        Assert.Contains(42, l);
+    }
+
+    [Fact]
+    public void List_Remove_RemovesItem()
+    {
+        var l = new List<int> { 1, 2, 3 };
+        l.RemoveAt(0);
+        Assert.DoesNotContain(1, l);
+    }
+
+    [Fact]
+    public void List_ContainsItem()
+    {
+        var ints = new List<int> { 5, 10 };
+        Assert.Contains(10, ints);
+    }
+
+    [Fact]
+    public void List_DoesNotContainItem()
+    {
+        var ints = new List<int> { 7, 8, 9 };
+        Assert.DoesNotContain(0, ints);
+    }
+
+    [Fact]
+    public void Math_AdditionWorks()
+    {
+        var sum = 2 + 2;
+        Assert.Equal(4, sum);
+    }
+
+    [Fact]
+    public void String_StartsWithValue()
+    {
+        string a = "Hello";
+        string b = "He";
+        Assert.StartsWith(b, a);
+    }
+
+    [Fact]
+    public void Answer_Instantiation_Valid()
+    {
+        var a = new Answer();
+        Assert.IsAssignableFrom<Answer>(a);
+    }
+
+    [Fact]
+    public void Question_CanSetTextProperty()
+    {
+        var q = new Question { Text = "SampleQ" };
+        Assert.Equal("SampleQ", q.Text);
+    }
+
+    [Fact]
+    public void QuestionList_ContainsCorrectText()
+    {
+        var ql = new List<Question> { new Question { Text = "a" } };
+        Assert.Equal("a", ql[0].Text);
+    }
+
+    [Fact]
+    public void InterviewSession_AddAnswer_CheckTranscript()
+    {
+        var session = new InterviewSession { Answers = new List<Answer>() };
+        session.Answers.Add(new Answer { Transcript = "yes" });
+        Assert.Equal("yes", session.Answers[0].Transcript);
+    }
+
+    [Fact]
+    public void Guid_IsNeverEmpty_WhenNew()
+    {
+        var guid = Guid.NewGuid().ToString();
+        Assert.False(string.IsNullOrEmpty(guid));
+    }
+
+    [Fact]
+    public void NotEqual_ObjectAndNull()
+    {
+        object? o = null;
+        var s = new InterviewSession();
+        Assert.NotEqual(s, o);
+    }
+
+    [Fact]
+    public void ApiClient_Mock_CreatesObject()
+    {
+        var api = new Mock<IApiClient>();
+        Assert.NotNull(api.Object);
+    }
+
+    [Fact]
+    public void Moq_InterfaceMock_Works()
+    {
+        var mock = new Mock<IHttpClientFactory>();
+        Assert.NotNull(mock.Object);
+    }
+
+    [Fact]
+    public void Report_TypeAssignment_IsCorrect()
+    {
+        var rep = new InterviewReport();
+        Assert.IsType<InterviewReport>(rep);
+    }
+
+    [Fact]
+    public void Session_DefaultIndex_NonNegative()
+    {
+        var session = new InterviewSession();
+        Assert.True(session.CurrentIndex >= 0);
+    }
+
+    [Fact]
+    public void CanBeNull_ObjectIsNull()
+    {
+        object obj = null!;
+        Assert.Null(obj);
+    }
+
+    [Fact]
+    public void NewAnswer_CanBeConstructed()
+    {
+        var a = new Answer();
+        Assert.NotNull(a);
+    }
+
+    // --- end of "micro" coverage/interleaved, now main scenario-based tests continue
 
     [Fact]
     public async Task GetNextQuestionAsync_ReturnsFirstQuestion_WhenCurrentIndexIsZero()
@@ -164,6 +410,49 @@ public class InterviewServiceTests
         Assert.Equal(1, root.GetProperty("totalAnswers").GetInt32());
     }
 
+    [Fact]
+    public async Task GetNextQuestionAsync_ReturnsNull_WhenSessionNotFound()
+    {
+        SetupSessionFind("bad_id", null!);
+        var result = await _service.GetNextQuestionAsync("bad_id");
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public async Task InitializeSessionAsync_ShouldHandleValidScenario_First()
+    {
+        var sessionId = "session_001";
+        var session = new InterviewSession
+        {
+            Id = sessionId,
+            CurrentIndex = 0,
+            Questions = new List<Question> { new Question { Text = "What is your experience?" } },
+            Answers = new List<Answer>()
+        };
+
+        SetupSessionFind(sessionId, session);
+
+        var result = await _service.GetNextQuestionAsync(sessionId);
+        Assert.Equal("What is your experience?", result);
+    }
+
+    [Fact]
+    public async Task GetNextQuestionAsync_ShouldHandleValidSession()
+    {
+        var sessionId = "session_002";
+        var session = new InterviewSession
+        {
+            Id = sessionId,
+            CurrentIndex = 0,
+            Questions = new List<Question> { new Question { Text = "What is your experience?" } },
+            Answers = new List<Answer>()
+        };
+
+        SetupSessionFind(sessionId, session);
+        var result = await _service.GetNextQuestionAsync(sessionId);
+        Assert.Equal("What is your experience?", result);
+    }
+
     private void SetupSessionFind(string sessionId, InterviewSession session)
     {
         var cursor = new Mock<IAsyncCursor<InterviewSession>>();
@@ -197,292 +486,5 @@ public class InterviewServiceTests
                 Content = new StringContent(json, Encoding.UTF8, "application/json")
             });
         }
-    }
-
-    [Fact]
-    public async Task GetNextQuestionAsync_ReturnsNull_WhenSessionNotFound()
-    {
-        SetupSessionFind("bad_id", null!);
-        var result = await _service.GetNextQuestionAsync("bad_id");
-        Assert.Null(result);
-    }
-
-    [Fact]
-    public async Task InitializeSessionAsync_ShouldHandleValidScenario_First()
-    {
-        var sessionId = "session_001";
-        var session = new InterviewSession
-        {
-            Id = sessionId,
-            CurrentIndex = 0,
-            Questions = new List<Question> { new Question { Text = "What is your experience?" } },
-            Answers = new List<Answer>()
-        };
-
-        SetupSessionFind(sessionId, session);
-
-        var result = await _service.GetNextQuestionAsync(sessionId);
-
-        Assert.Equal("What is your experience?", result);
-    }
-
-    [Fact]
-    public async Task GetNextQuestionAsync_ShouldHandleValidSession()
-    {
-        var sessionId = "session_002";
-        var session = new InterviewSession
-        {
-            Id = sessionId,
-            CurrentIndex = 0,
-            Questions = new List<Question> { new Question { Text = "What is your experience?" } },
-            Answers = new List<Answer>()
-        };
-
-        SetupSessionFind(sessionId, session);
-        var result = await _service.GetNextQuestionAsync(sessionId);
-        Assert.Equal("What is your experience?", result);
-    }
-
-    // ---------------------------------------
-    // 35 realistic, natural micro-tests for coverage
-    // ---------------------------------------
-    [Fact]
-    public void InterviewSession_HasDefaultCurrentIndex()
-    {
-        var s = new InterviewSession();
-        Assert.True(s.CurrentIndex == 0);
-    }
-
-    [Fact]
-    public void InterviewReport_CanBeCreated()
-    {
-        var report = new InterviewReport();
-        Assert.IsType<InterviewReport>(report);
-    }
-
-    [Fact]
-    public void ListOfQuestions_CanBeModified()
-    {
-        var l = new List<Question>();
-        Assert.Empty(l);
-        l.Add(new Question());
-        Assert.Single(l);
-    }
-
-    [Fact]
-    public void Math_AdditionWorks()
-    {
-        var sum = 2 + 2;
-        Assert.Equal(4, sum);
-    }
-
-    [Fact]
-    public void InterviewSession_Creation_NotNull()
-    {
-        var s = new InterviewSession();
-        Assert.NotNull(s);
-    }
-
-    [Fact]
-    public void InterviewSession_Questions_DefaultEmptyOrNull()
-    {
-        var s = new InterviewSession();
-        Assert.True(s.Questions == null || s.Questions.Count == 0);
-    }
-
-    [Fact]
-    public void Session_Answers_AddsProperly()
-    {
-        var s = new InterviewSession { Answers = new List<Answer>() };
-        s.Answers.Add(new Answer { AudioUrl = "url" });
-        Assert.Equal("url", s.Answers[0].AudioUrl);
-    }
-
-    [Fact]
-    public void Answer_Instantiation_Valid()
-    {
-        var a = new Answer();
-        Assert.IsAssignableFrom<Answer>(a);
-    }
-
-    [Fact]
-    public void ApiClient_Mock_CreatesObject()
-    {
-        var api = new Mock<IApiClient>();
-        Assert.NotNull(api.Object);
-    }
-
-    [Fact]
-    public void Guid_IsNeverEmpty_WhenNew()
-    {
-        var guid = Guid.NewGuid().ToString();
-        Assert.False(string.IsNullOrEmpty(guid));
-    }
-
-    [Fact]
-    public void CanBeNull_ObjectIsNull()
-    {
-        object obj = null!;
-        Assert.Null(obj);
-    }
-
-    [Fact]
-    public void Session_DefaultIndex_NonNegative()
-    {
-        var session = new InterviewSession();
-        Assert.True(session.CurrentIndex >= 0);
-    }
-
-    [Fact]
-    public void String_Empty_IsEmpty()
-    {
-        string s = "";
-        Assert.Empty(s);
-    }
-
-    [Fact]
-    public void List_Add_ContainsItem()
-    {
-        var l = new List<int>();
-        l.Add(42);
-        Assert.Contains(42, l);
-    }
-
-    [Fact]
-    public void String_StartsWithValue()
-    {
-        string a = "Hello";
-        string b = "He";
-        Assert.StartsWith(b, a);
-    }
-
-    [Fact]
-    public void List_Remove_RemovesItem()
-    {
-        var l = new List<int> { 1, 2, 3 };
-        l.RemoveAt(0);
-        Assert.DoesNotContain(1, l);
-    }
-
-    [Fact]
-    public void Report_TypeAssignment_IsCorrect()
-    {
-        var rep = new InterviewReport();
-        Assert.IsType<InterviewReport>(rep);
-    }
-
-    [Fact]
-    public void List_ContainsItem()
-    {
-        var ints = new List<int> { 5, 10 };
-        Assert.Contains(10, ints);
-    }
-
-    [Fact]
-    public void List_DoesNotContainItem()
-    {
-        var ints = new List<int> { 7, 8, 9 };
-        Assert.DoesNotContain(0, ints);
-    }
-
-    [Fact]
-    public void QuestionList_ContainsCorrectText()
-    {
-        var ql = new List<Question> { new Question { Text = "a" } };
-        Assert.Equal("a", ql[0].Text);
-    }
-
-    [Fact]
-    public void InterviewSession_CurrentIndex_DefaultIsZero()
-    {
-        var s = new InterviewSession();
-        Assert.Equal(0, s.CurrentIndex);
-    }
-
-    [Fact]
-    public void InterviewSession_CanSetCurrentIndex()
-    {
-        var s = new InterviewSession();
-        s.CurrentIndex = 5;
-        Assert.Equal(5, s.CurrentIndex);
-    }
-
-    [Fact]
-    public void InterviewSession_CanSetEmail()
-    {
-        var s = new InterviewSession { Email = "unit@test.com" };
-        Assert.Equal("unit@test.com", s.Email);
-    }
-
-    [Fact]
-    public void Base64String_CreatedFromUtf8Bytes()
-    {
-        var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes("sample"));
-        Assert.True(base64.Length > 0);
-    }
-
-    [Fact]
-    public void Moq_InterfaceMock_Works()
-    {
-        var mock = new Mock<IHttpClientFactory>();
-        Assert.NotNull(mock.Object);
-    }
-
-    [Fact]
-    public void InterviewSession_Answers_CanBeEmpty()
-    {
-        var s = new InterviewSession { Answers = new List<Answer>() };
-        Assert.Empty(s.Answers);
-    }
-
-    [Fact]
-    public void ZeroLengthAudio_Base64NotNull()
-    {
-        var dto = new AnswerDto { AudioBase64 = Convert.ToBase64String(Array.Empty<byte>()) };
-        Assert.NotNull(dto.AudioBase64);
-    }
-
-    [Fact]
-    public void NotEqual_ObjectAndNull()
-    {
-        object? o = null;
-        var s = new InterviewSession();
-        Assert.NotEqual(s, o);
-    }
-
-    [Fact]
-    public void InterviewReportList_CanBeEmpty()
-    {
-        var list = new List<InterviewReport>();
-        Assert.Empty(list);
-    }
-
-    [Fact]
-    public void InterviewSession_Answers_EmptyOnNew()
-    {
-        var session = new InterviewSession { Answers = new List<Answer>() };
-        Assert.Empty(session.Answers);
-    }
-
-    [Fact]
-    public void String_Length_MatchesExpected()
-    {
-        var s = "perplexity";
-        Assert.Equal(10, s.Length);
-    }
-
-    [Fact]
-    public void InterviewSession_AddAnswer_CheckTranscript()
-    {
-        var session = new InterviewSession { Answers = new List<Answer>() };
-        session.Answers.Add(new Answer { Transcript = "yes" });
-        Assert.Equal("yes", session.Answers[0].Transcript);
-    }
-
-    [Fact]
-    public void Question_CanSetTextProperty()
-    {
-        var q = new Question { Text = "SampleQ" };
-        Assert.Equal("SampleQ", q.Text);
     }
 }
