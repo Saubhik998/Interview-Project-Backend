@@ -6,9 +6,12 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MongoDB.Driver;
-using System.IO;
+using System;
 
-var builder = WebApplication.CreateBuilder(args); 
+var builder = WebApplication.CreateBuilder(args);
+
+// Define the CORS policy name as a const for easier referencing
+const string CorsPolicyFrontend = "AllowFrontend";
 
 // Load MongoDB settings
 builder.Services.Configure<MongoDbSettings>(
@@ -27,17 +30,24 @@ builder.Services.AddHttpClient<IApiClient, FastApiClient>();
 // Register InterviewService
 builder.Services.AddScoped<IInterviewService, InterviewService>();
 
+// Add Controllers to the pipeline
 builder.Services.AddControllers();
 
-// CORS policy – updated
+// CORS policy: allow multiple frontend origins (dev, Docker, Nginx, etc.)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        policy => policy.WithOrigins(
-                            "http://localhost:3000", 
-                            "http://audio-interviewer-frontend") // Docker container name
-                      .AllowAnyHeader()
-                      .AllowAnyMethod());
+    options.AddPolicy(CorsPolicyFrontend, policy =>
+    {
+        policy.WithOrigins( // add all origins you want to support
+                "http://localhost:3000",             // React dev server
+                "http://localhost:8080",             // Frontend container on host
+                "http://frontend-audio-interviewer"  // Frontend container in Docker network
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            // .AllowCredentials() // Uncomment if you use cookie/cookie-auth
+            ;
+    });
 });
 
 // Add Health Checks with MongoDB
@@ -80,24 +90,24 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "AI Audio Interview API V1");
-        c.RoutePrefix = string.Empty;
+        c.RoutePrefix = string.Empty; // Serve Swagger UI at the app root
     });
 }
 
 // Serve static files like .webm
 var contentTypeProvider = new FileExtensionContentTypeProvider();
 contentTypeProvider.Mappings[".webm"] = "audio/webm";
-
 app.UseStaticFiles(new StaticFileOptions
 {
     ContentTypeProvider = contentTypeProvider
 });
 
-app.UseCors("AllowFrontend");
+// Enable CORS BEFORE authorization and controllers
+app.UseCors(CorsPolicyFrontend);
 
 app.UseAuthorization();
 
-//  Avoid HTTPS redirection warning during Testing
+// Avoid HTTPS redirection warning during Testing
 if (!app.Environment.IsEnvironment("Testing"))
 {
     app.UseHttpsRedirection();
