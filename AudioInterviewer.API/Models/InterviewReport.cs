@@ -56,5 +56,9 @@ namespace AudioInterviewer.API.Models
         /// Collection of answers submitted by the candidate.
         /// </summary>
         public List<Answer> Answers { get; set; } = new();
+
+        [Required]
+        [BsonElement("createdAt")]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

@@ -225,13 +225,14 @@ namespace AudioInterviewer.API.Services
 
             var dbReport = new InterviewReport
             {
-                Email               = session.Email,
-                JobDescription      = session.JobDescription,
-                CandidateFitScore   = aiReport.GetProperty("score").GetInt32(),
-                Strengths           = aiReport.GetProperty("strengths").EnumerateArray().Select(s => s.GetString()!).ToList(),
-                ImprovementAreas    = aiReport.GetProperty("improvements").EnumerateArray().Select(s => s.GetString()!).ToList(),
-                SuggestedFollowUp   = aiReport.GetProperty("followUps").EnumerateArray().Select(f => f.GetString()!).ToList(),
-                Answers             = session.Answers
+                Email = session.Email,
+                JobDescription = session.JobDescription,
+                CandidateFitScore = aiReport.GetProperty("score").GetInt32(),
+                Strengths = aiReport.GetProperty("strengths").EnumerateArray().Select(s => s.GetString()!).ToList(),
+                ImprovementAreas = aiReport.GetProperty("improvements").EnumerateArray().Select(s => s.GetString()!).ToList(),
+                SuggestedFollowUp = aiReport.GetProperty("followUps").EnumerateArray().Select(f => f.GetString()!).ToList(),
+                Answers = session.Answers,
+                CreatedAt = DateTime.UtcNow 
             };
             await _dbContext.Reports.InsertOneAsync(dbReport);
 
