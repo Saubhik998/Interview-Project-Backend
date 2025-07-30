@@ -68,11 +68,11 @@ namespace AudioInterviewer.API.Controllers
                 .FirstOrDefault()?.Text
                 ?? "No question generated.";
 
-            return Ok(new
+            return Ok(new InitResponse
             {
-                message = "Interview initialized",
-                sessionId,
-                firstQuestion
+                Message = "Interview initialized",
+                SessionId = sessionId,
+                FirstQuestion = firstQuestion
             });
         }
 
@@ -187,7 +187,7 @@ namespace AudioInterviewer.API.Controllers
         /// <response code="200">Reports retrieved successfully.</response>
         /// <response code="400">Email missing or invalid.</response>
         [HttpGet("reports")]
-        public async Task<IActionResult> GetReportsByEmail([FromQuery, Required] string email)
+        public async Task<IActionResult> GetReportsByEmail([Required] string email)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { error = "Email is required." });

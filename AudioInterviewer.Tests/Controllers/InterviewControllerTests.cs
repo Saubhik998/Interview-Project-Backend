@@ -52,11 +52,15 @@ namespace AudioInterviewer.UnitTests.Controllers
             var okResult = Assert.IsType<OkObjectResult>(result);
 
             var json = JsonSerializer.Serialize(okResult.Value);
-            var jsonElement = JsonSerializer.Deserialize<JsonElement>(json);
+            // Optionally log the JSON to debug output if needed
+            // Console.WriteLine("Response JSON: " + json);
 
-            Assert.Equal("Interview initialized", jsonElement.GetProperty("message").GetString());
-            Assert.Equal("sessionId123", jsonElement.GetProperty("sessionId").GetString());
-            Assert.Equal("First question?", jsonElement.GetProperty("firstQuestion").GetString());
+            var responseObj = JsonSerializer.Deserialize<InitResponse>(json);
+
+            Assert.NotNull(responseObj);
+            Assert.Equal("Interview initialized", responseObj.Message);
+            Assert.Equal("sessionId123", responseObj.SessionId);
+            Assert.Equal("First question?", responseObj.FirstQuestion);
         }
 
         /// <summary>
@@ -67,6 +71,7 @@ namespace AudioInterviewer.UnitTests.Controllers
         public async Task InitializeInterview_InvalidRequest_ReturnsBadRequest()
         {
             _controller.ModelState.AddModelError("Email", "Invalid");
+
             var result = await _controller.InitializeInterview(new InterviewController.InitRequest());
             Assert.IsType<BadRequestObjectResult>(result);
         }

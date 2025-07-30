@@ -14,7 +14,7 @@ using AudioInterviewer.API.Models;
 using AudioInterviewer.API.Services;
 using AudioInterviewer.API.Services.External;
 using AudioInterviewer.API.Data;
-
+using Microsoft.Extensions.Configuration;
 /// <summary>
 /// Unit tests for <see cref="InterviewService"/> logic, database, and integration behavior.
 /// </summary>
@@ -29,6 +29,8 @@ public class InterviewServiceTests
     private readonly InterviewService _service;
     private readonly HttpClient _httpClient;
 
+    private readonly Mock<IConfiguration> _mockConfiguration;
+
     public InterviewServiceTests()
     {
         _mockDbContext = new Mock<IMongoDbContext>();
@@ -38,6 +40,7 @@ public class InterviewServiceTests
         _mockReportCollection = new Mock<IMongoCollection<InterviewReport>>();
         _mockGridFsBucket = new Mock<IGridFSBucket>();
         _httpClient = new HttpClient(new MockHttpMessageHandler());
+        _mockConfiguration = new Mock<IConfiguration>();
 
         _mockDbContext.SetupGet(x => x.Sessions).Returns(_mockSessionCollection.Object);
         _mockDbContext.SetupGet(x => x.Reports).Returns(_mockReportCollection.Object);
@@ -47,7 +50,8 @@ public class InterviewServiceTests
         _service = new InterviewService(
             _mockDbContext.Object,
             _mockApiClient.Object,
-            _mockHttpClientFactory.Object
+            _mockHttpClientFactory.Object,
+            _mockConfiguration.Object
         );
     }
 
