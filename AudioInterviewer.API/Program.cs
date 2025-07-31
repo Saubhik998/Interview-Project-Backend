@@ -38,13 +38,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(CorsPolicyFrontend, policy =>
     {
-        policy.WithOrigins( // add all origins you want to support
-                "http://localhost:3000",             // React dev server
-                "http://localhost:8080",             // Frontend container on host
-                "http://frontend-audio-interviewer"  // Frontend container in Docker network
-            )
-            .AllowAnyHeader()
-            .AllowAnyMethod()
+        policy // add all origins you want to support
+                .AllowAnyOrigin()            
+                             
+                 
+            
+                .AllowAnyHeader()
+                .AllowAnyMethod()
             // .AllowCredentials() // Uncomment if you use cookie/cookie-auth
             ;
     });
