@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   docker-build-push:
     runs-on: ubuntu-latest
@@ -21,10 +25,19 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and Push Docker Image
+      - name: Build and Push Docker Image to Docker Hub
         uses: docker/build-push-action@v5
         with:
           context: ./AudioInterviewer.API
           file: ./AudioInterviewer.API/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/audio-interviewer-api:latest
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u Saubhik998 --password-stdin
+
+      - name: Tag and Push Docker Image to GitHub Container Registry
+        run: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/audio-interviewer-api:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/audio-interviewer-api:latest ghcr.io/saubhik998/audio-interviewer-api:latest
+          docker push ghcr.io/saubhik998/audio-interviewer-api:latest
