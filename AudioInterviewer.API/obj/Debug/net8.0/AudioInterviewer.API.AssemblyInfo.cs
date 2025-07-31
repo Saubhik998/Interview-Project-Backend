@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AudioInterviewer.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b526648f7d771bb06227c387f10234d6892fee1d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d4d18808c8b7a82a1f8e7f40197238d231a40273")]
 [assembly: System.Reflection.AssemblyProductAttribute("AudioInterviewer.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AudioInterviewer.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
